@@ -8,7 +8,7 @@ namespace Zapasovnik.API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=db.kulosh.eu;Port=20533;database=dbZapasovnik;uid=dbZapasovnik;password=wxm4mup0BVF4dzr-xam");
+            optionsBuilder.UseMySQL();
         }
     }
 }
