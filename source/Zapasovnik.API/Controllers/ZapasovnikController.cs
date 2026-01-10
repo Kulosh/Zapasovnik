@@ -39,9 +39,19 @@ namespace Zapasovnik.API.Controllers
             UsersFavTeams = DbContext.UsersFavTeams.ToList();
         }
 
-        [HttpGet(Name = "GetLeague")]
-        public IEnumerable<League> Get()
+        [HttpGet(Name = "GetLeagues")]
+        public IEnumerable<League> GetLeagues()
         {
+            return Leagues.ToArray();
+        }
+
+        [HttpPost(Name = "PostLeague")]
+        public IEnumerable<League> PostLeague(string leagueName)
+        {
+            League newLeague = new League { LeagueName = leagueName };
+            DbContext.Leagues.Add(newLeague);
+            DbContext.SaveChanges();
+            Leagues = DbContext.Leagues.ToList();
             return Leagues.ToArray();
         }
     }
