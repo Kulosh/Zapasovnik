@@ -1,6 +1,14 @@
-@Zapasovnik.API_HostAddress = http://localhost:5044
+@Zapasovnik.API_HostAddress = https://localhost:7184
 
-GET {{Zapasovnik.API_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{Zapasovnik.API_HostAddress}}/zapasovnik
+
+###
+
+@subject=pampeliska
+POST {{Zapasovnik.API_HostAddress}}/api/test?subject={{subject}}
+
+###
+
+GET {{Zapasovnik.API_HostAddress}}/api/test
 
 ###
