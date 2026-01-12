@@ -117,9 +117,9 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("Users")]
-        public IEnumerable<User> APIUsers(string teamName, DateTime teamEstablished)
+        public IEnumerable<User> APIUsers(string userName, string userEmail, string userPassword)
         {
-            User newUser = new User { TeamName = teamName, TeamEstablished = teamEstablished };
+            User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword};
             DbContext.Users.Add(newUser);
             DbContext.SaveChanges();
             Users = DbContext.Users.ToList();
