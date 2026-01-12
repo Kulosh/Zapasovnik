@@ -39,20 +39,91 @@ namespace Zapasovnik.API.Controllers
             UsersFavTeams = DbContext.UsersFavTeams.ToList();
         }
 
-        [HttpGet(Name = "GetLeagues")]
-        public IEnumerable<League> GetLeagues()
+        [HttpGet("Leagues")]
+        public IEnumerable<League> APILeagues()
         {
             return Leagues.ToArray();
         }
 
-        [HttpPost(Name = "PostLeague")]
-        public IEnumerable<League> PostLeague(string leagueName)
+        [HttpPost("Leagues")]
+        public IEnumerable<League> APILeagues(string leagueName)
         {
             League newLeague = new League { LeagueName = leagueName };
             DbContext.Leagues.Add(newLeague);
             DbContext.SaveChanges();
             Leagues = DbContext.Leagues.ToList();
             return Leagues.ToArray();
+        }
+
+
+
+        [HttpGet("Matches")]
+        public IEnumerable<Match> APIMatches()
+        {
+            return Matches.ToArray();
+        }
+
+        [HttpPost("Matches")]
+        public IEnumerable<Match> APIMatches(int leagueId, DateTime matchDate)
+        {
+            Match newMatch = new Match { MatchDate = matchDate, LeagueId = leagueId };
+            DbContext.Matches.Add(newMatch);
+            DbContext.SaveChanges();
+            Matches = DbContext.Matches.ToList();
+            return Matches.ToArray();
+        }
+
+
+
+        [HttpGet("Players")]
+        public IEnumerable<Player> APIPlayers()
+        {
+            return Players.ToArray();
+        }
+
+        [HttpPost("Players")]
+        public IEnumerable<Player> APIPlayers(string firstName, string lastName, DateTime playerBorn)
+        {
+            Player newPlayer = new Player { FirstName = firstName, LastName = lastName, PlayerBorn = playerBorn };
+            DbContext.Players.Add(newPlayer);
+            DbContext.SaveChanges();
+            Players = DbContext.Players.ToList();
+            return Players.ToArray();
+        }
+
+
+
+        [HttpGet("Teams")]
+        public IEnumerable<Team> APITeams()
+        {
+            return Teams.ToArray();
+        }
+
+        [HttpPost("Teams")]
+        public IEnumerable<Team> APITeams(string teamName, DateTime teamEstablished)
+        {
+            Team newTeam = new Team { TeamName = teamName, TeamEstablished = teamEstablished };
+            DbContext.Teams.Add(newTeam);
+            DbContext.SaveChanges();
+            Teams = DbContext.Teams.ToList();
+            return Teams.ToArray();
+        }
+
+
+        [HttpGet("Users")]
+        public IEnumerable<User> APIUsers()
+        {
+            return Users.ToArray();
+        }
+
+        [HttpPost("Users")]
+        public IEnumerable<User> APIUsers(string teamName, DateTime teamEstablished)
+        {
+            User newUser = new User { TeamName = teamName, TeamEstablished = teamEstablished };
+            DbContext.Users.Add(newUser);
+            DbContext.SaveChanges();
+            Users = DbContext.Users.ToList();
+            return Users.ToArray();
         }
     }
 }
