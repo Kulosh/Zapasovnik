@@ -21,11 +21,20 @@ namespace Zapasovnik.API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            IConfiguration configuration = configurationBuilder
-                .AddUserSecrets<Program>()
-                .Build();
-            string connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+            string connection;
+
+            if (Environment.GetEnvironmentVariable("ConnectionString") == null)
+            {
+                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                IConfiguration configuration = configurationBuilder
+                    .AddUserSecrets<Program>()
+                    .Build();
+                connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+            }
+            else
+            {
+                connection = Environment.GetEnvironmentVariable("ConnectionString")!;
+            }
 
             optionsBuilder.UseMySQL(connection);
         }
