@@ -5,7 +5,7 @@ namespace Zapasovnik.API
 {
     public class dbZapasovnikContext : DbContext
     {
-        public DbSet<Test> Tests { get; set; }
+        public DbSet<Test> Tests { get; set; } // test purpose
 
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
@@ -21,7 +21,13 @@ namespace Zapasovnik.API
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("");
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            IConfiguration configuration = configurationBuilder
+                .AddUserSecrets<Program>()
+                .Build();
+            string connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+
+            optionsBuilder.UseMySQL(connection);
         }
     }
 }
