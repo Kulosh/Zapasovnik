@@ -58,27 +58,41 @@ fun ZapasovnikHomepage(modifier: Modifier = Modifier){
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Red)
+                .background(Color.Gray)
                 .padding(20.dp)
         )
 
-        Button(onClick = {}, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = {}, modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+        ) {
             Text(
-                text = "Matches"
+                text = "Matches",
+                modifier = Modifier.padding(10.dp)
             )
         }
 
-        Button(onClick = {}, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = {}, modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+        ) {
             Text(
-                text = "Teams"
+                text = "Teams",
+                modifier = Modifier.padding(10.dp)
             )
         }
 
-        Button(onClick = {}, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = {}, modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+        ) {
             Text(
-                text = "Players"
+                text = "Players",
+                modifier = Modifier.padding(10.dp)
             )
         }
+
+
     }
 }
 
