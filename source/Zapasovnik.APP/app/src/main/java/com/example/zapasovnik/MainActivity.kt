@@ -64,6 +64,18 @@ fun ZapasovnikHomepage(modifier: Modifier = Modifier){
                 text = "Matches"
             )
         }
+
+        Button(onClick = {}, modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = "Teams"
+            )
+        }
+
+        Button(onClick = {}, modifier = Modifier.padding(20.dp)) {
+            Text(
+                text = "Players"
+            )
+        }
     }
 }
 
