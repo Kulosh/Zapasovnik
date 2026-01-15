@@ -34,8 +34,11 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier
                     .background(color = MaterialTheme.colorScheme.background)
                     .windowInsetsPadding(WindowInsets.statusBars)
-                ) {
-                    ZapasovnikHomepage(modifier = Modifier.fillMaxSize())
+                ) { innerPadding ->
+                    ZapasovnikHomepage(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                    )
                 }
             }
         }
@@ -82,7 +85,13 @@ fun ZapasovnikHomepage(modifier: Modifier = Modifier){
 @Preview (showBackground = true)
 @Composable
 fun ZapasovnikPreview(){
-    Scaffold(modifier = Modifier) {
-        ZapasovnikHomepage(Modifier.fillMaxSize())
+    Scaffold(modifier = Modifier
+        .background(color = MaterialTheme.colorScheme.background)
+        .windowInsetsPadding(WindowInsets.statusBars)
+    ) { innerPadding ->
+        ZapasovnikHomepage(Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+        )
     }
 }
