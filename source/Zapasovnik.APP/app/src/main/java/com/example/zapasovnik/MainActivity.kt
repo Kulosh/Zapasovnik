@@ -1,6 +1,7 @@
 package com.example.zapasovnik
 
 import android.os.Bundle
+import android.widget.TableLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,13 +12,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.zapasovnik.model.HomeMatchTableAdapter
+import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.ui.theme.ZapasovnikTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.home_layout)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        lifecycleScope.launch {
+            try {
+                val matches: List<Match> = RetrofitClient.api.getMatches()
+                fillTable(matches)
+                recyclerView.adapter = HomeMatchTableAdapter(matches)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 //        setContent {
 //            ZapasovnikTheme {
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -29,6 +49,10 @@ class MainActivity : ComponentActivity() {
 //            }
 //        }
     }
+}
+
+private fun fillTable(matches: List<Match>) {
+//    val targetTable = findViewById<TableLayout>
 }
 
 @Composable
