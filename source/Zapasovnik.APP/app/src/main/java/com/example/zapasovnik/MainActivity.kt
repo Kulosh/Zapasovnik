@@ -1,13 +1,8 @@
 package com.example.zapasovnik
 
 import android.os.Bundle
-import android.widget.TableLayout
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,7 +27,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             try {
                 val matches: List<Match> = RetrofitClient.api.getMatches()
-                fillTable(matches)
+//                fillTable(matches)
                 recyclerView.adapter = HomeMatchTableAdapter(matches)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -52,7 +47,7 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun fillTable(matches: List<Match>) {
-//    val targetTable = findViewById<TableLayout>
+//    val targetTable =
 }
 
 @Composable
