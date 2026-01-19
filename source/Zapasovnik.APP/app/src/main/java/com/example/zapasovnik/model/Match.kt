@@ -1,4 +1,4 @@
-package com.example.zapasovnik
+package com.example.zapasovnik.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

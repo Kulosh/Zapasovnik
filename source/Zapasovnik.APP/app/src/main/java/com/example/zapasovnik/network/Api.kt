@@ -1,6 +1,6 @@
 package com.example.zapasovnik.network
 
-import com.example.zapasovnik.Match
+import com.example.zapasovnik.model.Match
 import retrofit2.http.GET
 
 interface Api {

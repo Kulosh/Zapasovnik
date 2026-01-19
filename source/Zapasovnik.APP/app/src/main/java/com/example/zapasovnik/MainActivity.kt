@@ -10,7 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zapasovnik.model.HomeMatchTableAdapter
+import com.example.zapasovnik.model.Match
+import com.example.zapasovnik.viewModel.HomeMatchTableAdapter
 import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.ui.theme.ZapasovnikTheme
 import kotlinx.coroutines.launch

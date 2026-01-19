@@ -1,8 +1,8 @@
-package com.example.zapasovnik.model
+package com.example.zapasovnik.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.zapasovnik.Match
+import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.launch
 

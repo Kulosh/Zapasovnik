@@ -1,4 +1,4 @@
-package com.example.zapasovnik.model
+package com.example.zapasovnik.viewModel
 
 
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zapasovnik.Match
+import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.R
 
 class HomeMatchTableAdapter(private val match: List<Match>):
