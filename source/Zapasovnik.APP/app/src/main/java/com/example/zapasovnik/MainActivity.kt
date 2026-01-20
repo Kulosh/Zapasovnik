@@ -27,7 +27,15 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             try {
-                val matches: List<Match> = RetrofitClient.api.getMatches()
+//                var matches: List<Match> = RetrofitClient.api.getMatches()
+                var matches = ArrayList<Match>();
+
+                matches.add(Match("sparta", "Tmrw", "Slavia"))
+                matches.add(Match("Boh", "Tmrw", "Ban"))
+                matches.add(Match("Plz", "Tmrw", "ManC"))
+                matches.add(Match("Tot", "Tmrw", "ManU"))
+
+
 //                fillTable(matches)
                 recyclerView.adapter = HomeMatchTableAdapter(matches)
             } catch (e: Exception) {
