@@ -17,9 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="1"
+        android:importantForAccessibility="no"
         android:src="@drawable/logo"
-        android:visibility="visible"
-        android:importantForAccessibility="no"/>
+        android:visibility="visible" />
 
     <Space
         android:layout_width="match_parent"
