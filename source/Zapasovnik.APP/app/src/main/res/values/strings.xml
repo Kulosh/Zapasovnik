@@ -3,4 +3,5 @@
     <string name="players_btn">Players</string>
     <string name="teams_btn">Teams</string>
     <string name="matches_btn">Matches</string>
+    <string name="home_match_hint">Scroll down to see more</string>
 </resources>
