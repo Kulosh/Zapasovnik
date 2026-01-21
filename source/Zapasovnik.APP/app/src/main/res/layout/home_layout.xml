@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:gravity="center"
     android:orientation="vertical">
 
     <Space
@@ -38,7 +39,7 @@
 
     <Button
         android:id="@+id/playerBtn"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/players_btn"
@@ -46,7 +47,7 @@
 
     <Button
         android:id="@+id/teamBtn"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/teams_btn"
@@ -54,7 +55,7 @@
 
     <Button
         android:id="@+id/matchBtn"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/matches_btn"
