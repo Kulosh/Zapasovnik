@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.viewModel.HomeMatchTableAdapter
-import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.ui.theme.ZapasovnikTheme
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
