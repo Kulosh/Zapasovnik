@@ -31,7 +31,7 @@ class HomeActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             try {
-                var matches: List<Match> = RetrofitClient.api.getMatches()
+                var TeamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
 //                var matches = ArrayList<Match>();
 
 //                matches.add(Match("sparta", "Tmrw", "Slavia"))
@@ -41,7 +41,7 @@ class HomeActivity : ComponentActivity() {
 
 
 //                fillTable(matches)
-                recyclerView.adapter = HomeMatchTableAdapter(matches)
+                recyclerView.adapter = HomeMatchTableAdapter(TeamMatches)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

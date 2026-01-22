@@ -12,7 +12,7 @@ class HomeMatchesModel : ViewModel() {
     fun loadMatches() {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.api.getMatches()
+                val response = RetrofitClient.api.getTeamMatches()
                 matchList.clear()
                 matchList.addAll(response)
             } catch (e: Exception) {
