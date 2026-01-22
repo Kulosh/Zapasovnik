@@ -7,7 +7,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
 object RetrofitClient {
-    private const val BASE_URL = "https://api.kulosh.eu/zapasovnik"
+    private const val BASE_URL = "https://api.kulosh.eu/zapasovnik/"
 
     val api: Api by lazy {
         Retrofit
