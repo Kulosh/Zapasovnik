@@ -157,7 +157,7 @@ namespace Zapasovnik.API.Controllers
             var rows = Matches
                 .Select(m => new MatchWithTeamsDto
                 {
-                    MatchId = m.MatchId,
+                    //MatchId = m.MatchId,
                     MatchDate = m.MatchDate,
 
                     Team1 = TeamsMatches
