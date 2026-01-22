@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Reflection.Metadata.Ecma335;
 using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
@@ -119,11 +121,69 @@ namespace Zapasovnik.API.Controllers
         [HttpPost("Users")]
         public IEnumerable<User> APIUsers(string userName, string userEmail, string userPassword)
         {
-            User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword};
+            User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword };
             DbContext.Users.Add(newUser);
             DbContext.SaveChanges();
             Users = DbContext.Users.ToList();
             return Users.ToArray();
+        }
+
+        [HttpGet("TeamMatches")]
+        public IEnumerable<MatchWithTeamsDto> APITeamMatches()
+        {
+            //return TeamsMatches.ToArray();
+
+            //List<MatchWithTeamsDto> data = new();
+
+            //string team1 = "";
+            //DateTime date = DateTime.Today;
+            //string team2 = "";
+            //int i = 0;
+
+            //foreach (var item in TeamsMatches)
+            //{
+            //    if (i % 2 == 0)
+            //    {
+            //        team1 = Teams.Where(t => t.TeamId == item.TeamId).Select(t => t.TeamName).ToString();
+            //        date = Convert.ToDateTime(Matches.Where(m => m.MatchId == item.MatchId).Select(m => m.MatchDate));
+            //    }
+            //    else
+            //    {
+            //        team2 = Teams.Where(t => t.TeamId == item.TeamId).Select(t => t.TeamName).ToString();
+            //        MatchWithTeamsDto dataAdd = new MatchWithTeamsDto { Team1 = team1, Date = date, Team2 = team2 };
+            //        data.Add(dataAdd);
+            //    }
+            //}
+            var rows = Matches
+                .Select(m => new MatchWithTeamsDto
+                {
+                    //MatchId = m.MatchId,
+                    MatchDate = m.MatchDate,
+
+                    Team1 = TeamsMatches
+                        .Where(tm => tm.MatchId == m.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault(),
+
+                    Team2 = TeamsMatches
+                        .Where(tm => tm.MatchId == m.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .Skip(1)
+                        .FirstOrDefault()
+                })
+                .OrderBy(x => x.MatchDate);
+                //.ThenBy(x => x.MatchId);
+
+            return rows;
+
         }
     }
 }
