@@ -179,8 +179,8 @@ namespace Zapasovnik.API.Controllers
                         .Skip(1)
                         .FirstOrDefault()
                 })
-                .OrderBy(x => x.MatchDate)
-                .ThenBy(x => x.MatchId);
+                .OrderBy(x => x.MatchDate);
+                //.ThenBy(x => x.MatchId);
 
             return rows;
 
