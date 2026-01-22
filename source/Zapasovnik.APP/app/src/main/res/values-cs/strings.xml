@@ -4,4 +4,5 @@
     <string name="players_btn">Hráči</string>
     <string name="teams_btn">Týmy</string>
     <string name="matches_btn">Zápasy</string>
+    <string name="home_match_hint">Posuňte níž pro více zápasů</string>
 </resources>

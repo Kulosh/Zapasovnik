@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.firebase.appdistribution.gradle)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
