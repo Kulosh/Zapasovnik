@@ -1,6 +1,5 @@
 package com.example.zapasovnik.network
 
-import com.google.firebase.appdistribution.gradle.ApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
