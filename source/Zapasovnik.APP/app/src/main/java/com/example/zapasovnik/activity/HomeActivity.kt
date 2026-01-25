@@ -3,6 +3,7 @@ package com.example.zapasovnik.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,12 @@ class HomeActivity : ComponentActivity() {
         val playersClick = findViewById<Button>(R.id.playerBtn)
         playersClick.setOnClickListener {
             val intent = Intent(this, PlayersActivity::class.java)
+            startActivity(intent)
+        }
+
+        val loginClick = findViewById<ImageView>(R.id.loginIcon)
+        loginClick.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
