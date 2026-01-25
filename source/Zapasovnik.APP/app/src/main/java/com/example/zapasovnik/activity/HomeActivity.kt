@@ -38,24 +38,11 @@ class HomeActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             try {
-                var TeamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-//                var matches = ArrayList<Match>();
-
-//                matches.add(Match("sparta", "Tmrw", "Slavia"))
-//                matches.add(Match("Boh", "Tmrw", "Ban"))
-//                matches.add(Match("Plz", "Tmrw", "ManC"))
-//                matches.add(Match("Tot", "Tmrw", "ManU"))
-
-
-//                fillTable(matches)
-                recyclerView.adapter = HomeMatchTableAdapter(TeamMatches)
+                val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
+                recyclerView.adapter = HomeMatchTableAdapter(teamMatches)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-}
-
-private fun fillTable(matches: List<Match>) {
-//    val targetTable =
 }
