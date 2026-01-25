@@ -4,4 +4,7 @@
     <string name="teams_btn">Teams</string>
     <string name="matches_btn">Matches</string>
     <string name="home_match_hint">Scroll down to see more</string>
+    <string name="login_btn">LOGIN</string>
+    <string name="username_input">Username</string>
+    <string name="password_input">Password</string>
 </resources>

@@ -5,4 +5,7 @@
     <string name="teams_btn">Týmy</string>
     <string name="matches_btn">Zápasy</string>
     <string name="home_match_hint">Posuňte níž pro více zápasů</string>
+    <string name="login_btn">PŘIHLÁSIT</string>
+    <string name="username_input">Uživatelské jméno</string>
+    <string name="password_input">Heslo</string>
 </resources>
