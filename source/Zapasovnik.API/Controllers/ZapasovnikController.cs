@@ -119,7 +119,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("Users")]
-        public IEnumerable<User> APIUsers(string userName, string userEmail, string userPassword)
+        public IEnumerable<User> APIUsers(string userName, string ?userEmail, string userPassword)
         {
             User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword };
             DbContext.Users.Add(newUser);

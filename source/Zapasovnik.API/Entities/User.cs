@@ -15,7 +15,7 @@ namespace Zapasovnik.API.Entities
         public string UserName { get; set; }
 
         [Column("user_email")]
-        public string UserEmail { get; set; }
+        public string ?UserEmail { get; set; }
 
         [Column("user_password")]
         public string UserPassword { get; set; }
