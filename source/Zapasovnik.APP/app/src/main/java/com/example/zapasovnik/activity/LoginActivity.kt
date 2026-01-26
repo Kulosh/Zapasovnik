@@ -28,12 +28,13 @@ class LoginActivity : ComponentActivity() {
             if (userName != "" && password != "") {
                 lifecycleScope.launch {
                     val user = User(username =  userName, password = password)
-                    val response: Boolean = RetrofitClient.api.postUser(user)
+                    val response: Boolean = RetrofitClient.api.postLogin(user)
 
                     if (response) {
                         startActivity(intent)
                     } else {
-                        Toast.makeText(applicationContext, "Invalid login", Toast.LENGTH_SHORT).show()
+                        // TODO: change text to values from strings.xml
+                        Toast.makeText(applicationContext, "Wrong credentials", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
