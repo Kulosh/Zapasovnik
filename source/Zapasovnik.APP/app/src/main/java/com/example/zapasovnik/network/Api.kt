@@ -9,6 +9,6 @@ interface Api {
     @GET("TeamMatches")
     suspend fun getTeamMatches(): List<Match>
 
-    @POST("Users")
-    suspend fun postUser(user: User): Boolean
+    @POST("Login")
+    suspend fun postLogin(user: User): Boolean
 }
