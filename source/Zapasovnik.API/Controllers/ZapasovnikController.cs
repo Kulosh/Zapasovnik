@@ -119,7 +119,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("Users")]
-        public IEnumerable<User> APIUsers(string userName, string userEmail, string userPassword)
+        public IEnumerable<User> APIUsers(string userName, string ?userEmail, string userPassword)
         {
             User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword };
             DbContext.Users.Add(newUser);
@@ -128,36 +128,21 @@ namespace Zapasovnik.API.Controllers
             return Users.ToArray();
         }
 
+        [HttpPost("Login")]
+        public bool APILogin([FromBody] User incomeUser)
+        {
+            var user = Users
+                .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
+                .FirstOrDefault();
+            return user != null;
+        }
+
         [HttpGet("TeamMatches")]
         public IEnumerable<MatchWithTeamsDto> APITeamMatches()
         {
-            //return TeamsMatches.ToArray();
-
-            //List<MatchWithTeamsDto> data = new();
-
-            //string team1 = "";
-            //DateTime date = DateTime.Today;
-            //string team2 = "";
-            //int i = 0;
-
-            //foreach (var item in TeamsMatches)
-            //{
-            //    if (i % 2 == 0)
-            //    {
-            //        team1 = Teams.Where(t => t.TeamId == item.TeamId).Select(t => t.TeamName).ToString();
-            //        date = Convert.ToDateTime(Matches.Where(m => m.MatchId == item.MatchId).Select(m => m.MatchDate));
-            //    }
-            //    else
-            //    {
-            //        team2 = Teams.Where(t => t.TeamId == item.TeamId).Select(t => t.TeamName).ToString();
-            //        MatchWithTeamsDto dataAdd = new MatchWithTeamsDto { Team1 = team1, Date = date, Team2 = team2 };
-            //        data.Add(dataAdd);
-            //    }
-            //}
             var rows = Matches
                 .Select(m => new MatchWithTeamsDto
                 {
-                    //MatchId = m.MatchId,
                     MatchDate = m.MatchDate,
 
                     Team1 = TeamsMatches
@@ -180,7 +165,6 @@ namespace Zapasovnik.API.Controllers
                         .FirstOrDefault()
                 })
                 .OrderBy(x => x.MatchDate);
-                //.ThenBy(x => x.MatchId);
 
             return rows;
 

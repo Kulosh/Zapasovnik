@@ -3,6 +3,7 @@ package com.example.zapasovnik.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
@@ -29,26 +30,19 @@ class HomeActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        val loginClick = findViewById<ImageView>(R.id.loginIcon)
+        loginClick.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
         lifecycleScope.launch {
             try {
-                var TeamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-//                var matches = ArrayList<Match>();
-
-//                matches.add(Match("sparta", "Tmrw", "Slavia"))
-//                matches.add(Match("Boh", "Tmrw", "Ban"))
-//                matches.add(Match("Plz", "Tmrw", "ManC"))
-//                matches.add(Match("Tot", "Tmrw", "ManU"))
-
-
-//                fillTable(matches)
-                recyclerView.adapter = HomeMatchTableAdapter(TeamMatches)
+                val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
+                recyclerView.adapter = HomeMatchTableAdapter(teamMatches)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
-}
-
-private fun fillTable(matches: List<Match>) {
-//    val targetTable =
 }

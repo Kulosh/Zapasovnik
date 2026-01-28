@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.Match
 
 class HomeMatchTableAdapter(private val match: List<Match>):
     RecyclerView.Adapter<HomeMatchTableAdapter.HomeMatchTableHolder>() {
