@@ -14,6 +14,8 @@ recyclerview = "1.4.0"
 constraintlayout = "2.2.1"
 orgJetbrainsKotlinPluginSerializationGradlePlugin = "2.2.0"
 kotlinxSerializationJson = "1.8.0"
+loggingInterceptor = "2.7.5"
+loggingInterceptorVersion = "4.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +38,8 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "orgJetbrainsKotlinPluginSerializationGradlePlugin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+logging-interceptor = { group = "com.squareup.okhttp", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptorVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

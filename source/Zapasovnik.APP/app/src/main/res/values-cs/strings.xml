@@ -8,4 +8,8 @@
     <string name="login_btn">PŘIHLÁSIT</string>
     <string name="username_input">Uživatelské jméno</string>
     <string name="password_input">Heslo</string>
+    <string name="invalid_login">Neplatné přihlášení</string>
+    <string name="invalid_credentials">Neplatné údaje</string>
+    <string name="network_error">Chyba sítě</string>
+    <string name="login_failed">Přihlášení se nezdařilo</string>
 </resources>

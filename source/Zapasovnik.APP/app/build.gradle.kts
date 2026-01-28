@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp3.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,8 +73,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    // Retrofit with Kotlin serialization Converter
-
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    //others
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 }

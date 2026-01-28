@@ -1,7 +1,9 @@
 package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.Match
-import com.example.zapasovnik.model.User
+import kotlinx.serialization.json.JsonObject
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -10,5 +12,7 @@ interface Api {
     suspend fun getTeamMatches(): List<Match>
 
     @POST("Login")
-    suspend fun postLogin(user: User): Boolean
+    suspend fun postLogin(
+        @Body loginString: JsonObject
+    ): Response<Boolean>
 }
