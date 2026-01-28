@@ -129,10 +129,10 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("Login")]
-        public bool APILogin(string userName, string userPassword)
+        public bool APILogin([FromBody] User incomeUser)
         {
             var user = Users
-                .Where(u => u.UserName == userName && u.UserPassword == userPassword)
+                .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
                 .FirstOrDefault();
             return user != null;
         }
