@@ -17,5 +17,17 @@ class ProfileActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.profile_layout)
 
+        val username = intent.getStringExtra("username").toString()
+        val usernameJson = buildJsonObject {
+            put("username", username)
+        }
+        val usernameText = findViewById<TextView>(R.id.profileUsername)
+        val emailText = findViewById<TextView>(R.id.profileEmail)
+
+        lifecycleScope.launch {
+            val resp = RetrofitClient.api.getUser(usernameJson)
+            usernameText.text = username
+            emailText.text = resp.getValue("email").toString().replace("\"", "")
+        }
     }
 }
