@@ -26,9 +26,12 @@ class HomeActivity : ComponentActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
+
         val playersClick = findViewById<Button>(R.id.playerBtn)
         playersClick.setOnClickListener {
             val intent = Intent(this, PlayersActivity::class.java)
+            intent.putExtra("login", loginSuccess)
             startActivity(intent)
         }
 
