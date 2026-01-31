@@ -22,6 +22,7 @@ class HomeActivity : ComponentActivity() {
         setContentView(R.layout.home_layout)
 
         val loginSuccess =  intent.getBooleanExtra("success", false)
+        val username = intent.getStringExtra("username")
 
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,6 +40,7 @@ class HomeActivity : ComponentActivity() {
             val loginClick = findViewById<ImageView>(R.id.loginIcon)
             loginClick.setOnClickListener {
                 val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("username", username)
                 startActivity(intent)
             }
         } else {
