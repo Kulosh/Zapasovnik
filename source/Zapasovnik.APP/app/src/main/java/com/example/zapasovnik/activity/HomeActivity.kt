@@ -21,19 +21,32 @@ class HomeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.home_layout)
 
+        val loginSuccess =  intent.getBooleanExtra("success", false)
+
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
 
         val playersClick = findViewById<Button>(R.id.playerBtn)
         playersClick.setOnClickListener {
             val intent = Intent(this, PlayersActivity::class.java)
+            intent.putExtra("login", loginSuccess)
             startActivity(intent)
         }
 
-        val loginClick = findViewById<ImageView>(R.id.loginIcon)
-        loginClick.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        if (loginSuccess) {
+            val loginClick = findViewById<ImageView>(R.id.loginIcon)
+            loginClick.setOnClickListener {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+        } else {
+            val loginClick = findViewById<ImageView>(R.id.loginIcon)
+            loginClick.setOnClickListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         lifecycleScope.launch {
