@@ -39,6 +39,7 @@ class LoginActivity : ComponentActivity() {
                             val ok = resp.body() == true
                             if (ok) {
                                 intent.putExtra("success", true)
+                                intent.putExtra("username", username)
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
