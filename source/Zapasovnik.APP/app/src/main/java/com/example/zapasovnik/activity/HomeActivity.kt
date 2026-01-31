@@ -21,7 +21,7 @@ class HomeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.home_layout)
 
-        val loginSuccess =  intent.getBooleanExtra("success", false)
+        val loginSuccess = intent.getBooleanExtra("success", false)
         val username = intent.getStringExtra("username")
 
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
