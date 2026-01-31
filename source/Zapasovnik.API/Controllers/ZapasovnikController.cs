@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
+using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
@@ -135,6 +136,19 @@ namespace Zapasovnik.API.Controllers
                 .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
                 .FirstOrDefault();
             return user != null;
+        }
+
+        [HttpPost("User")]
+        public UserDto APIUser(string username)
+        {
+            UserDto user = new();
+
+            user.Username = username;
+            user.Email = Users
+                .Where(u => u.UserName == username)
+                .Select(u => u.UserEmail)
+                .First()!;
+            return user;
         }
 
         [HttpGet("TeamMatches")]
