@@ -12,4 +12,9 @@
     <string name="invalid_credentials">Neplatné údaje</string>
     <string name="network_error">Chyba sítě</string>
     <string name="login_failed">Přihlášení se nezdařilo</string>
+    <string name="email">Email</string>
+    <string name="change_password">Změnit heslo</string>
+    <string name="fav_players">Oblíbení hráči</string>
+    <string name="fav_teams">Oblíbené týmy</string>
+    <string name="fav_matches">Oblíbené zápasy</string>
 </resources>

@@ -11,4 +11,9 @@
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="network_error">Network error</string>
     <string name="login_failed">Login failed</string>
+    <string name="email">Email</string>
+    <string name="change_password">Change password</string>
+    <string name="fav_players">Favorite players</string>
+    <string name="fav_teams">Favorite teams</string>
+    <string name="fav_matches">Favorite matches</string>
 </resources>
