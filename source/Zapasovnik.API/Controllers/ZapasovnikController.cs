@@ -139,13 +139,13 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("User")]
-        public string APIUser([FromBody] UserDto incomeUser)
+        public UserDto APIUser([FromBody] UserDto incomeUser)
         {
-            string email = Users
+            incomeUser.Email = Users
                 .Where(u => u.UserName == incomeUser.Username)
                 .Select(u => u.UserEmail)
                 .First()!;
-            return email;
+            return incomeUser;
         }
 
         [HttpGet("TeamMatches")]
