@@ -8,8 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.put
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
