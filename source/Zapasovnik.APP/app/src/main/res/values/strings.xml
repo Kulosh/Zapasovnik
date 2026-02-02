@@ -19,4 +19,6 @@
     <string name="old_password">Enter old password</string>
     <string name="new_password">Enter new password</string>
     <string name="retype_new">Re-enter new password</string>
+    <string name="new_not_same">New passwords are not same</string>
+    <string name="old_wrong">Old password is incorrect</string>
 </resources>
