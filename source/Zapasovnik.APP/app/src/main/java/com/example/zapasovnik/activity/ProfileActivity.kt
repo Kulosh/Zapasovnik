@@ -29,6 +29,7 @@ class ProfileActivity : ComponentActivity() {
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {
