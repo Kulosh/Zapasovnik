@@ -148,6 +148,24 @@ namespace Zapasovnik.API.Controllers
             return incomeUser;
         }
 
+        [HttpPost("chgpwd")]
+        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
+        {
+            User user = Users
+                .Where(u => u.UserName == chg.Username)
+                .First();
+
+            if (user.UserPassword != chg.Old) return false;
+            else
+            {
+                user.UserPassword = chg.New;
+
+                DbContext.Users.Update(user);
+                DbContext.SaveChanges();
+                return true;
+            }
+        }
+
         [HttpGet("TeamMatches")]
         public IEnumerable<MatchWithTeamsDto> APITeamMatches()
         {
