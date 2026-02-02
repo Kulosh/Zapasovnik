@@ -20,4 +20,9 @@ interface Api {
     suspend fun postLogin(
         @Body loginString: JsonObject
     ): Response<Boolean>
+
+    @POST("chgpwd")
+    suspend fun postChangePassword(
+        @Body changePassword: JsonObject
+    ): Response<Boolean>
 }
