@@ -30,6 +30,9 @@
         <activity android:name=".activity.ProfileActivity">
 
         </activity>
+        <activity android:name=".activity.ChangePasswordActivity">
+            
+        </activity>
     </application>
 
 </manifest>
