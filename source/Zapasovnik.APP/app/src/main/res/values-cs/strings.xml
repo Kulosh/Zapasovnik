@@ -17,4 +17,7 @@
     <string name="fav_players">Oblíbení hráči</string>
     <string name="fav_teams">Oblíbené týmy</string>
     <string name="fav_matches">Oblíbené zápasy</string>
+    <string name="old_password">Zadejte staré heslo</string>
+    <string name="new_password">Zadejte nové heslo</string>
+    <string name="retype_new">Znovu-zadejte nové heslo</string>
 </resources>

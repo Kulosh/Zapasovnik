@@ -16,4 +16,7 @@
     <string name="fav_players">Favorite players</string>
     <string name="fav_teams">Favorite teams</string>
     <string name="fav_matches">Favorite matches</string>
+    <string name="old_password">Enter old password</string>
+    <string name="new_password">Enter new password</string>
+    <string name="retype_new">Re-enter new password</string>
 </resources>
