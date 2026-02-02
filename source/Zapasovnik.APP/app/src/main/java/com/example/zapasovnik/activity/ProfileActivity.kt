@@ -1,6 +1,8 @@
 package com.example.zapasovnik.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -23,11 +25,18 @@ class ProfileActivity : ComponentActivity() {
         }
         val usernameText = findViewById<TextView>(R.id.profileUsername)
         val emailText = findViewById<TextView>(R.id.profileEmail)
+        val changPasswordBtn = findViewById<Button>(R.id.profileChangePassword)
+
+        changPasswordBtn.setOnClickListener {
+            val intent = Intent(this, ChangePasswordActivity::class.java)
+        }
 
         lifecycleScope.launch {
             val resp = RetrofitClient.api.getUser(usernameJson)
             usernameText.text = username
             emailText.text = resp.getValue("email").toString().replace("\"", "")
         }
+
+
     }
 }
