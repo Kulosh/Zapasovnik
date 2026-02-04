@@ -144,7 +144,7 @@ namespace Zapasovnik.API.Controllers
             incomeUser.Email = Users
                 .Where(u => u.UserName == incomeUser.Username)
                 .Select(u => u.UserEmail)
-                .First()!;
+                .FirstOrDefault();
             return incomeUser;
         }
 
