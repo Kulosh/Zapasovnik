@@ -22,7 +22,7 @@ class ProfileActivity : ComponentActivity() {
 
         val username = intent.getStringExtra("username").toString()
         val usernameJson = buildJsonObject {
-            put("usernamePwd", username)
+            put("username", username)
         }
         val usernameText = findViewById<TextView>(R.id.profileUsername)
         val emailText = findViewById<TextView>(R.id.profileEmail)
@@ -30,7 +30,7 @@ class ProfileActivity : ComponentActivity() {
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
-            intent.putExtra("username", username)
+            intent.putExtra("usernamePwd", username)
             Log.d("username profile", username)
             startActivity(intent)
         }

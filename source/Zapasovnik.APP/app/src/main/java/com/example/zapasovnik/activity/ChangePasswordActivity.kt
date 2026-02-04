@@ -25,16 +25,17 @@ class ChangePasswordActivity : ComponentActivity() {
         val newPwd = findViewById<EditText>(R.id.changePwdNew)
         val newPwdRe = findViewById<EditText>(R.id.changePwdNewRe)
         val confirmBtn = findViewById<Button>(R.id.changeConfirm)
+        val username = intent.getStringExtra("usernamePwd")
+        Log.w("Username", "$username")
+
 
         confirmBtn.setOnClickListener {
             if (newPwd.text.toString() == newPwdRe.text.toString()) {
                 val intent = Intent(this, ProfileActivity::class.java)
 
-                Log.d("Username", "${intent.getStringExtra("username")}")
-
                 lifecycleScope.launch {
                     val pwdString = buildJsonObject {
-                        put("username", intent.getStringExtra("usernamePwd"))
+                        put("username", username)
                         put("old", oldPwd.text.toString())
                         put("new", newPwd.text.toString())
                     }
@@ -43,11 +44,14 @@ class ChangePasswordActivity : ComponentActivity() {
                     Log.d("PWD string", pwdString.toString())
                     if (resp.isSuccessful) {
                         startActivity(intent)
-                    } else Toast.makeText(applicationContext, R.string.old_wrong, Toast.LENGTH_SHORT).show()
+                    } else Toast.makeText(
+                        applicationContext,
+                        R.string.old_wrong,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-            } else Toast.makeText(applicationContext, R.string.new_not_same, Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(applicationContext, R.string.new_not_same, Toast.LENGTH_SHORT)
+                .show()
         }
-
-
     }
 }
