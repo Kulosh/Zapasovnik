@@ -11,47 +11,54 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.Match
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.viewModel.HomeMatchTableAdapter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class HomeActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.home_layout)
 
-        val loginSuccess = intent.getBooleanExtra("success", false)
-        val username = intent.getStringExtra("username")
+        userData = UserData(this)
+
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        val profileIntent = Intent(this, ProfileActivity::class.java)
+
+//        val loginSuccess = intent.getBooleanExtra("success", false)
+//        val username = intent.getStringExtra("username")
 
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-
-
         val playersClick = findViewById<Button>(R.id.playerBtn)
         playersClick.setOnClickListener {
             val intent = Intent(this, PlayersActivity::class.java)
-            intent.putExtra("login", loginSuccess)
             startActivity(intent)
         }
 
-        if (loginSuccess) {
-            val loginClick = findViewById<ImageView>(R.id.loginIcon)
-            loginClick.setOnClickListener {
-                val intent = Intent(this, ProfileActivity::class.java)
-                intent.putExtra("username", username)
-                startActivity(intent)
-            }
-        } else {
-            val loginClick = findViewById<ImageView>(R.id.loginIcon)
-            loginClick.setOnClickListener {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        }
-
         lifecycleScope.launch {
+            val loginSuccess = userData.loggedInFlow.first()
+
+            if (loginSuccess) {
+                val loginClick = findViewById<ImageView>(R.id.loginIcon)
+                loginClick.setOnClickListener {
+//                    intent.putExtra("username", username)
+                    startActivity(profileIntent)
+                }
+            } else {
+                val loginClick = findViewById<ImageView>(R.id.loginIcon)
+                loginClick.setOnClickListener {
+                    startActivity(loginIntent)
+                }
+            }
+
             try {
                 val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
                 recyclerView.adapter = HomeMatchTableAdapter(teamMatches)

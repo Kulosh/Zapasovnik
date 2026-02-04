@@ -9,16 +9,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 class LoginActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.login_layout)
+
+        userData = UserData(this)
 
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         loginBtn.setOnClickListener {
@@ -38,8 +44,9 @@ class LoginActivity : ComponentActivity() {
                         if (resp.isSuccessful) {
                             val ok = resp.body() == true
                             if (ok) {
-                                intent.putExtra("success", true)
-                                intent.putExtra("username", username)
+//                                intent.putExtra("success", true)
+//                                intent.putExtra("username", username)
+                                userData.storeUser(username, "", true)
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
