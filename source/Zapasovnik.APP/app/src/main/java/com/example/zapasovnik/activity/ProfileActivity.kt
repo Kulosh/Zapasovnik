@@ -2,6 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -21,7 +22,7 @@ class ProfileActivity : ComponentActivity() {
 
         val username = intent.getStringExtra("username").toString()
         val usernameJson = buildJsonObject {
-            put("username", username)
+            put("usernamePwd", username)
         }
         val usernameText = findViewById<TextView>(R.id.profileUsername)
         val emailText = findViewById<TextView>(R.id.profileEmail)
@@ -29,6 +30,8 @@ class ProfileActivity : ComponentActivity() {
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
+            intent.putExtra("username", username)
+            Log.d("username profile", username)
             startActivity(intent)
         }
 
