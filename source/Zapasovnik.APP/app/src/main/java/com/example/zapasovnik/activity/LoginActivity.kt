@@ -42,11 +42,13 @@ class LoginActivity : ComponentActivity() {
                         val resp = RetrofitClient.api.postUser(loginString)
 
                         if (resp.isSuccessful) {
-                            val ok = resp.body() == true
-                            if (ok) {
+                            val ok = resp.body()?.getValue("success").toString()
+                            val email = resp.body()?.getValue("email").toString()
 //                                intent.putExtra("success", true)
 //                                intent.putExtra("username", username)
                                 userData.storeUser(username, "", true)
+                            if (ok == "true") {
+                                userData.storeUser(username, email, "true")
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
