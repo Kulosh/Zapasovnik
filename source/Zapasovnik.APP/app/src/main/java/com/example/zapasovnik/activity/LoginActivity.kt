@@ -60,8 +60,7 @@ class LoginActivity : ComponentActivity() {
 //                            val err = resp.errorBody()?.string()
 //                            Log.d("LoginString", "$loginString")
 //                            Log.e("API", "HTTP ${resp.code()} error=$err")
-                            val msg = R.string.login_failed.toString() + ": " + resp.code()
-                            Toast.makeText(applicationContext, "($msg)", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${R.string.login_failed}: ${resp.code()}", Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: Exception) {
 //                        Log.d("LoginString", "$loginString")
