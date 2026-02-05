@@ -39,7 +39,7 @@ class LoginActivity : ComponentActivity() {
             if (username != "" && password != "") {
                 lifecycleScope.launch {
                     try {
-                        val resp = RetrofitClient.api.postLogin(loginString)
+                        val resp = RetrofitClient.api.postUser(loginString)
 
                         if (resp.isSuccessful) {
                             val ok = resp.body() == true
