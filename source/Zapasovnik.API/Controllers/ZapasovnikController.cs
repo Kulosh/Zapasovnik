@@ -149,13 +149,8 @@ namespace Zapasovnik.API.Controllers
                 .Select(u => u.UserEmail)
                 .FirstOrDefault();
 
-            if (user.Email == null)
-            {
-                user.Success = false;
-            } else
-            {
-                user.Success = true;
-            }
+            if (user.Email == null) user.Success = false;
+            else user.Success = true;
 
             return user;
         }
