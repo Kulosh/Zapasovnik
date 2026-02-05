@@ -22,4 +22,5 @@
     <string name="retype_new">Znovu-zadejte nové heslo</string>
     <string name="new_not_same">Nová hesla se neshodují</string>
     <string name="old_wrong">Staré heslo je nesprávné</string>
+    <string name="logout">Odhlásit se</string>
 </resources>
