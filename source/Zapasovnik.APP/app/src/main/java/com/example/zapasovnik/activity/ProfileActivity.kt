@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -26,34 +27,38 @@ class ProfileActivity : ComponentActivity() {
 
         userData = UserData(this)
 
-//        val username = intent.getStringExtra("username").toString()
-        val username = userData.usernameFlow.toString()
-
-        val usernameJson = buildJsonObject {
-            put("username", username)
-        }
         val usernameText = findViewById<TextView>(R.id.profileUsername)
         val emailText = findViewById<TextView>(R.id.profileEmail)
         val changPasswordBtn = findViewById<Button>(R.id.profileChangePassword)
+        val logoutBtn = findViewById<Button>(R.id.logoutBtn)
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
-//            intent.putExtra("usernamePwd", username)
 //            Log.d("username profile", username)
             startActivity(intent)
         }
 
+        logoutBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            lifecycleScope.launch {
+                userData.storeUser("", "", "false")
+                startActivity(intent)
+            }
+        }
+
         lifecycleScope.launch {
-            val resp = RetrofitClient.api.getUser(usernameJson)
-            val email = resp.getValue("email").toString().replace("\"", "")
-            userData.storeUser(username, email, true)
+            val username = userData.usernameFlow.first()
+            val email = userData.emailFlow.first()
+
+            val usernameJson = buildJsonObject {
+                put("username", username)
+            }
 
             Log.e("Username", username)
             Log.e("Email", email)
 
-
             usernameText.text = username
-            emailText.text = email
+            emailText.text = email.replace("\"", "")
         }
 
 
