@@ -2,6 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -25,8 +26,9 @@ class LoginActivity : ComponentActivity() {
         setContentView(R.layout.login_layout)
 
         userData = UserData(this)
-
+        val intent = Intent(this, HomeActivity::class.java)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
+
         loginBtn.setOnClickListener {
             val username: String = findViewById<EditText>(R.id.usernameLogin).text.toString()
             val password: String = findViewById<EditText>(R.id.passwordLogin).text.toString()
@@ -34,19 +36,21 @@ class LoginActivity : ComponentActivity() {
                 put("userName", username)
                 put("userPassword", password)
             }
-            val intent = Intent(this, HomeActivity::class.java)
 
             if (username != "" && password != "") {
                 lifecycleScope.launch {
                     try {
                         val resp = RetrofitClient.api.postUser(loginString)
 
+//                        Log.d("Response", resp.toString())
+
                         if (resp.isSuccessful) {
                             val ok = resp.body()?.getValue("success").toString()
                             val email = resp.body()?.getValue("email").toString()
-//                                intent.putExtra("success", true)
-//                                intent.putExtra("username", username)
-                                userData.storeUser(username, "", true)
+
+//                            Log.d("Success", ok)
+//                            Log.d("Email", email)
+
                             if (ok == "true") {
                                 userData.storeUser(username, email, "true")
                                 startActivity(intent)
