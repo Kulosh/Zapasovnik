@@ -129,23 +129,35 @@ namespace Zapasovnik.API.Controllers
             return Users.ToArray();
         }
 
-        [HttpPost("Login")]
-        public bool APILogin([FromBody] User incomeUser)
-        {
-            var user = Users
-                .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
-                .FirstOrDefault();
-            return user != null;
-        }
+        //[HttpPost("Login")]
+        //public bool APILogin([FromBody] User incomeUser)
+        //{
+        //    var user = Users
+        //        .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
+        //        .FirstOrDefault();
+        //    return user != null;
+        //}
 
         [HttpPost("User")]
-        public UserDto APIUser([FromBody] UserDto incomeUser)
+        public UserDto APIUser([FromBody] User incomeUser)
         {
-            incomeUser.Email = Users
-                .Where(u => u.UserName == incomeUser.Username)
+            UserDto user = new();
+
+            user.Username= incomeUser.UserName;
+            user.Email = Users
+                .Where(u => u.UserName == incomeUser.UserName)
                 .Select(u => u.UserEmail)
                 .FirstOrDefault();
-            return incomeUser;
+
+            if (user.Email == null)
+            {
+                user.Success = false;
+            } else
+            {
+                user.Success = true;
+            }
+
+            return user;
         }
 
         [HttpPost("chgpwd")]
