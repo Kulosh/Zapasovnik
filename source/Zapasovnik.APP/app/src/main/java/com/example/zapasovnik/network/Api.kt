@@ -12,14 +12,14 @@ interface Api {
     suspend fun getTeamMatches(): List<Match>
 
     @POST("User")
-    suspend fun getUser(
-        @Body username: JsonObject
-    ): JsonObject
+    suspend fun postUser(
+        @Body user: JsonObject
+    ): Response<JsonObject>
 
-    @POST("Login")
-    suspend fun postLogin(
-        @Body loginString: JsonObject
-    ): Response<Boolean>
+//    @POST("Login")
+//    suspend fun postLogin(
+//        @Body loginString: JsonObject
+//    ): Response<Boolean>
 
     @POST("chgpwd")
     suspend fun postChangePassword(
