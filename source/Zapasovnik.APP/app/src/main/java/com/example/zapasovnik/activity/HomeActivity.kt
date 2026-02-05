@@ -2,6 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
@@ -31,9 +32,6 @@ class HomeActivity : ComponentActivity() {
         val loginIntent = Intent(this, LoginActivity::class.java)
         val profileIntent = Intent(this, ProfileActivity::class.java)
 
-//        val loginSuccess = intent.getBooleanExtra("success", false)
-//        val username = intent.getStringExtra("username")
-
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -45,11 +43,11 @@ class HomeActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val loginSuccess = userData.loggedInFlow.first()
+//            Log.e("Login success", loginSuccess)
 
-            if (loginSuccess) {
+            if (loginSuccess == "true") {
                 val loginClick = findViewById<ImageView>(R.id.loginIcon)
                 loginClick.setOnClickListener {
-//                    intent.putExtra("username", username)
                     startActivity(profileIntent)
                 }
             } else {
