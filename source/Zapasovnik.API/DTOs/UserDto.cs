@@ -1,4 +1,4 @@
-﻿namespace Zapasovnik.API.DTOs
+namespace Zapasovnik.API.DTOs
 {
     public class UserDto
     {
