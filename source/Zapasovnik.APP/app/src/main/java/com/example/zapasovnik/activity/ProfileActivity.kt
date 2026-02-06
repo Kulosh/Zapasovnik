@@ -54,9 +54,9 @@ class ProfileActivity : ComponentActivity() {
                 put("username", username)
             }
 
-            Log.d("USER ID", userData.userIdFlow.first())
-            Log.d("Username", username)
-            Log.d("Email", email)
+//            Log.d("USER ID", userData.userIdFlow.first())
+//            Log.d("Username", username)
+//            Log.d("Email", email)
 
             usernameText.text = username
             emailText.text = email.replace("\"", "")

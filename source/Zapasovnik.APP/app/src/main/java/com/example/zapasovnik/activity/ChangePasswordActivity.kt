@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import kotlin.collections.getValue
 
 class ChangePasswordActivity : ComponentActivity() {
 
@@ -40,17 +41,18 @@ class ChangePasswordActivity : ComponentActivity() {
                 val intent = Intent(this, ProfileActivity::class.java)
 
                 lifecycleScope.launch {
-                    val username = userData.usernameFlow.first()
+                    val userId = userData.userIdFlow.first()
 
                     val pwdString = buildJsonObject {
-                        put("username", username)
+                        put("userId", userId)
                         put("old", oldPwd.text.toString())
                         put("new", newPwd.text.toString())
                     }
                     val resp = RetrofitClient.api.postChangePassword(pwdString)
+                    val success = resp.body()
                     Log.d("response", "$resp")
                     Log.d("PWD string", pwdString.toString())
-                    if (resp.isSuccessful) {
+                    if (success == true) {
                         startActivity(intent)
                     } else Toast.makeText(
                         applicationContext,
@@ -58,8 +60,11 @@ class ChangePasswordActivity : ComponentActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            } else Toast.makeText(applicationContext, R.string.new_not_same, Toast.LENGTH_SHORT)
-                .show()
+            } else Toast.makeText(
+                applicationContext,
+                R.string.new_not_same,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
