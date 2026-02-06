@@ -144,10 +144,16 @@ namespace Zapasovnik.API.Controllers
             UserDto user = new();
 
             user.Username= incomeUser.UserName;
+
+            user.UserId = Users
+                .Where(u => u.UserName == incomeUser.UserName)
+                .Select(u => u.UserId)
+                .FirstOrDefault();
+
             user.Email = Users
                 .Where(u => u.UserName == incomeUser.UserName)
                 .Select(u => u.UserEmail)
-                .FirstOrDefault();
+                .FirstOrDefault()!;
 
             if (user.Email == null) user.Success = false;
             else user.Success = true;
