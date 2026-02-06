@@ -41,7 +41,7 @@ class ProfileActivity : ComponentActivity() {
         logoutBtn.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             lifecycleScope.launch {
-                userData.storeUser("", "", "false")
+                userData.storeUser("", "", "", "false")
                 startActivity(intent)
             }
         }
@@ -54,8 +54,9 @@ class ProfileActivity : ComponentActivity() {
                 put("username", username)
             }
 
-            Log.e("Username", username)
-            Log.e("Email", email)
+            Log.d("USER ID", userData.userIdFlow.first())
+            Log.d("Username", username)
+            Log.d("Email", email)
 
             usernameText.text = username
             emailText.text = email.replace("\"", "")

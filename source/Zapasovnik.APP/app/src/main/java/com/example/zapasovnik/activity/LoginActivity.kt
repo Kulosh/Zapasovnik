@@ -47,12 +47,13 @@ class LoginActivity : ComponentActivity() {
                         if (resp.isSuccessful) {
                             val ok = resp.body()?.getValue("success").toString()
                             val email = resp.body()?.getValue("email").toString()
+                            val id = resp.body()?.getValue("userId").toString()
 
 //                            Log.d("Success", ok)
 //                            Log.d("Email", email)
 
                             if (ok == "true") {
-                                userData.storeUser(username, email, "true")
+                                userData.storeUser(id, username, email, "true")
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()

@@ -15,13 +15,15 @@ class UserData (
     private val context: Context
 ) {
     companion object {
+        val USER_ID_KEY = stringPreferencesKey("USER_ID")
         val USERNAME_KEY = stringPreferencesKey("USERNAME")
         val USER_EMAIL_KEY = stringPreferencesKey("USER_EMAIL")
         val LOGGED_IN_KEY = stringPreferencesKey("LOGGED_IN_STATUS")
     }
 
-    suspend fun storeUser(username: String, email: String, loggedIn: String) {
+    suspend fun storeUser(userId: String, username: String, email: String, loggedIn: String) {
         context.datastore.edit {
+            it[USER_ID_KEY] = userId
             it[USERNAME_KEY] = username
             it[USER_EMAIL_KEY] = email
             it[LOGGED_IN_KEY] = loggedIn
@@ -38,5 +40,9 @@ class UserData (
 
     val loggedInFlow: Flow<String> = context.datastore.data.map {
         it[LOGGED_IN_KEY] ?: ""
+    }
+
+    val userIdFlow: Flow<String> = context.datastore.data.map {
+        it[USER_ID_KEY] ?: ""
     }
 }
