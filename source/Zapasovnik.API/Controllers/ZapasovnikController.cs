@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Nodes;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
@@ -112,38 +113,12 @@ namespace Zapasovnik.API.Controllers
             return Teams.ToArray();
         }
 
-
-        [HttpGet("Users")]
-        public IEnumerable<User> APIUsers()
-        {
-            return Users.ToArray();
-        }
-
-        [HttpPost("Users")]
-        public IEnumerable<User> APIUsers(string userName, string ?userEmail, string userPassword)
-        {
-            User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword };
-            DbContext.Users.Add(newUser);
-            DbContext.SaveChanges();
-            Users = DbContext.Users.ToList();
-            return Users.ToArray();
-        }
-
-        //[HttpPost("Login")]
-        //public bool APILogin([FromBody] User incomeUser)
-        //{
-        //    var user = Users
-        //        .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
-        //        .FirstOrDefault();
-        //    return user != null;
-        //}
-
         [HttpPost("User")]
         public UserDto APIUser([FromBody] User incomeUser)
         {
             UserDto user = new();
 
-            user.Username= incomeUser.UserName;
+            user.Username = incomeUser.UserName;
 
             user.UserId = Users
                 .Where(u => u.UserName == incomeUser.UserName)
@@ -209,7 +184,34 @@ namespace Zapasovnik.API.Controllers
                 .OrderBy(x => x.MatchDate);
 
             return rows;
+        }
 
+        [HttpPost("FavPlayer")]
+        public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] string userId)
+        {
+            var rows = UsersFavPlayers
+                .Where(f => Convert.ToString(f.UserId) == userId)
+                .Join(DbContext.Players,
+                    fav => fav.PlayerId,
+                    p => p.PlayerId,
+                    (fav, p) => p)
+                .Select(p => new FavPlayersDto
+                {
+                    FName = p.FirstName,
+                    LName = p.LastName,
+
+                    Team = DbContext.TeamsPlayers
+                        .Where(tp => tp.PlayerId == p.PlayerId)
+                        .Join(DbContext.Teams,
+                            tp => tp.TeamId,
+                            t => t.TeamId,
+                            (tp, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault()!
+                })
+                .ToList();
+
+            return rows;
         }
     }
 }
