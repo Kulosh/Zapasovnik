@@ -190,7 +190,7 @@ namespace Zapasovnik.API.Controllers
         public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
         {
             var rows = UsersFavPlayers
-                .Where(f => f.UserId == Convert.ToInt32(userId))
+                .Where(f => f.UserId == Convert.ToInt32(userId.UserId))
                 .Join(DbContext.Players,
                     fav => fav.PlayerId,
                     p => p.PlayerId,
