@@ -1,5 +1,6 @@
 package com.example.zapasovnik.network
 
+import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.Match
 import kotlinx.serialization.json.JsonObject
 import retrofit2.Response
@@ -25,4 +26,9 @@ interface Api {
     suspend fun postChangePassword(
         @Body changePassword: JsonObject
     ): Response<Boolean>
+
+    @POST("favPlayer")
+    suspend fun postFavPlayer (
+        @Body userId: JsonObject
+    ): List<FavPlayer>
 }
