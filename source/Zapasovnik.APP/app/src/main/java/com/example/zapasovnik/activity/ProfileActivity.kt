@@ -31,6 +31,7 @@ class ProfileActivity : ComponentActivity() {
         val emailText = findViewById<TextView>(R.id.profileEmail)
         val changPasswordBtn = findViewById<Button>(R.id.profileChangePassword)
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
+        val favPlayersBtn = findViewById<Button>(R.id.favPlayersBtn)
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
@@ -44,6 +45,11 @@ class ProfileActivity : ComponentActivity() {
                 userData.storeUser("", "", "", "false")
                 startActivity(intent)
             }
+        }
+
+        favPlayersBtn.setOnClickListener {
+            val intent = Intent(this, FavPlayersActivity::class.java)
+            startActivity(intent)
         }
 
         lifecycleScope.launch {
