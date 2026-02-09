@@ -31,4 +31,9 @@ interface Api {
     suspend fun postFavPlayer (
         @Body userId: JsonObject
     ): List<FavPlayer>
+
+    @POST("Register")
+    suspend fun postRegister (
+        @Body newUser: JsonObject
+    ): Response<JsonObject>
 }

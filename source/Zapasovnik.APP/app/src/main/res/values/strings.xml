@@ -22,4 +22,7 @@
     <string name="new_not_same">New passwords are not same</string>
     <string name="old_wrong">Old password is incorrect</string>
     <string name="logout">Logout</string>
+    <string name="reenter_password">Re-enter password</string>
+    <string name="enter_password">Enter password</string>
+    <string name="register_btn">Register</string>
 </resources>
