@@ -36,6 +36,9 @@
         <activity android:name=".activity.FavPlayersActivity">
 
         </activity>
+        <activity android:name=".activity.RegisterActivity">
+            
+        </activity>
     </application>
 
 </manifest>
