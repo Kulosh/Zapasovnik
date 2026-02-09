@@ -20,10 +20,11 @@
     <string name="old_password">Zadejte staré heslo</string>
     <string name="new_password">Zadejte nové heslo</string>
     <string name="retype_new">Znovu-zadejte nové heslo</string>
-    <string name="new_not_same">Nová hesla se neshodují</string>
+    <string name="new_not_same">Hesla se neshodují</string>
     <string name="old_wrong">Staré heslo je nesprávné</string>
     <string name="logout">Odhlásit se</string>
     <string name="reenter_password">Znovu-zadejte heslo</string>
     <string name="enter_password">Zadejte heslo</string>
     <string name="register_btn">Registrovat</string>
+    <string name="fill_all_fields">Prosím vyplňte všechna pole</string>
 </resources>

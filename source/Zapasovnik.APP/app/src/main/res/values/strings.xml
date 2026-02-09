@@ -19,10 +19,11 @@
     <string name="old_password">Enter old password</string>
     <string name="new_password">Enter new password</string>
     <string name="retype_new">Re-enter new password</string>
-    <string name="new_not_same">New passwords are not same</string>
+    <string name="new_not_same">Passwords are not the same</string>
     <string name="old_wrong">Old password is incorrect</string>
     <string name="logout">Logout</string>
     <string name="reenter_password">Re-enter password</string>
     <string name="enter_password">Enter password</string>
     <string name="register_btn">Register</string>
+    <string name="fill_all_fields">Please, fill all fields</string>
 </resources>
