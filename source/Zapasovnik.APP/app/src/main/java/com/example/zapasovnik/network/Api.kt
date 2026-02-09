@@ -12,6 +12,9 @@ interface Api {
     @GET("TeamMatches")
     suspend fun getTeamMatches(): List<Match>
 
+    @GET("Players")
+    suspend fun getPlayers(): List<FavPlayer>
+
     @POST("User")
     suspend fun postUser(
         @Body user: JsonObject
