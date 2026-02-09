@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="368dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="195dp" />
+
+    <EditText
+        android:id="@+id/regUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/username_input"
+        android:autofillHints="username"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/regEmail"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+
+    <EditText
+        android:id="@+id/regEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/email"
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/regPwd"
+        app:layout_constraintStart_toStartOf="@+id/regUsername" />
+
+    <EditText
+        android:id="@+id/regPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/enter_password"
+        android:autofillHints="password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/regPwdRe"
+        app:layout_constraintStart_toStartOf="@+id/regUsername" />
+
+    <EditText
+        android:id="@+id/regPwdRe"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/reenter_password"
+        android:autofillHints="password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/regUsername" />
+
+    <Button
+        android:id="@+id/regBtnConfirm"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/register_btn"
+        app:layout_constraintEnd_toEndOf="@+id/regPwdRe"
+        app:layout_constraintStart_toStartOf="@+id/regPwdRe"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
