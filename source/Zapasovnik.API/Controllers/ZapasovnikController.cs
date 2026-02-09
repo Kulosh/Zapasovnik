@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
 using Zapasovnik.API.Entities;
+using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Controllers
 {
@@ -136,6 +137,7 @@ namespace Zapasovnik.API.Controllers
                 .FirstOrDefault();
             return user != null;
         }
+
 
         [HttpGet("TeamMatches")]
         public IEnumerable<MatchWithTeamsDto> APITeamMatches()
