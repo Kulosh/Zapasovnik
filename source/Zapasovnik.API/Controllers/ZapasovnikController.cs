@@ -230,7 +230,7 @@ namespace Zapasovnik.API.Controllers
                 .Where(u => u.UserName == incomeUser.UserName)
                 .Select(u => u.UserId)
                 .FirstOrDefault();
-
+            newUser.Success = true;
             return newUser;
         }
     }
