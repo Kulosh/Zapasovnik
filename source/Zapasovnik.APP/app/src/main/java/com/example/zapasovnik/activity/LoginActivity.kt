@@ -28,6 +28,12 @@ class LoginActivity : ComponentActivity() {
         userData = UserData(this)
         val intent = Intent(this, HomeActivity::class.java)
         val loginBtn = findViewById<Button>(R.id.loginBtn)
+        val regBtn = findViewById<Button>(R.id.loginRegBtn)
+
+        regBtn.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         loginBtn.setOnClickListener {
             val username: String = findViewById<EditText>(R.id.usernameLogin).text.toString()
