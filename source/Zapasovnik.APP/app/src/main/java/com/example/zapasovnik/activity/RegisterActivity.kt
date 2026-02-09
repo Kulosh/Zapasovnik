@@ -2,6 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -32,11 +33,13 @@ class RegisterActivity : ComponentActivity() {
         val pwdRe = findViewById<EditText>(R.id.regPwdRe)
 
         regBtn.setOnClickListener {
-            if (pwd.text.toString() === pwdRe.text.toString()) {
+//            Log.d("CLICK", "CLICK")
+
+            if (pwd.text.toString() == pwdRe.text.toString()) {
                 val regString = buildJsonObject {
                     put("username", username.text.toString())
-                    put("email", email.text.toString())
-                    put("password", pwd.text.toString())
+                    put("userEmail", email.text.toString())
+                    put("userPassword", pwd.text.toString())
                 }
 
                 lifecycleScope.launch {
@@ -55,6 +58,11 @@ class RegisterActivity : ComponentActivity() {
                             Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    "PWD are not same",
+                    Toast.LENGTH_SHORT).show()
             }
         }
     }
