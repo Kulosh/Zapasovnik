@@ -12,5 +12,5 @@ data class FavPlayer (
     var LName: String,
 
     @SerialName("team")
-    var Team: String
+    var Team: String? = "No team"
 )

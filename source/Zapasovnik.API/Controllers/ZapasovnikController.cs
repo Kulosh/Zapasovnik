@@ -80,9 +80,27 @@ namespace Zapasovnik.API.Controllers
 
 
         [HttpGet("Players")]
-        public IEnumerable<Player> APIPlayers()
+        public IEnumerable<FavPlayersDto> APIPlayers()
         {
-            return Players.ToArray();
+            var rows = Players
+                .Select(p => new FavPlayersDto
+                {
+                    FName = p.FirstName,
+                    LName = p.LastName,
+
+                    Team = TeamsPlayers
+                        .Where(tp => tp.PlayerId == p.PlayerId)
+                        .Join(Teams,
+                              tp => tp.TeamId,
+                              t => t.TeamId,
+                              (tp, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault()!,
+                })
+                .OrderBy(x => x.LName)
+                .ThenBy(x => x.FName);
+
+            return rows;
         }
 
         [HttpPost("Players")]
