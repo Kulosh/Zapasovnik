@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Nodes;
+using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
@@ -111,30 +113,45 @@ namespace Zapasovnik.API.Controllers
             return Teams.ToArray();
         }
 
-
-        [HttpGet("Users")]
-        public IEnumerable<User> APIUsers()
+        [HttpPost("User")]
+        public UserDto APIUser([FromBody] User incomeUser)
         {
-            return Users.ToArray();
-        }
+            UserDto user = new();
 
-        [HttpPost("Users")]
-        public IEnumerable<User> APIUsers(string userName, string ?userEmail, string userPassword)
-        {
-            User newUser = new User { UserName = userName, UserEmail = userEmail, UserPassword = userPassword };
-            DbContext.Users.Add(newUser);
-            DbContext.SaveChanges();
-            Users = DbContext.Users.ToList();
-            return Users.ToArray();
-        }
+            user.Username = incomeUser.UserName;
 
-        [HttpPost("Login")]
-        public bool APILogin([FromBody] User incomeUser)
-        {
-            var user = Users
-                .Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword)
+            user.UserId = Users
+                .Where(u => u.UserName == incomeUser.UserName)
+                .Select(u => u.UserId)
                 .FirstOrDefault();
-            return user != null;
+
+            user.Email = Users
+                .Where(u => u.UserName == incomeUser.UserName)
+                .Select(u => u.UserEmail)
+                .FirstOrDefault()!;
+
+            if (user.Email == null) user.Success = false;
+            else user.Success = true;
+
+            return user;
+        }
+
+        [HttpPost("chgpwd")]
+        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
+        {
+            User user = Users
+                .Where(u => Convert.ToString(u.UserId) == chg.UserId)
+                .First();
+
+            if (user.UserPassword != chg.Old) return false;
+            else
+            {
+                user.UserPassword = chg.New;
+
+                DbContext.Users.Update(user);
+                DbContext.SaveChanges();
+                return true;
+            }
         }
 
         [HttpGet("TeamMatches")]
@@ -167,7 +184,34 @@ namespace Zapasovnik.API.Controllers
                 .OrderBy(x => x.MatchDate);
 
             return rows;
+        }
 
+        [HttpPost("FavPlayer")]
+        public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
+        {
+            var rows = UsersFavPlayers
+                .Where(f => f.UserId == Convert.ToInt32(userId.UserId))
+                .Join(DbContext.Players,
+                    fav => fav.PlayerId,
+                    p => p.PlayerId,
+                    (fav, p) => p)
+                .Select(p => new FavPlayersDto
+                {
+                    FName = p.FirstName,
+                    LName = p.LastName,
+
+                    Team = DbContext.TeamsPlayers
+                        .Where(tp => tp.PlayerId == p.PlayerId)
+                        .Join(DbContext.Teams,
+                            tp => tp.TeamId,
+                            t => t.TeamId,
+                            (tp, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault()!
+                })
+                .ToList();
+
+            return rows;
         }
     }
 }

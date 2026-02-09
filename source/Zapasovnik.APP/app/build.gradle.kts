@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

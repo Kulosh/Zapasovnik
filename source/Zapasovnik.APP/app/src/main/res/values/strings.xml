@@ -11,4 +11,15 @@
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="network_error">Network error</string>
     <string name="login_failed">Login failed</string>
+    <string name="email">Email</string>
+    <string name="change_password">Change password</string>
+    <string name="fav_players">Favorite players</string>
+    <string name="fav_teams">Favorite teams</string>
+    <string name="fav_matches">Favorite matches</string>
+    <string name="old_password">Enter old password</string>
+    <string name="new_password">Enter new password</string>
+    <string name="retype_new">Re-enter new password</string>
+    <string name="new_not_same">New passwords are not same</string>
+    <string name="old_wrong">Old password is incorrect</string>
+    <string name="logout">Logout</string>
 </resources>

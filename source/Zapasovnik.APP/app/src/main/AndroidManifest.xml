@@ -27,6 +27,15 @@
         <activity android:name=".activity.LoginActivity">
 
         </activity>
+        <activity android:name=".activity.ProfileActivity">
+
+        </activity>
+        <activity android:name=".activity.ChangePasswordActivity">
+            
+        </activity>
+        <activity android:name=".activity.FavPlayersActivity">
+
+        </activity>
     </application>
 
 </manifest>
