@@ -34,34 +34,44 @@ class RegisterActivity : ComponentActivity() {
 
         regBtn.setOnClickListener {
 //            Log.d("CLICK", "CLICK")
-
-            if (pwd.text.toString() == pwdRe.text.toString()) {
-                val regString = buildJsonObject {
-                    put("username", username.text.toString())
-                    put("userEmail", email.text.toString())
-                    put("userPassword", pwd.text.toString())
-                }
-
-                lifecycleScope.launch {
-                    val resp = RetrofitClient.api.postRegister(regString)
-                    if (resp.isSuccessful){
-                        userData.storeUser(
-                            userId = resp.body()?.getValue("userId").toString(),
-                            username = username.text.toString(),
-                            email = email.text.toString(),
-                            loggedIn = resp.body()?.getValue("success").toString())
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(
-                            applicationContext,
-                            "${R.string.login_failed}: ${resp.code()}",
-                            Toast.LENGTH_SHORT).show()
+            if (
+                email.text.toString() != "" &&
+                username.text.toString() != "" &&
+                pwd.text.toString() != ""
+                ) {
+                if (pwd.text.toString() == pwdRe.text.toString()) {
+                    val regString = buildJsonObject {
+                        put("username", username.text.toString())
+                        put("userEmail", email.text.toString())
+                        put("userPassword", pwd.text.toString())
                     }
+
+                    lifecycleScope.launch {
+                        val resp = RetrofitClient.api.postRegister(regString)
+                        if (resp.isSuccessful){
+                            userData.storeUser(
+                                userId = resp.body()?.getValue("userId").toString(),
+                                username = username.text.toString(),
+                                email = email.text.toString(),
+                                loggedIn = resp.body()?.getValue("success").toString())
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "${R.string.login_failed}: ${resp.code()}",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.new_not_same,
+                        Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(
                     applicationContext,
-                    "PWD are not same",
+                    R.string.fill_all_fields,
                     Toast.LENGTH_SHORT).show()
             }
         }
