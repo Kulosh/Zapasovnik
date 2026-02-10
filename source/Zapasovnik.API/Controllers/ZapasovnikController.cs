@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
+using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
@@ -58,8 +59,6 @@ namespace Zapasovnik.API.Controllers
             Leagues = DbContext.Leagues.ToList();
             return Leagues.ToArray();
         }
-
-
 
         [HttpGet("Matches")]
         public IEnumerable<Match> APIMatches()
@@ -170,66 +169,6 @@ namespace Zapasovnik.API.Controllers
                 DbContext.SaveChanges();
                 return true;
             }
-        }
-
-        //[HttpGet("TeamMatches")]
-        //public IEnumerable<MatchWithTeamsDto> APITeamMatches()
-        //{
-        //    var rows = Matches
-        //        .Select(m => new MatchWithTeamsDto
-        //        {
-        //            MatchDate = m.MatchDate,
-
-        //            Team1 = TeamsMatches
-        //                .Where(tm => tm.MatchId == m.MatchId)
-        //                .Join(Teams,
-        //                        tm => tm.TeamId,
-        //                        t => t.TeamId,
-        //                        (tm, t) => t.TeamName)
-        //                .OrderBy(name => name)
-        //                .FirstOrDefault(),
-
-        //            Team2 = TeamsMatches
-        //                .Where(tm => tm.MatchId == m.MatchId)
-        //                .Join(Teams,
-        //                        tm => tm.TeamId,
-        //                        t => t.TeamId,
-        //                        (tm, t) => t.TeamName)
-        //                .OrderBy(name => name)
-        //                .Skip(1)
-        //                .FirstOrDefault()
-        //        })
-        //        .OrderBy(x => x.MatchDate);
-
-        //    return rows;
-        //}
-
-        [HttpPost("FavPlayer")]
-        public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
-        {
-            var rows = UsersFavPlayers
-                .Where(f => f.UserId == Convert.ToInt32(userId.UserId))
-                .Join(DbContext.Players,
-                    fav => fav.PlayerId,
-                    p => p.PlayerId,
-                    (fav, p) => p)
-                .Select(p => new FavPlayersDto
-                {
-                    FName = p.FirstName,
-                    LName = p.LastName,
-
-                    Team = DbContext.TeamsPlayers
-                        .Where(tp => tp.PlayerId == p.PlayerId)
-                        .Join(DbContext.Teams,
-                            tp => tp.TeamId,
-                            t => t.TeamId,
-                            (tp, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault()!
-                })
-                .ToList();
-
-            return rows;
         }
 
         [HttpPost("Register")]

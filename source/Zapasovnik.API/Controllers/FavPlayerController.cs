@@ -29,9 +29,9 @@ namespace Zapasovnik.API.Controllers
 
 
         [HttpPost]
-        public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
+        public List<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
         {
-            var rows = UsersFavPlayers
+            List<FavPlayersDto> rows = UsersFavPlayers
                 .Where(f => f.UserId == Convert.ToInt32(userId.UserId))
                 .Join(DbContext.Players,
                     fav => fav.PlayerId,
