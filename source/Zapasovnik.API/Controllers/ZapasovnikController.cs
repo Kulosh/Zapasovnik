@@ -76,32 +76,6 @@ namespace Zapasovnik.API.Controllers
             return Matches.ToArray();
         }
 
-
-
-        [HttpGet("Players")]
-        public IEnumerable<FavPlayersDto> APIPlayers()
-        {
-            var rows = Players
-                .Select(p => new FavPlayersDto
-                {
-                    FName = p.FirstName,
-                    LName = p.LastName,
-
-                    Team = TeamsPlayers
-                        .Where(tp => tp.PlayerId == p.PlayerId)
-                        .Join(Teams,
-                              tp => tp.TeamId,
-                              t => t.TeamId,
-                              (tp, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault()!,
-                })
-                .OrderBy(x => x.LName)
-                .ThenBy(x => x.FName);
-
-            return rows;
-        }
-
         [HttpPost("Players")]
         public IEnumerable<Player> APIPlayers(string firstName, string lastName, DateTime playerBorn)
         {
@@ -111,8 +85,6 @@ namespace Zapasovnik.API.Controllers
             Players = DbContext.Players.ToList();
             return Players.ToArray();
         }
-
-
 
         [HttpGet("Teams")]
         public IEnumerable<Team> APITeams()

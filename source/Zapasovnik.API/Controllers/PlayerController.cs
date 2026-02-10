@@ -7,9 +7,9 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
-    [Route("Zapasovnik/[controller]")]
+    [Route("Zapasovnik")]
     [ApiController]
-    public class FavPlayerController : ControllerBase
+    public class PlayerController : ControllerBase
     {
         public UserFavPlayersDb DbContext { get; set; }
         public List<Player> Players { get; set; }
@@ -17,7 +17,7 @@ namespace Zapasovnik.API.Controllers
         public List<Team> Teams { get; set; }
         public List<UserFavPlayer> UsersFavPlayers { get; set; }
 
-        public FavPlayerController()
+        public PlayerController()
         {
             DbContext = new();
 
@@ -27,8 +27,7 @@ namespace Zapasovnik.API.Controllers
             TeamsPlayers = DbContext.TeamsPlayers.ToList();
         }
 
-
-        [HttpPost]
+        [HttpPost("FavPlayer")]
         public List<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
         {
             List<FavPlayersDto> rows = UsersFavPlayers
@@ -52,6 +51,30 @@ namespace Zapasovnik.API.Controllers
                         .FirstOrDefault()!
                 })
                 .ToList();
+
+            return rows;
+        }
+
+        [HttpGet("Players")]
+        public IEnumerable<FavPlayersDto> APIPlayers()
+        {
+            var rows = Players
+                .Select(p => new FavPlayersDto
+                {
+                    FName = p.FirstName,
+                    LName = p.LastName,
+
+                    Team = TeamsPlayers
+                        .Where(tp => tp.PlayerId == p.PlayerId)
+                        .Join(Teams,
+                              tp => tp.TeamId,
+                              t => t.TeamId,
+                              (tp, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault()!,
+                })
+                .OrderBy(x => x.LName)
+                .ThenBy(x => x.FName);
 
             return rows;
         }
