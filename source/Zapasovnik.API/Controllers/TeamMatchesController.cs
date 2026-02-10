@@ -17,6 +17,8 @@ namespace Zapasovnik.API.Controllers
 
         public TeamMatchesController()
         {
+            DbContext = new();
+
             Teams = DbContext.Teams.ToList();
             TeamsMatches = DbContext.TeamsMatches.ToList();
             Matches = DbContext.Matches.ToList();
