@@ -130,29 +130,6 @@ namespace Zapasovnik.API.Controllers
             return Teams.ToArray();
         }
 
-        [HttpPost("User")]
-        public UserDto APIUser([FromBody] User incomeUser)
-        {
-            UserDto user = new();
-
-            user.Username = incomeUser.UserName;
-
-            user.UserId = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
-
-            user.Email = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserEmail)
-                .FirstOrDefault()!;
-
-            if (user.Email == null) user.Success = false;
-            else user.Success = true;
-
-            return user;
-        }
-
         [HttpPost("chgpwd")]
         public bool APIChangePassword([FromBody] ChangePasswordDto chg)
         {
