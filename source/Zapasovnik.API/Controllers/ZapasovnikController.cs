@@ -172,37 +172,37 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
-        [HttpGet("TeamMatches")]
-        public IEnumerable<MatchWithTeamsDto> APITeamMatches()
-        {
-            var rows = Matches
-                .Select(m => new MatchWithTeamsDto
-                {
-                    MatchDate = m.MatchDate,
+        //[HttpGet("TeamMatches")]
+        //public IEnumerable<MatchWithTeamsDto> APITeamMatches()
+        //{
+        //    var rows = Matches
+        //        .Select(m => new MatchWithTeamsDto
+        //        {
+        //            MatchDate = m.MatchDate,
 
-                    Team1 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault(),
+        //            Team1 = TeamsMatches
+        //                .Where(tm => tm.MatchId == m.MatchId)
+        //                .Join(Teams,
+        //                        tm => tm.TeamId,
+        //                        t => t.TeamId,
+        //                        (tm, t) => t.TeamName)
+        //                .OrderBy(name => name)
+        //                .FirstOrDefault(),
 
-                    Team2 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .Skip(1)
-                        .FirstOrDefault()
-                })
-                .OrderBy(x => x.MatchDate);
+        //            Team2 = TeamsMatches
+        //                .Where(tm => tm.MatchId == m.MatchId)
+        //                .Join(Teams,
+        //                        tm => tm.TeamId,
+        //                        t => t.TeamId,
+        //                        (tm, t) => t.TeamName)
+        //                .OrderBy(name => name)
+        //                .Skip(1)
+        //                .FirstOrDefault()
+        //        })
+        //        .OrderBy(x => x.MatchDate);
 
-            return rows;
-        }
+        //    return rows;
+        //}
 
         [HttpPost("FavPlayer")]
         public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
