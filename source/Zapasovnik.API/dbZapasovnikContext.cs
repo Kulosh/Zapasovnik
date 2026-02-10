@@ -5,8 +5,6 @@ namespace Zapasovnik.API
 {
     public class dbZapasovnikContext : DbContext
     {
-        public DbSet<Test> Tests { get; set; } // test purpose
-
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Team> Teams { get; set; }
