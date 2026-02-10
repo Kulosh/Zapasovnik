@@ -27,4 +27,5 @@
     <string name="enter_password">Zadejte heslo</string>
     <string name="register_btn">Registrovat</string>
     <string name="fill_all_fields">Prosím vyplňte všechna pole</string>
+    <string name="add_player">Přidat hráče</string>
 </resources>
