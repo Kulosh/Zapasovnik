@@ -25,7 +25,7 @@ namespace Zapasovnik.API.Controllers
 
 
 
-        [HttpGet("TeamMatches")]
+        [HttpGet]
         public List<MatchWithTeamsDto> APITeamMatches()
         {
             List<MatchWithTeamsDto> rows = Matches
