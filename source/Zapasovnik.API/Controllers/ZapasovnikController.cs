@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
+using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
@@ -59,8 +60,6 @@ namespace Zapasovnik.API.Controllers
             return Leagues.ToArray();
         }
 
-
-
         [HttpGet("Matches")]
         public IEnumerable<Match> APIMatches()
         {
@@ -77,32 +76,6 @@ namespace Zapasovnik.API.Controllers
             return Matches.ToArray();
         }
 
-
-
-        [HttpGet("Players")]
-        public IEnumerable<FavPlayersDto> APIPlayers()
-        {
-            var rows = Players
-                .Select(p => new FavPlayersDto
-                {
-                    FName = p.FirstName,
-                    LName = p.LastName,
-
-                    Team = TeamsPlayers
-                        .Where(tp => tp.PlayerId == p.PlayerId)
-                        .Join(Teams,
-                              tp => tp.TeamId,
-                              t => t.TeamId,
-                              (tp, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault()!,
-                })
-                .OrderBy(x => x.LName)
-                .ThenBy(x => x.FName);
-
-            return rows;
-        }
-
         [HttpPost("Players")]
         public IEnumerable<Player> APIPlayers(string firstName, string lastName, DateTime playerBorn)
         {
@@ -112,8 +85,6 @@ namespace Zapasovnik.API.Controllers
             Players = DbContext.Players.ToList();
             return Players.ToArray();
         }
-
-
 
         [HttpGet("Teams")]
         public IEnumerable<Team> APITeams()
@@ -129,127 +100,6 @@ namespace Zapasovnik.API.Controllers
             DbContext.SaveChanges();
             Teams = DbContext.Teams.ToList();
             return Teams.ToArray();
-        }
-
-        [HttpPost("User")]
-        public UserDto APIUser([FromBody] User incomeUser)
-        {
-            UserDto user = new();
-
-            user.Username = incomeUser.UserName;
-
-            user.UserId = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
-
-            user.Email = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserEmail)
-                .FirstOrDefault()!;
-
-            if (user.Email == null) user.Success = false;
-            else user.Success = true;
-
-            return user;
-        }
-
-        [HttpPost("chgpwd")]
-        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
-        {
-            User user = Users
-                .Where(u => Convert.ToString(u.UserId) == chg.UserId)
-                .First();
-
-            if (user.UserPassword != chg.Old) return false;
-            else
-            {
-                user.UserPassword = chg.New;
-
-                DbContext.Users.Update(user);
-                DbContext.SaveChanges();
-                return true;
-            }
-        }
-
-        [HttpGet("TeamMatches")]
-        public IEnumerable<MatchWithTeamsDto> APITeamMatches()
-        {
-            var rows = Matches
-                .Select(m => new MatchWithTeamsDto
-                {
-                    MatchDate = m.MatchDate,
-
-                    Team1 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault(),
-
-                    Team2 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .Skip(1)
-                        .FirstOrDefault()
-                })
-                .OrderBy(x => x.MatchDate);
-
-            return rows;
-        }
-
-        [HttpPost("FavPlayer")]
-        public IEnumerable<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
-        {
-            var rows = UsersFavPlayers
-                .Where(f => f.UserId == Convert.ToInt32(userId.UserId))
-                .Join(DbContext.Players,
-                    fav => fav.PlayerId,
-                    p => p.PlayerId,
-                    (fav, p) => p)
-                .Select(p => new FavPlayersDto
-                {
-                    FName = p.FirstName,
-                    LName = p.LastName,
-
-                    Team = DbContext.TeamsPlayers
-                        .Where(tp => tp.PlayerId == p.PlayerId)
-                        .Join(DbContext.Teams,
-                            tp => tp.TeamId,
-                            t => t.TeamId,
-                            (tp, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault()!
-                })
-                .ToList();
-
-            return rows;
-        }
-
-        [HttpPost("Register")]
-        public UserDto APIRegister([FromBody] User incomeUser)
-        {
-            UserDto newUser = new UserDto
-            {
-                Username = incomeUser.UserName,
-                Email = incomeUser.UserEmail,
-            };
-
-            DbContext.Users.Add(incomeUser);
-            DbContext.SaveChanges();
-
-            newUser.UserId = DbContext.Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
-            newUser.Success = true;
-            return newUser;
         }
     }
 }
