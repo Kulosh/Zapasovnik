@@ -129,23 +129,5 @@ namespace Zapasovnik.API.Controllers
             Teams = DbContext.Teams.ToList();
             return Teams.ToArray();
         }
-
-        [HttpPost("chgpwd")]
-        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
-        {
-            User user = Users
-                .Where(u => Convert.ToString(u.UserId) == chg.UserId)
-                .First();
-
-            if (user.UserPassword != chg.Old) return false;
-            else
-            {
-                user.UserPassword = chg.New;
-
-                DbContext.Users.Update(user);
-                DbContext.SaveChanges();
-                return true;
-            }
-        }
     }
 }
