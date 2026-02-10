@@ -170,25 +170,5 @@ namespace Zapasovnik.API.Controllers
                 return true;
             }
         }
-
-        [HttpPost("Register")]
-        public UserDto APIRegister([FromBody] User incomeUser)
-        {
-            UserDto newUser = new UserDto
-            {
-                Username = incomeUser.UserName,
-                Email = incomeUser.UserEmail,
-            };
-
-            DbContext.Users.Add(incomeUser);
-            DbContext.SaveChanges();
-
-            newUser.UserId = DbContext.Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
-            newUser.Success = true;
-            return newUser;
-        }
     }
 }
