@@ -1,5 +1,6 @@
 package com.example.zapasovnik.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -66,19 +67,40 @@ class NewPlayerActivity : ComponentActivity() {
 //            Log.d("Birth", birth)
 //            Log.d("Team", team)
 
-            lifecycleScope.launch {
-                val newPlayerString = buildJsonObject {
-                    put("FName", fname)
-                    put("LName", lname)
-                    put("Birth", birth)
-                    put("Team", team)
-                }
+            if (fname == "" || lname == "") {
+                Toast.makeText(
+                    applicationContext,
+                    R.string.new_player_enter_name,
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val intent = Intent(this, HomeActivity::class.java)
 
-                Log.d("String", newPlayerString.toString())
+                lifecycleScope.launch {
+                    val newPlayerString = buildJsonObject {
+                        put("FName", fname)
+                        put("LName", lname)
+                        put("Birth", birth)
+                        put("Team", team)
+                    }
 
-                val resp = RetrofitClient.api.postAddPlayer(newPlayerString)
-                if (resp.isSuccessful && resp.body().toString() == "true") {
-                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    Log.d("String", newPlayerString.toString())
+
+                    val resp = RetrofitClient.api.postAddPlayer(newPlayerString)
+                    if (resp.isSuccessful && resp.body().toString() == "true") {
+                        Toast.makeText(
+                            applicationContext,
+                            R.string.new_player_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            R.string.network_error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
