@@ -43,4 +43,9 @@ interface Api {
     suspend fun postRegister (
         @Body newUser: JsonObject
     ): Response<JsonObject>
+
+    @POST("AddPlayer")
+    suspend fun postAddPlayer (
+        @Body newPlayer: JsonObject
+    ): Response<Boolean>
 }
