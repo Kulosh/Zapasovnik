@@ -33,4 +33,6 @@
     <string name="new_player_team">Tým hráče</string>
     <string name="new_player_birth">Datum narození</string>
     <string name="new_player_add_btn">Přidat hráče</string>
+    <string name="new_player_enter_name">Zadejte jméno</string>
+    <string name="new_player_success">Hráč úspěšně přidán</string>
 </resources>
