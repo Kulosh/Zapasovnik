@@ -27,4 +27,11 @@
     <string name="register_btn">Register</string>
     <string name="fill_all_fields">Please, fill all fields</string>
     <string name="add_player">Add player</string>
+    <string name="new_player_fname">Player\'s first name</string>
+    <string name="new_player_lname">Player\'s last name</string>
+    <string name="new_player_team">Player\'s team</string>
+    <string name="new_player_birth">Player\'s birth date</string>
+    <string name="new_player_add_btn">Add player</string>
+    <string name="new_player_enter_name">Enter name</string>
+    <string name="new_player_success">Player added successfully</string>
 </resources>
