@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
@@ -29,15 +29,11 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
-                double ticks = double.Parse(newPlayer.Birth);
-                TimeSpan time = TimeSpan.FromMilliseconds(ticks);
-                DateTime birth = new DateTime(1970, 1, 1) + time;
-
                 Player player = new()
                 {
                     FirstName = newPlayer.FName,
                     LastName = newPlayer.LName,
-                    PlayerBorn = birth
+                    PlayerBorn = Convert.ToDateTime(newPlayer.Birth)
                 };
                 DbContext.Players.Add(player);
                 DbContext.SaveChanges();
