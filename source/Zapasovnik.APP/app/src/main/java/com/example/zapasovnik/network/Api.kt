@@ -2,6 +2,7 @@ package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.Match
+import com.example.zapasovnik.model.Team
 import kotlinx.serialization.json.JsonObject
 import retrofit2.Response
 import retrofit2.http.Body
@@ -14,6 +15,9 @@ interface Api {
 
     @GET("Players")
     suspend fun getPlayers(): List<FavPlayer>
+
+    @GET("Teams")
+    suspend fun getTeams(): List<Team>
 
     @POST("User")
     suspend fun postUser(
