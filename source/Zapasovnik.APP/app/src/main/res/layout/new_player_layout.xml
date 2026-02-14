@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
+
+    <EditText
+        android:id="@+id/newPlayerFName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="128dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/new_player_fname"
+        android:inputType="text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/newPlayerLName"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/new_player_lname"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/newPlayerFName"
+        app:layout_constraintTop_toBottomOf="@+id/newPlayerFName" />
+
+    <EditText
+        android:id="@+id/newPlayerBorn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:ems="10"
+        android:hint="@string/new_player_birth"
+        android:inputType="date"
+        app:layout_constraintStart_toStartOf="@+id/newPlayerLName"
+        app:layout_constraintTop_toBottomOf="@+id/newPlayerLName" />
+
+    <AutoCompleteTextView
+        android:id="@+id/newPlayerTeam"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/white"
+        android:hint="@string/new_player_team"
+        app:layout_constraintEnd_toEndOf="@+id/newPlayerBorn"
+        app:layout_constraintStart_toStartOf="@+id/newPlayerBorn"
+        app:layout_constraintTop_toBottomOf="@+id/newPlayerBorn" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+    <Button
+        android:id="@+id/newPlayerAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/new_player_add_btn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toBottomOf="@+id/newPlayerTeam" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
