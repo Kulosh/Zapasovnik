@@ -29,11 +29,15 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
+                double ticks = double.Parse(newPlayer.Birth);
+                TimeSpan time = TimeSpan.FromMilliseconds(ticks);
+                DateTime birth = new DateTime(1970, 1, 1) + time;
+
                 Player player = new()
                 {
                     FirstName = newPlayer.FName,
                     LastName = newPlayer.LName,
-                    PlayerBorn = Convert.ToDateTime(newPlayer.Birth)
+                    PlayerBorn = birth
                 };
                 DbContext.Players.Add(player);
                 DbContext.SaveChanges();
