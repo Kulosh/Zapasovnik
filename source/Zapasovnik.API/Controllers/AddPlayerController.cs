@@ -37,6 +37,9 @@ namespace Zapasovnik.API.Controllers
                 };
                 DbContext.Players.Add(player);
                 DbContext.SaveChanges();
+                Players = DbContext.Players.ToList();
+
+                if (newPlayer.Team == "") return true;
 
                 Player pId = Players
                     .Where(p => p.FirstName == player.FirstName && p.LastName == player.LastName && p.PlayerBorn == Convert.ToDateTime(player.PlayerBorn))
@@ -44,7 +47,7 @@ namespace Zapasovnik.API.Controllers
 
                 Team team = Teams.Where(t => t.TeamName == newPlayer.Team).First();
 
-                TeamPlayer teamPlayer = new() { PlayerId = pId.PlayerId, TeamId = team.TeamId };
+                TeamPlayer teamPlayer = new() { PlayerId = pId.PlayerId, TeamId = team.TeamId, };
                 DbContext.TeamPlayers.Add(teamPlayer);
                 DbContext.SaveChanges();
 
