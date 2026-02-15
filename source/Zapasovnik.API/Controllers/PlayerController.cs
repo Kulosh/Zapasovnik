@@ -106,5 +106,25 @@ namespace Zapasovnik.API.Controllers
                 Team = team
             };
         }
+
+        [HttpDelete("DeletePlayer/{id}")]
+        public bool APIDeletePlayer(int id)
+        {
+            try
+            {
+                TeamPlayer tp = TeamsPlayers.Where(tp => tp.PlayerId == id).First();
+                DbContext.TeamsPlayers.Remove(tp);
+                DbContext.SaveChanges();
+
+                Player p = Players.Where(p => p.PlayerId == id).First();
+                DbContext.Players.Remove(p);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
     }
 }
