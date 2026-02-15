@@ -38,6 +38,7 @@ namespace Zapasovnik.API.Controllers
                     (fav, p) => p)
                 .Select(p => new FavPlayersDto
                 {
+                    Id = p.PlayerId,
                     FName = p.FirstName,
                     LName = p.LastName,
 
@@ -61,6 +62,7 @@ namespace Zapasovnik.API.Controllers
             var rows = Players
                 .Select(p => new FavPlayersDto
                 {
+                    Id = p.PlayerId,
                     FName = p.FirstName,
                     LName = p.LastName,
 
