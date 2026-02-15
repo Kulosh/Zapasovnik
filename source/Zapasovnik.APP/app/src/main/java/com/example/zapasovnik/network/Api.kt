@@ -2,6 +2,7 @@ package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.Match
+import com.example.zapasovnik.model.MatchDetail
 import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.Team
 import kotlinx.serialization.json.JsonObject
@@ -24,6 +25,9 @@ interface Api {
 
     @GET("PlayerDetail/{id}")
     suspend fun getPlayerDetail(@Path("id") id: Int): Response<PlayerDetail>
+
+    @GET("MatchDetail/{id}")
+    suspend fun getMatchDetail(@Path("id") id: Int): Response<MatchDetail>
 
     @POST("User")
     suspend fun postUser(
@@ -65,6 +69,16 @@ interface Api {
         @Body favPlayer: JsonObject
     ): Response<Boolean>
 
+    @POST("AddMatch")
+    suspend fun postAddMatch(
+        @Body newMatch: JsonObject
+    ): Response<Boolean>
+
+
+
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
+
+    @DELETE("DeleteMatch/{id}")
+    suspend fun deleteMatch(@Path("id") id: Int): Response<Boolean>
 }
