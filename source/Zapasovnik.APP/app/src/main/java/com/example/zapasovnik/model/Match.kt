@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Match (
+    @SerialName(value = "matchId")
+    var Id: Int,
+
     @SerialName(value = "matchDate")
     var Date: String,
 
