@@ -80,5 +80,31 @@ namespace Zapasovnik.API.Controllers
 
             return rows;
         }
+
+        [HttpGet("Players/{id}")]
+        public PlayerDetailDto APIPlayerDetail(int id)
+        {
+            var player = Players.FirstOrDefault(p => p.PlayerId == id);
+            if (player == null)
+            {
+                return null!;
+            }
+            var team = TeamsPlayers
+                .Where(tp => tp.PlayerId == player.PlayerId)
+                .Join(Teams,
+                      tp => tp.TeamId,
+                      t => t.TeamId,
+                      (tp, t) => t.TeamName)
+                .OrderBy(name => name)
+                .FirstOrDefault()!;
+            return new PlayerDetailDto
+            {
+                Id = player.PlayerId,
+                Fname = player.FirstName,
+                Lname = player.LastName,
+                Birth = Convert.ToString(player.PlayerBorn),
+                Team = team
+            };
+        }
     }
 }
