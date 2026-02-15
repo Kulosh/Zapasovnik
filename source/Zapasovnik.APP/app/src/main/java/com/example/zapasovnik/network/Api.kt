@@ -1,6 +1,7 @@
 package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.League
 import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.model.MatchDetail
 import com.example.zapasovnik.model.PlayerDetail
@@ -22,6 +23,9 @@ interface Api {
 
     @GET("Teams")
     suspend fun getTeams(): List<Team>
+
+    @GET("Leagues")
+    suspend fun getLeagues(): List<League>
 
     @GET("PlayerDetail/{id}")
     suspend fun getPlayerDetail(@Path("id") id: Int): Response<PlayerDetail>
