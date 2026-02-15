@@ -38,4 +38,5 @@
     <string name="del_player">Smazat hráče</string>
     <string name="add_fav_player">Přidat k oblíbeným hráčům</string>
     <string name="del_fav_player">Odebrat z oblíbených hráčů</string>
+    <string name="add_match">Přidat zápas</string>
 </resources>
