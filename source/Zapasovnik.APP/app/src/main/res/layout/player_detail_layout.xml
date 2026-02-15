@@ -109,4 +109,24 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="357dp" />
 
+    <Button
+        android:id="@+id/addToFavPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/add_fav_player"
+        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
+        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
+        app:layout_constraintTop_toBottomOf="@+id/deletePlayerBtn" />
+
+    <Button
+        android:id="@+id/delFromFavPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/del_fav_player"
+        app:layout_constraintEnd_toEndOf="@+id/addToFavPlayers"
+        app:layout_constraintStart_toStartOf="@+id/addToFavPlayers"
+        app:layout_constraintTop_toBottomOf="@+id/addToFavPlayers" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
