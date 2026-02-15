@@ -81,7 +81,7 @@ namespace Zapasovnik.API.Controllers
             return rows;
         }
 
-        [HttpGet("Players/{id}")]
+        [HttpGet("PlayerDetail/{id}")]
         public PlayerDetailDto APIPlayerDetail(int id)
         {
             var player = Players.FirstOrDefault(p => p.PlayerId == id);
