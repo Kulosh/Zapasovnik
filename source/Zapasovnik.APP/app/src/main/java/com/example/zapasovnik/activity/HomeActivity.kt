@@ -65,7 +65,11 @@ class HomeActivity : ComponentActivity() {
 
             try {
                 val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-                recyclerView.adapter = HomeMatchTableAdapter(teamMatches)
+                recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+                    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+                    intent.putExtra("id", match.Id)
+                    startActivity(intent)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

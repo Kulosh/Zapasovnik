@@ -2,6 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -20,18 +21,25 @@ class MatchesActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.matches_list_layout)
 
-        val addBtn = findViewById<Button>(R.id.addMatchBtn)
         val recyclerView = findViewById<RecyclerView>(R.id.matchesTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        lifecycleScope.launch {
-            val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-            recyclerView.adapter = HomeMatchTableAdapter(teamMatches)
-        }
+        val addBtn = findViewById<Button>(R.id.addMatchBtn)
 
         addBtn.setOnClickListener {
             val intent = Intent(this, NewMatchActivity::class.java)
             startActivity(intent)
+        }
+
+        lifecycleScope.launch {
+            val matches = RetrofitClient.api.getTeamMatches()
+            Log.d("Matches", "${matches}")
+
+            recyclerView.adapter = HomeMatchTableAdapter(matches) { match ->
+                val intent = Intent(this@MatchesActivity, MatchDetailActivity::class.java)
+                intent.putExtra("id", match.Id)
+                Log.d("Match CLICK", match.toString())
+                startActivity(intent)
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ data class MatchDetail (
     @SerialName("team2")
     var Team2: String,
 
-    @SerialName("matchDate")
+    @SerialName("date")
     var Date: String,
 
     @SerialName("league")
