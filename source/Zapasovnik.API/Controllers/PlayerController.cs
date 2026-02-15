@@ -145,7 +145,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
-        [HttpDelete("DeleteFavPlayer")]
+        [HttpPost("DeleteFavPlayer")]
         public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
         {
             try
