@@ -16,6 +16,7 @@ namespace Zapasovnik.API.Controllers
         public List<TeamMatch> TeamsMatches { get; set; }
         public List<Match> Matches { get; set; }
         public List<League> Leagues { get; set; }
+        public List<UserFavMatch> UserFavMatches { get; set; }
 
         public TeamMatchesController()
         {
@@ -25,6 +26,7 @@ namespace Zapasovnik.API.Controllers
             TeamsMatches = DbContext.TeamsMatches.ToList();
             Matches = DbContext.Matches.ToList();
             Leagues = DbContext.Leagues.ToList();
+            UserFavMatches = DbContext.UserFavMatches.ToList();
         }
 
         [HttpGet("TeamMatches")]
@@ -156,6 +158,45 @@ namespace Zapasovnik.API.Controllers
 
                 DbContext.TeamsMatches.Add(t1);
                 DbContext.TeamsMatches.Add(t2);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [HttpDelete("DeleteMatch/{id}")]
+        public bool APIDeleteMatch(int id)
+        {
+            try
+            {
+                List<UserFavMatch> favMatches = UserFavMatches
+                    .Where(ufm => ufm.MatchId == id)
+                    .ToList();
+                if ( favMatches.Count > 0 )
+                {
+                    UserFavMatches.RemoveAll(ufm => ufm.MatchId == id);
+                    DbContext.UserFavMatches.RemoveRange(favMatches);
+                    DbContext.SaveChanges();
+                }
+                
+                List<TeamMatch> teamMatches = TeamsMatches
+                    .Where(tm => tm.MatchId == id)
+                    .ToList();
+                if (teamMatches.Count > 0)
+                {
+                    TeamsMatches.RemoveAll(tm => tm.MatchId == id);
+                    DbContext.TeamsMatches.RemoveRange(teamMatches);
+                    DbContext.SaveChanges();
+                }
+
+                Match match = Matches
+                    .Where(m => m.MatchId == id)
+                    .First();
+                DbContext.Remove(match);
                 DbContext.SaveChanges();
 
                 return true;
