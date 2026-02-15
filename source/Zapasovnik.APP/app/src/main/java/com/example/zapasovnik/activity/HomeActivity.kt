@@ -41,6 +41,12 @@ class HomeActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        val matchesClick = findViewById<Button>(R.id.matchBtn)
+        matchesClick.setOnClickListener {
+            val intent = Intent(this, MatchesActivity::class.java)
+            startActivity(intent)
+        }
+
         lifecycleScope.launch {
             val loginSuccess = userData.loggedInFlow.first()
 //            Log.e("Login success", loginSuccess)
