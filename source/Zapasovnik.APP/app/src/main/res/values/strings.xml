@@ -34,4 +34,5 @@
     <string name="new_player_add_btn">Add player</string>
     <string name="new_player_enter_name">Enter name</string>
     <string name="new_player_success">Player added successfully</string>
+    <string name="del_player">Delete player</string>
 </resources>
