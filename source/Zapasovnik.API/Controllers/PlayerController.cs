@@ -144,20 +144,5 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
-
-        [HttpPost("DeleteFavPlayer")]
-        public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
-        {
-            try
-            {
-                DbContext.UsersFavPlayers.Remove(delFavPlayer);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
     }
 }
