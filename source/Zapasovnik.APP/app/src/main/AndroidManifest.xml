@@ -42,6 +42,9 @@
         <activity android:name=".activity.NewPlayerActivity">
 
         </activity>
+        <activity android:name=".activity.PlayerDetailActivity">
+
+        </activity>
     </application>
 
 </manifest>

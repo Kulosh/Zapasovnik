@@ -31,7 +31,11 @@ class PlayersActivity : ComponentActivity() {
         lifecycleScope.launch {
             val players = RetrofitClient.api.getPlayers()
 
-            recyclerView.adapter = PlayersTableAdapter(players)
+            recyclerView.adapter = PlayersTableAdapter(players) { player ->
+                val intent = Intent(this@PlayersActivity, PlayerDetailActivity::class.java)
+                intent.putExtra("id", player.Id)
+                startActivity(intent)
+            }
         }
     }
 }
