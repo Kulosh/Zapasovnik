@@ -6,41 +6,37 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <EditText
-        android:id="@+id/newPlayerFName"
+    <AutoCompleteTextView
+        android:id="@+id/newMatchTeam1"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="64dp"
         android:background="@color/white"
-        android:ems="10"
-        android:hint="@string/new_player_fname"
-        android:inputType="text"
+        android:text="AutoCompleteTextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/newPlayerLName"
+    <AutoCompleteTextView
+        android:id="@+id/newMatchTeam2"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:background="@color/white"
-        android:ems="10"
-        android:hint="@string/new_player_lname"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/newPlayerFName"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerFName" />
+        android:text="AutoCompleteTextView"
+        app:layout_constraintStart_toStartOf="@+id/newMatchTeam1"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchTeam1" />
 
     <AutoCompleteTextView
-        android:id="@+id/newPlayerTeam"
+        android:id="@+id/newMatchLeague"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@color/white"
         android:hint="@string/new_player_team"
-        app:layout_constraintEnd_toEndOf="@+id/newPlayerLName"
-        app:layout_constraintStart_toStartOf="@+id/newPlayerLName"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerBorn" />
+        app:layout_constraintEnd_toEndOf="@+id/newMatchTeam2"
+        app:layout_constraintStart_toStartOf="@+id/newMatchTeam2"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchTeam2" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"
@@ -50,23 +46,25 @@
         app:layout_constraintGuide_begin="205dp" />
 
     <Button
-        android:id="@+id/newPlayerAddBtn"
+        android:id="@+id/newMatchAddBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_add_btn"
+        android:text="@string/add_match"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerTeam" />
+        app:layout_constraintTop_toBottomOf="@+id/newMatchDate" />
 
     <CalendarView
-        android:id="@+id/newPlayerBorn"
-        android:layout_width="371dp"
+        android:id="@+id/newMatchDate"
+        android:layout_width="0dp"
         android:layout_height="313dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerLName" />
+        app:layout_constraintTop_toBottomOf="@+id/newMatchLeague" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
