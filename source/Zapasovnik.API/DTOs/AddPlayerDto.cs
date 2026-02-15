@@ -1,10 +1,10 @@
 ﻿namespace Zapasovnik.API.DTOs
 {
-    public class FavPlayersDto
+    public class AddPlayerDto
     {
-        public int Id { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
-        public string? Team { get; set; }
+        public string Birth { get; set; }
+        public string Team { get; set; }
     }
 }

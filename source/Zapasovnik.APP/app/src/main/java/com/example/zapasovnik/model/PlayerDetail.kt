@@ -4,16 +4,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FavPlayer (
+data class PlayerDetail (
     @SerialName("id")
     var Id: Int,
 
-    @SerialName("fName")
+    @SerialName("fname")
     var FName: String,
 
-    @SerialName("lName")
+    @SerialName("lname")
     var LName: String,
 
     @SerialName("team")
     var Team: String? = "No team",
+
+    @SerialName("birth")
+    var Birth: String
 )

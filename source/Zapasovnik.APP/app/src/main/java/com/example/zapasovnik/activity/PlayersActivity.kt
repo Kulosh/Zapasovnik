@@ -1,6 +1,8 @@
 package com.example.zapasovnik.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
@@ -19,11 +21,21 @@ class PlayersActivity : ComponentActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.playersTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val addPlayer = findViewById<Button>(R.id.addPlayerBtn)
+
+        addPlayer.setOnClickListener {
+            val intent = Intent(this, NewPlayerActivity::class.java)
+            startActivity(intent)
+        }
 
         lifecycleScope.launch {
             val players = RetrofitClient.api.getPlayers()
 
-            recyclerView.adapter = PlayersTableAdapter(players)
+            recyclerView.adapter = PlayersTableAdapter(players) { player ->
+                val intent = Intent(this@PlayersActivity, PlayerDetailActivity::class.java)
+                intent.putExtra("id", player.Id)
+                startActivity(intent)
+            }
         }
     }
 }

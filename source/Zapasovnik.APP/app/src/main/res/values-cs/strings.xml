@@ -27,4 +27,15 @@
     <string name="enter_password">Zadejte heslo</string>
     <string name="register_btn">Registrovat</string>
     <string name="fill_all_fields">Prosím vyplňte všechna pole</string>
+    <string name="add_player">Přidat hráče</string>
+    <string name="new_player_fname">Křestní jméno hráče</string>
+    <string name="new_player_lname">Příjmení hráče</string>
+    <string name="new_player_team">Tým hráče</string>
+    <string name="new_player_birth">Datum narození</string>
+    <string name="new_player_add_btn">Přidat hráče</string>
+    <string name="new_player_enter_name">Zadejte jméno</string>
+    <string name="new_player_success">Hráč úspěšně přidán</string>
+    <string name="del_player">Smazat hráče</string>
+    <string name="add_fav_player">Přidat k oblíbeným hráčům</string>
+    <string name="del_fav_player">Odebrat z oblíbených hráčů</string>
 </resources>

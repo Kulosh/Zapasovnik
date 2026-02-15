@@ -38,6 +38,7 @@ namespace Zapasovnik.API.Controllers
                     (fav, p) => p)
                 .Select(p => new FavPlayersDto
                 {
+                    Id = p.PlayerId,
                     FName = p.FirstName,
                     LName = p.LastName,
 
@@ -61,6 +62,7 @@ namespace Zapasovnik.API.Controllers
             var rows = Players
                 .Select(p => new FavPlayersDto
                 {
+                    Id = p.PlayerId,
                     FName = p.FirstName,
                     LName = p.LastName,
 
@@ -77,6 +79,79 @@ namespace Zapasovnik.API.Controllers
                 .ThenBy(x => x.FName);
 
             return rows;
+        }
+
+        [HttpGet("PlayerDetail/{id}")]
+        public PlayerDetailDto APIPlayerDetail(int id)
+        {
+            var player = Players.FirstOrDefault(p => p.PlayerId == id);
+            if (player == null)
+            {
+                return null!;
+            }
+            var team = TeamsPlayers
+                .Where(tp => tp.PlayerId == player.PlayerId)
+                .Join(Teams,
+                      tp => tp.TeamId,
+                      t => t.TeamId,
+                      (tp, t) => t.TeamName)
+                .OrderBy(name => name)
+                .FirstOrDefault()!;
+            return new PlayerDetailDto
+            {
+                Id = player.PlayerId,
+                Fname = player.FirstName,
+                Lname = player.LastName,
+                Birth = Convert.ToString(player.PlayerBorn),
+                Team = team
+            };
+        }
+
+        [HttpDelete("DeletePlayer/{id}")]
+        public bool APIDeletePlayer(int id)
+        {
+            try
+            {
+                var favPlayers = UsersFavPlayers.Where(ufp => ufp.PlayerId == id).ToList();
+
+                if (favPlayers.Count > 0)
+                {
+                    UsersFavPlayers.RemoveAll(ufp => ufp.PlayerId == id);
+                    DbContext.UsersFavPlayers.RemoveRange(DbContext.UsersFavPlayers.Where(ufp => ufp.PlayerId == id));
+                    DbContext.SaveChanges();
+                }
+
+                TeamPlayer tp = TeamsPlayers.Where(tp => tp.PlayerId == id).FirstOrDefault();
+
+                if (tp != null)
+                {
+                    DbContext.TeamsPlayers.Remove(tp);
+                    DbContext.SaveChanges();
+                }
+
+                Player p = Players.Where(p => p.PlayerId == id).First();
+                DbContext.Players.Remove(p);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
+        [HttpPost("AddFavPlayer")]
+        public bool APIAddFavPlayer([FromBody] UserFavPlayer newFavPlayer)
+        {
+            try
+            {
+                DbContext.UsersFavPlayers.Add(newFavPlayer);
+                DbContext.SaveChanges();
+                return true;
+            } catch
+            {
+                return false;
+            }
         }
     }
 }

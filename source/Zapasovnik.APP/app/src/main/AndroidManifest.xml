@@ -39,6 +39,12 @@
         <activity android:name=".activity.RegisterActivity">
             
         </activity>
+        <activity android:name=".activity.NewPlayerActivity">
+
+        </activity>
+        <activity android:name=".activity.PlayerDetailActivity">
+
+        </activity>
     </application>
 
 </manifest>

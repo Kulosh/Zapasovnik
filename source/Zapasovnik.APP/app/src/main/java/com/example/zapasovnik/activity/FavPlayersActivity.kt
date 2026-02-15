@@ -1,5 +1,6 @@
 package com.example.zapasovnik.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,7 @@ import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.viewModel.FavPlayersTableAdapter
+import com.example.zapasovnik.viewModel.PlayersTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
@@ -35,7 +37,12 @@ class FavPlayersActivity : ComponentActivity() {
             }
             val favPlayers = RetrofitClient.api.postFavPlayer(userId)
 
-            recyclerView.adapter = FavPlayersTableAdapter(favPlayers)
+            recyclerView.adapter = PlayersTableAdapter(favPlayers) { player ->
+                val intent = Intent(this@FavPlayersActivity, PlayerDetailActivity::class.java)
+                intent.putExtra("id", player.Id)
+                intent.putExtra("isFav", true)
+                startActivity(intent)
+            }
         }
     }
 }
