@@ -48,6 +48,9 @@
         <activity android:name=".activity.MatchesActivity">
 
         </activity>
+        <activity android:name=".activity.NewMatchActivity">
+
+        </activity>
     </application>
 
 </manifest>

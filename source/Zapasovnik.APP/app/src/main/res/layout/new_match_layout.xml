@@ -8,22 +8,25 @@
 
     <AutoCompleteTextView
         android:id="@+id/newMatchTeam1"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
         android:background="@color/white"
-        android:text="AutoCompleteTextView"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        android:hint="@string/new_match_t1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView
         android:id="@+id/newMatchTeam2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
-        android:text="AutoCompleteTextView"
+        android:hint="@string/new_match_t2"
+        app:layout_constraintEnd_toEndOf="@+id/newMatchTeam1"
         app:layout_constraintStart_toStartOf="@+id/newMatchTeam1"
         app:layout_constraintTop_toBottomOf="@+id/newMatchTeam1" />
 
@@ -33,7 +36,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
-        android:hint="@string/new_player_team"
+        android:hint="@string/new_match_league"
         app:layout_constraintEnd_toEndOf="@+id/newMatchTeam2"
         app:layout_constraintStart_toStartOf="@+id/newMatchTeam2"
         app:layout_constraintTop_toBottomOf="@+id/newMatchTeam2" />
