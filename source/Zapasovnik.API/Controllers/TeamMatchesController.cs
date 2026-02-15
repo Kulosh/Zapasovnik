@@ -25,9 +25,6 @@ namespace Zapasovnik.API.Controllers
             Matches = DbContext.Matches.ToList();
         }
 
-
-
-
         [HttpGet]
         public List<MatchWithTeamsDto> APITeamMatches()
         {
@@ -35,6 +32,8 @@ namespace Zapasovnik.API.Controllers
                 .Select(m => new MatchWithTeamsDto
                 {
                     MatchDate = m.MatchDate,
+
+                    MatchId = m.MatchId,
 
                     Team1 = TeamsMatches
                         .Where(tm => tm.MatchId == m.MatchId)
