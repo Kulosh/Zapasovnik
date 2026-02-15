@@ -112,6 +112,15 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
+                var favPlayers = UsersFavPlayers.Where(ufp => ufp.PlayerId == id).ToList();
+
+                if (favPlayers.Count > 0)
+                {
+                    UsersFavPlayers.RemoveAll(ufp => ufp.PlayerId == id);
+                    DbContext.UsersFavPlayers.RemoveRange(DbContext.UsersFavPlayers.Where(ufp => ufp.PlayerId == id));
+                    DbContext.SaveChanges();
+                }
+
                 TeamPlayer tp = TeamsPlayers.Where(tp => tp.PlayerId == id).FirstOrDefault();
 
                 if (tp != null)

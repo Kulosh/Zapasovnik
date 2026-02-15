@@ -24,10 +24,6 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
-                //UserFavPlayer existing = new UserFavPlayer { UserId = delFavPlayer.UserId, PlayerId = delFavPlayer.PlayerId };
-                //Console.WriteLine($"{existing.PlayerId} - pid");
-                //Console.WriteLine($"{existing.UserId} - uid");
-
                 DbContext.UsersFavPlayers.Remove(delFavPlayer);
                 DbContext.SaveChanges();
                 return true;
