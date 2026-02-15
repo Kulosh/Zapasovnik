@@ -35,4 +35,6 @@
     <string name="new_player_enter_name">Enter name</string>
     <string name="new_player_success">Player added successfully</string>
     <string name="del_player">Delete player</string>
+    <string name="add_fav_player">Add to favorite players</string>
+    <string name="del_fav_player">Remove from favorite players</string>
 </resources>

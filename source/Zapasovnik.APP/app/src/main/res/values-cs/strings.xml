@@ -36,4 +36,6 @@
     <string name="new_player_enter_name">Zadejte jméno</string>
     <string name="new_player_success">Hráč úspěšně přidán</string>
     <string name="del_player">Smazat hráče</string>
+    <string name="add_fav_player">Přidat k oblíbeným hráčům</string>
+    <string name="del_fav_player">Odebrat z oblíbených hráčů</string>
 </resources>
