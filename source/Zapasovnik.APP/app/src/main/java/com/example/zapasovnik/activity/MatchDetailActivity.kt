@@ -30,7 +30,7 @@ class MatchDetailActivity : ComponentActivity() {
         setContentView(R.layout.match_detail_layout)
 
         val isFav = intent.getBooleanExtra("isFav", false)
-        val playerId = intent.getIntExtra("id", -1)
+        val matchId = intent.getIntExtra("id", -1)
         val team1 = findViewById<TextView>(R.id.matchDetailTeam1)
         val team2 = findViewById<TextView>(R.id.matchDetailTeam2)
         val date = findViewById<TextView>(R.id.matchDetailDate)
@@ -42,7 +42,7 @@ class MatchDetailActivity : ComponentActivity() {
         userData = UserData(this)
 
         lifecycleScope.launch {
-            match = RetrofitClient.api.getMatchDetail(playerId)
+            match = RetrofitClient.api.getMatchDetail(matchId)
 
             team1.text = match.body()?.Team1
             team2.text = match.body()?.Team2
@@ -52,7 +52,7 @@ class MatchDetailActivity : ComponentActivity() {
 
         delMatchBtn.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deletePlayer(playerId)
+                val resp = RetrofitClient.api.deleteMatch(matchId)
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@MatchDetailActivity, HomeActivity::class.java)
