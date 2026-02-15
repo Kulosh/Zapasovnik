@@ -55,6 +55,16 @@ interface Api {
         @Body newPlayer: JsonObject
     ): Response<Boolean>
 
+    @POST("AddFavPlayer")
+    suspend fun postAddFavPlayer (
+        @Body favPlayer: JsonObject
+    ): Response<Boolean>
+
+    @POST("DeleteFavPlayer")
+    suspend fun postDeleteFavPlayer(
+        @Body favPlayer: JsonObject
+    ): Response<Boolean>
+
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
 }
