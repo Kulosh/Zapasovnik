@@ -130,5 +130,34 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        [HttpPost("AddFavPlayer")]
+        public bool APIAddFavPlayer([FromBody] UserFavPlayer newFavPlayer)
+        {
+            try
+            {
+                DbContext.UsersFavPlayers.Add(newFavPlayer);
+                DbContext.SaveChanges();
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
+        [HttpDelete("DeleteFavPlayer")]
+        public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
+        {
+            try
+            {
+                DbContext.UsersFavPlayers.Remove(delFavPlayer);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
