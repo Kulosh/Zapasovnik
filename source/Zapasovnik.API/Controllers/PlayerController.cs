@@ -112,9 +112,13 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
-                TeamPlayer tp = TeamsPlayers.Where(tp => tp.PlayerId == id).First();
-                DbContext.TeamsPlayers.Remove(tp);
-                DbContext.SaveChanges();
+                TeamPlayer tp = TeamsPlayers.Where(tp => tp.PlayerId == id).FirstOrDefault();
+
+                if (tp != null)
+                {
+                    DbContext.TeamsPlayers.Remove(tp);
+                    DbContext.SaveChanges();
+                }
 
                 Player p = Players.Where(p => p.PlayerId == id).First();
                 DbContext.Players.Remove(p);
