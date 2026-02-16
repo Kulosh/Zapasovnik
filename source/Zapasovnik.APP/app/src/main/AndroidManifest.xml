@@ -57,6 +57,9 @@
         <activity android:name=".activity.FavMatchesActivity">
 
         </activity>
+        <activity android:name=".activity.TeamsActivity">
+
+        </activity>
     </application>
 
 </manifest>

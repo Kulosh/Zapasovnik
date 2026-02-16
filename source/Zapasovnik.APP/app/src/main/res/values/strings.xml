@@ -47,4 +47,5 @@
     <string name="match_detail_date">Date</string>
     <string name="match_detail_league">League</string>
     <string name="del_match">Delete match</string>
+    <string name="add_team">Add team</string>
 </resources>

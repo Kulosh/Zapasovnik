@@ -48,4 +48,5 @@
     <string name="match_detail_date">Datum</string>
     <string name="match_detail_league">Liga</string>
     <string name="del_match">Smaza zápas</string>
+    <string name="add_team">Přidat tým</string>
 </resources>
