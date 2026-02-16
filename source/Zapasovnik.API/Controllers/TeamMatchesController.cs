@@ -221,5 +221,40 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        [HttpPost("FavMatch")]
+        public List<MatchWithTeamsDto> APIFavMatches([FromBody] UserDto userId)
+        {
+            List<MatchWithTeamsDto> favMatches = UserFavMatches
+                .Where(ufm => ufm.UserId == Convert.ToInt32(userId.UserId))
+                .Join(DbContext.Matches,
+                    fav => fav.MatchId,
+                    m => m.MatchId,
+                    (fav, m) => m)
+                .Select(mwt => new MatchWithTeamsDto
+                {
+                    MatchDate = mwt.MatchDate,
+                    MatchId = mwt.MatchId,
+                    Team1 = TeamsMatches
+                        .Where(tm => tm.MatchId == mwt.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault(),
+                    Team2 = TeamsMatches
+                        .Where(tm => tm.MatchId == mwt.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .Skip(1)
+                        .FirstOrDefault()
+                })
+                .ToList();
+            return favMatches;
+        }
     }
 }
