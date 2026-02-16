@@ -45,6 +45,18 @@
         <activity android:name=".activity.PlayerDetailActivity">
 
         </activity>
+        <activity android:name=".activity.MatchesActivity">
+
+        </activity>
+        <activity android:name=".activity.NewMatchActivity">
+
+        </activity>
+        <activity android:name=".activity.MatchDetailActivity">
+
+        </activity>
+        <activity android:name=".activity.FavMatchesActivity">
+
+        </activity>
     </application>
 
 </manifest>

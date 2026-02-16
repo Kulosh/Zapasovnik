@@ -35,6 +35,16 @@
     <string name="new_player_enter_name">Enter name</string>
     <string name="new_player_success">Player added successfully</string>
     <string name="del_player">Delete player</string>
-    <string name="add_fav_player">Add to favorite players</string>
-    <string name="del_fav_player">Remove from favorite players</string>
+    <string name="add_fav">Add to favorite</string>
+    <string name="add_del">Remove from favorite</string>
+    <string name="add_match">Add match</string>
+    <string name="new_match_t1">Enter Team1</string>
+    <string name="new_match_t2">Enter Team2</string>
+    <string name="new_match_league">Enter league</string>
+    <string name="new_match_success">Match added succesfully</string>
+    <string name="match_detail_t1">Team1</string>
+    <string name="match_detail_t2">Team2</string>
+    <string name="match_detail_date">Date</string>
+    <string name="match_detail_league">League</string>
+    <string name="del_match">Delete match</string>
 </resources>

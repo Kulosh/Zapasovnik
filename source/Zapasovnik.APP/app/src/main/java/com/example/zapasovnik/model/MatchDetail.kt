@@ -4,16 +4,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Match (
-    @SerialName(value = "matchId")
+data class MatchDetail (
+    @SerialName("matchId")
     var Id: Int,
 
-    @SerialName(value = "matchDate")
-    var Date: String,
-
-    @SerialName(value = "team1")
+    @SerialName("team1")
     var Team1: String,
 
     @SerialName("team2")
-    var Team2: String
+    var Team2: String,
+
+    @SerialName("date")
+    var Date: String,
+
+    @SerialName("league")
+    var League: String
 )

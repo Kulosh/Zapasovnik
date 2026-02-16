@@ -9,6 +9,8 @@ namespace Zapasovnik.API.DbContexts
         public DbSet<Match> Matches { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMatch> TeamsMatches { get; set; }
+        public DbSet<League> Leagues { get; set; }
+        public DbSet<UserFavMatch> UserFavMatches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

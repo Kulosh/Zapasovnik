@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.MatchDetail
 import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
@@ -19,45 +20,52 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import retrofit2.Response
 
-class PlayerDetailActivity : ComponentActivity() {
+class MatchDetailActivity : ComponentActivity() {
 
     lateinit var userData: UserData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.player_detail_layout)
+        setContentView(R.layout.match_detail_layout)
 
         val isFav = intent.getBooleanExtra("isFav", false)
-        val playerId = intent.getIntExtra("id", -1)
-        val fname = findViewById<TextView>(R.id.playerDetaliFname)
-        val lname = findViewById<TextView>(R.id.playerDetailLname)
-        val birth = findViewById<TextView>(R.id.playerDetailBirth)
-        val team = findViewById<TextView>(R.id.playerDetailTeam)
-        val delPlayerBtn = findViewById<Button>(R.id.deletePlayerBtn)
-        val favBtn = findViewById<Button>(R.id.addToFavPlayers)
-        val unfavBtn = findViewById<Button>(R.id.delFromFavPlayers)
-        var player: Response<PlayerDetail> ?= null
+        val matchId = intent.getIntExtra("id", -1)
+        val team1 = findViewById<TextView>(R.id.matchDetailTeam1)
+        val team2 = findViewById<TextView>(R.id.matchDetailTeam2)
+        val date = findViewById<TextView>(R.id.matchDetailDate)
+        val league = findViewById<TextView>(R.id.matchDetailLeague)
+        val delMatchBtn = findViewById<Button>(R.id.deleteMatchBtn)
+        val favBtn = findViewById<Button>(R.id.addToFavMatches)
+        val unfavBtn = findViewById<Button>(R.id.delFromFavMatches)
+        var match: Response<MatchDetail> ?= null
         userData = UserData(this)
-        var loggedIn: Boolean ?= false
+        var loggedIn: String ?= "false"
 
         lifecycleScope.launch {
-            player = RetrofitClient.api.getPlayerDetail(playerId)
+            match = RetrofitClient.api.getMatchDetail(matchId)
+            loggedIn = userData.loggedInFlow.first()
+            Log.d("loggedIn", loggedIn)
 
-            loggedIn = userData.loggedInFlow.first().toBoolean()
+            if (loggedIn == "true") {
+                if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+            } else {
+                favBtn.visibility = Button.GONE
+                unfavBtn.visibility = Button.GONE
+            }
 
-            fname.text = player.body()?.FName
-            lname.text = player.body()?.LName
-            birth.text = player.body()?.Birth
-            team.text = player.body()?.Team
+            team1.text = match.body()?.Team1
+            team2.text = match.body()?.Team2
+            date.text = match.body()?.Date
+            league.text = match.body()?.League
         }
 
-        delPlayerBtn.setOnClickListener {
+        delMatchBtn.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deletePlayer(playerId)
+                val resp = RetrofitClient.api.deleteMatch(matchId)
 
                 if (resp.isSuccessful && resp.body() == true) {
-                    val intent = Intent(this@PlayerDetailActivity, HomeActivity::class.java)
+                    val intent = Intent(this@MatchDetailActivity, HomeActivity::class.java)
                     startActivity(intent)
                 } else {
                     Toast.makeText(
@@ -69,20 +77,14 @@ class PlayerDetailActivity : ComponentActivity() {
             }
         }
 
-        if (loggedIn == true) {
-            if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
-        } else {
-            favBtn.visibility = Button.GONE
-            unfavBtn.visibility = Button.GONE
-        }
-
         favBtn.setOnClickListener {
             lifecycleScope.launch {
-                val favPlayer = buildJsonObject {
-                    put("playerId", player?.body()?.Id)
+                val favMatch = buildJsonObject {
+                    put("matchId", match?.body()?.Id)
                     put("userId", userData.userIdFlow.first().toInt())
                 }
-                val resp = RetrofitClient.api.postAddFavPlayer(favPlayer)
+//                     TODO: PostFav
+                val resp = RetrofitClient.api.postAddFavMatch(favMatch)
 
                 if (resp.isSuccessful && resp.body() == true){
                     finish()
@@ -93,13 +95,14 @@ class PlayerDetailActivity : ComponentActivity() {
 
         unfavBtn.setOnClickListener {
             lifecycleScope.launch {
-                val favPlayer = buildJsonObject {
-                    put("playerId", player?.body()?.Id)
+                val favMatch = buildJsonObject {
+                    put("matchId", match?.body()?.Id)
                     put("userId", userData.userIdFlow.first().toInt())
                 }
-                val resp = RetrofitClient.api.postDeleteFavPlayer(favPlayer)
-                Log.d("String", favPlayer.toString())
-                Log.d("Response", resp.toString())
+                    // TODO: PostUnFav
+                val resp = RetrofitClient.api.postDeleteFavMatch(favMatch)
+//                Log.d("String", favPlayer.toString())
+//                Log.d("Response", resp.toString())
 
                 if (resp.isSuccessful && resp.body() == true) {
                     finish()

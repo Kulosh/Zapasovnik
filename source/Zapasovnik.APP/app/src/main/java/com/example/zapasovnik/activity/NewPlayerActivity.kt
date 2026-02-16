@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CalendarView
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,8 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
 
 class NewPlayerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

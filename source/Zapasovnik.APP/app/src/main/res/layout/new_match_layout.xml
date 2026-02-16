@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <AutoCompleteTextView
+        android:id="@+id/newMatchTeam1"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
+        android:background="@color/white"
+        android:hint="@string/new_match_t1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/newMatchTeam2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:hint="@string/new_match_t2"
+        app:layout_constraintEnd_toEndOf="@+id/newMatchTeam1"
+        app:layout_constraintStart_toStartOf="@+id/newMatchTeam1"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchTeam1" />
+
+    <AutoCompleteTextView
+        android:id="@+id/newMatchLeague"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:hint="@string/new_match_league"
+        app:layout_constraintEnd_toEndOf="@+id/newMatchTeam2"
+        app:layout_constraintStart_toStartOf="@+id/newMatchTeam2"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchTeam2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+    <Button
+        android:id="@+id/newMatchAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/add_match"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchDate" />
+
+    <CalendarView
+        android:id="@+id/newMatchDate"
+        android:layout_width="0dp"
+        android:layout_height="313dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchLeague" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

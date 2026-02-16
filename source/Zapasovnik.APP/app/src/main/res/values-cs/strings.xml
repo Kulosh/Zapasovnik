@@ -36,6 +36,16 @@
     <string name="new_player_enter_name">Zadejte jméno</string>
     <string name="new_player_success">Hráč úspěšně přidán</string>
     <string name="del_player">Smazat hráče</string>
-    <string name="add_fav_player">Přidat k oblíbeným hráčům</string>
-    <string name="del_fav_player">Odebrat z oblíbených hráčů</string>
+    <string name="add_fav">Přidat k oblíbeným</string>
+    <string name="add_del">Odebrat z oblíbených</string>
+    <string name="add_match">Přidat zápas</string>
+    <string name="new_match_t1">Zadejte tým1</string>
+    <string name="new_match_t2">Zadejte tým2</string>
+    <string name="new_match_league">Zadejte ligu</string>
+    <string name="new_match_success">Zápas úspěšně přidán</string>
+    <string name="match_detail_t1">Tým1</string>
+    <string name="match_detail_t2">Tým2</string>
+    <string name="match_detail_date">Datum</string>
+    <string name="match_detail_league">Liga</string>
+    <string name="del_match">Smaza zápas</string>
 </resources>

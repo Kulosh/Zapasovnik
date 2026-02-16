@@ -41,6 +41,12 @@ class HomeActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        val matchesClick = findViewById<Button>(R.id.matchBtn)
+        matchesClick.setOnClickListener {
+            val intent = Intent(this, MatchesActivity::class.java)
+            startActivity(intent)
+        }
+
         lifecycleScope.launch {
             val loginSuccess = userData.loggedInFlow.first()
 //            Log.e("Login success", loginSuccess)
@@ -59,7 +65,11 @@ class HomeActivity : ComponentActivity() {
 
             try {
                 val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-                recyclerView.adapter = HomeMatchTableAdapter(teamMatches)
+                recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+                    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+                    intent.putExtra("id", match.Id)
+                    startActivity(intent)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

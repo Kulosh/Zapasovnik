@@ -1,7 +1,9 @@
 package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.League
 import com.example.zapasovnik.model.Match
+import com.example.zapasovnik.model.MatchDetail
 import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.Team
 import kotlinx.serialization.json.JsonObject
@@ -22,8 +24,14 @@ interface Api {
     @GET("Teams")
     suspend fun getTeams(): List<Team>
 
+    @GET("Leagues")
+    suspend fun getLeagues(): List<League>
+
     @GET("PlayerDetail/{id}")
     suspend fun getPlayerDetail(@Path("id") id: Int): Response<PlayerDetail>
+
+    @GET("MatchDetail/{id}")
+    suspend fun getMatchDetail(@Path("id") id: Int): Response<MatchDetail>
 
     @POST("User")
     suspend fun postUser(
@@ -45,6 +53,11 @@ interface Api {
         @Body userId: JsonObject
     ): List<FavPlayer>
 
+    @POST("favMatch")
+    suspend fun postFavMatch (
+        @Body userId: JsonObject
+    ): List<Match>
+
     @POST("Register")
     suspend fun postRegister (
         @Body newUser: JsonObject
@@ -65,6 +78,24 @@ interface Api {
         @Body favPlayer: JsonObject
     ): Response<Boolean>
 
+    @POST("AddMatch")
+    suspend fun postAddMatch(
+        @Body newMatch: JsonObject
+    ): Response<Boolean>
+
+    @POST("AddFavMatch")
+    suspend fun postAddFavMatch(
+        @Body favMatch: JsonObject
+    ): Response<Boolean>
+
+    @POST("DeleteFavMatch")
+    suspend fun postDeleteFavMatch(
+        @Body favMatch: JsonObject
+    ): Response<Boolean>
+
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
+
+    @DELETE("DeleteMatch/{id}")
+    suspend fun deleteMatch(@Path("id") id: Int): Response<Boolean>
 }
