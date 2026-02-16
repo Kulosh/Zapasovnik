@@ -40,10 +40,19 @@ class MatchDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavMatches)
         var match: Response<MatchDetail> ?= null
         userData = UserData(this)
-        var loggedIn: Boolean ?= false
+        var loggedIn: String ?= "false"
 
         lifecycleScope.launch {
             match = RetrofitClient.api.getMatchDetail(matchId)
+            loggedIn = userData.loggedInFlow.first()
+            Log.d("loggedIn", loggedIn)
+
+            if (loggedIn == "true") {
+                if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+            } else {
+                favBtn.visibility = Button.GONE
+                unfavBtn.visibility = Button.GONE
+            }
 
             team1.text = match.body()?.Team1
             team2.text = match.body()?.Team2
@@ -68,45 +77,38 @@ class MatchDetailActivity : ComponentActivity() {
             }
         }
 
-        if (loggedIn == true) {
-            if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
-        } else {
-            favBtn.visibility = Button.GONE
-            unfavBtn.visibility = Button.GONE
+        favBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val favMatch = buildJsonObject {
+                    put("matchId", match?.body()?.Id)
+                    put("userId", userData.userIdFlow.first().toInt())
+                }
+//                     TODO: PostFav
+                val resp = RetrofitClient.api.postAddFavMatch(favMatch)
+
+                if (resp.isSuccessful && resp.body() == true){
+                    finish()
+                    startActivity(intent)
+                }
+            }
         }
 
-//        favBtn.setOnClickListener {
-//            lifecycleScope.launch {
-//                val favMatch = buildJsonObject {
-//                    put("matchId", match?.body()?.Id)
-//                    put("userId", userData.userIdFlow.first().toInt())
-//                }
-                    // TODO: PostFav
-//                val resp = RetrofitClient.api.post(favMatch)
-//
-//                if (resp.isSuccessful && resp.body() == true){
-//                    finish()
-//                    startActivity(intent)
-//                }
-//            }
-//        }
-
-//        unfavBtn.setOnClickListener {
-//            lifecycleScope.launch {
-//                val favMatch = buildJsonObject {
-//                    put("matchId", match?.body()?.Id)
-//                    put("userId", userData.userIdFlow.first().toInt())
-//                }
+        unfavBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val favMatch = buildJsonObject {
+                    put("matchId", match?.body()?.Id)
+                    put("userId", userData.userIdFlow.first().toInt())
+                }
                     // TODO: PostUnFav
-//                val resp = RetrofitClient.api.post(favMatch)
-////                Log.d("String", favPlayer.toString())
-////                Log.d("Response", resp.toString())
-//
-//                if (resp.isSuccessful && resp.body() == true) {
-//                    finish()
-//                    startActivity(intent)
-//                }
-//            }
-//        }
+                val resp = RetrofitClient.api.postDeleteFavMatch(favMatch)
+//                Log.d("String", favPlayer.toString())
+//                Log.d("Response", resp.toString())
+
+                if (resp.isSuccessful && resp.body() == true) {
+                    finish()
+                    startActivity(intent)
+                }
+            }
+        }
     }
 }

@@ -32,6 +32,7 @@ class ProfileActivity : ComponentActivity() {
         val changPasswordBtn = findViewById<Button>(R.id.profileChangePassword)
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
         val favPlayersBtn = findViewById<Button>(R.id.favPlayersBtn)
+        val favMatchesBtn = findViewById<Button>(R.id.favMatchesBtn)
 
         changPasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
@@ -49,6 +50,11 @@ class ProfileActivity : ComponentActivity() {
 
         favPlayersBtn.setOnClickListener {
             val intent = Intent(this, FavPlayersActivity::class.java)
+            startActivity(intent)
+        }
+
+        favMatchesBtn.setOnClickListener {
+            val intent = Intent(this, FavMatchesActivity::class.java)
             startActivity(intent)
         }
 
