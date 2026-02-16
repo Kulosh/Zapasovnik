@@ -176,13 +176,13 @@ namespace Zapasovnik.API.Controllers
                 List<UserFavMatch> favMatches = UserFavMatches
                     .Where(ufm => ufm.MatchId == id)
                     .ToList();
-                if ( favMatches.Count > 0 )
+                if (favMatches.Count > 0)
                 {
                     UserFavMatches.RemoveAll(ufm => ufm.MatchId == id);
                     DbContext.UserFavMatches.RemoveRange(favMatches);
                     DbContext.SaveChanges();
                 }
-                
+
                 List<TeamMatch> teamMatches = TeamsMatches
                     .Where(tm => tm.MatchId == id)
                     .ToList();
@@ -199,6 +199,21 @@ namespace Zapasovnik.API.Controllers
                 DbContext.Remove(match);
                 DbContext.SaveChanges();
 
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [HttpPost("AddFavMatch")]
+        public bool APIAddFavMatch([FromBody] UserFavMatch newFavMatch)
+        {
+            try
+            {
+                DbContext.UserFavMatches.Add(newFavMatch);
+                DbContext.SaveChanges();
                 return true;
             }
             catch
