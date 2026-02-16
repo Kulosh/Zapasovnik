@@ -40,6 +40,7 @@ class MatchDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavMatches)
         var match: Response<MatchDetail> ?= null
         userData = UserData(this)
+        var loggedIn: Boolean ?= false
 
         lifecycleScope.launch {
             match = RetrofitClient.api.getMatchDetail(matchId)
@@ -67,7 +68,12 @@ class MatchDetailActivity : ComponentActivity() {
             }
         }
 
-        if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+        if (loggedIn == true) {
+            if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+        } else {
+            favBtn.visibility = Button.GONE
+            unfavBtn.visibility = Button.GONE
+        }
 
 //        favBtn.setOnClickListener {
 //            lifecycleScope.launch {
