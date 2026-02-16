@@ -53,6 +53,11 @@ interface Api {
         @Body userId: JsonObject
     ): List<FavPlayer>
 
+    @POST("favMatch")
+    suspend fun postFavMatch (
+        @Body userId: JsonObject
+    ): List<Match>
+
     @POST("Register")
     suspend fun postRegister (
         @Body newUser: JsonObject
@@ -78,7 +83,15 @@ interface Api {
         @Body newMatch: JsonObject
     ): Response<Boolean>
 
+    @POST("AddFavMatch")
+    suspend fun postAddFavMatch(
+        @Body favMatch: JsonObject
+    ): Response<Boolean>
 
+    @POST("DeleteFavMatch")
+    suspend fun postDeleteFavMatch(
+        @Body favMatch: JsonObject
+    ): Response<Boolean>
 
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
