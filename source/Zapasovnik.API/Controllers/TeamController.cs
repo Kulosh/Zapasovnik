@@ -12,11 +12,17 @@ namespace Zapasovnik.API.Controllers
     {
         public TeamsDbContext DbContext { get; set; }
         public List<Team> Teams { get; set; }
+        public List<UserFavTeam> UserFavTeams { get; set; }
+        public List<TeamMatch> TeamMatches { get; set; }
+        public List<TeamPlayer> TeamPlayers { get; set; }
 
         public TeamController()
         {
             DbContext = new();
             Teams = DbContext.Teams.ToList();
+            TeamMatches = DbContext.TeamMatches.ToList();
+            TeamPlayers = DbContext.TeamPlayers.ToList();
+            UserFavTeams = DbContext.UserFavTeams.ToList();
         }
 
         [HttpGet("Teams")]
@@ -59,7 +65,44 @@ namespace Zapasovnik.API.Controllers
             {
                 return false;
             }
+        }
 
+        [HttpDelete("DeleteTeam/{id}")]
+        public bool APIDeleteTeam(int id)
+        {
+            try
+            {
+                List<UserFavTeam> favTeams = UserFavTeams.FindAll(t => t.TeamId == id);
+                List<TeamMatch> teamMatches = TeamMatches.FindAll(t => t.TeamId == id);
+                List<TeamPlayer> teamPlayers = TeamPlayers.FindAll(t => t.TeamId == id);
+                Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
+
+                if (favTeams.Count > 0 || favTeams != null)
+                {
+                    DbContext.UserFavTeams.RemoveRange(favTeams);
+                    DbContext.SaveChanges();
+                }
+
+                if (teamMatches.Count > 0 || teamMatches != null)
+                {
+                    DbContext.TeamMatches.RemoveRange(teamMatches);
+                    DbContext.SaveChanges();
+                }
+
+                if (teamPlayers.Count > 0 || teamPlayers != null)
+                {
+                    DbContext.TeamPlayers.RemoveRange(teamPlayers);
+                    DbContext.SaveChanges();
+                }
+
+                DbContext.Teams.Remove(team);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false; 
+            }
         }
     }
 }
