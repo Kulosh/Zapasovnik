@@ -47,6 +47,12 @@ class HomeActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        val teamsClick = findViewById<Button>(R.id.teamBtn)
+        teamsClick.setOnClickListener {
+            val intent = Intent(this, TeamsActivity::class.java)
+            startActivity(intent)
+        }
+
         lifecycleScope.launch {
             val loginSuccess = userData.loggedInFlow.first()
 //            Log.e("Login success", loginSuccess)

@@ -4,10 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Team (
+data class TeamDetail (
     @SerialName("teamId")
-    var TeamId: Int,
+    var Id: Int,
 
     @SerialName("teamName")
-    var TeamName: String,
+    var Name: String,
+
+    @SerialName("teamEstablished")
+    var Established: String,
 )

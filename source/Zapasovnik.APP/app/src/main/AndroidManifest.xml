@@ -60,6 +60,12 @@
         <activity android:name=".activity.TeamsActivity">
 
         </activity>
+        <activity android:name=".activity.TeamDetailActivity">
+
+        </activity>
+        <activity android:name=".activity.NewTeamActivity">
+
+        </activity>
     </application>
 
 </manifest>

@@ -7,40 +7,17 @@
     android:background="@drawable/background">
 
     <EditText
-        android:id="@+id/newPlayerFName"
+        android:id="@+id/newTeamName"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginBottom="32dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/new_player_fname"
+        android:hint="@string/new_team_name"
         android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/newTeamEst"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/newPlayerLName"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/white"
-        android:ems="10"
-        android:hint="@string/new_player_lname"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="@+id/newPlayerFName"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerFName" />
-
-    <AutoCompleteTextView
-        android:id="@+id/newPlayerTeam"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/white"
-        android:hint="@string/new_player_team"
-        app:layout_constraintEnd_toEndOf="@+id/newPlayerLName"
-        app:layout_constraintStart_toStartOf="@+id/newPlayerLName"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerBorn" />
+        app:layout_constraintStart_toStartOf="@+id/guideline11" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"
@@ -50,23 +27,33 @@
         app:layout_constraintGuide_begin="205dp" />
 
     <Button
-        android:id="@+id/newPlayerAddBtn"
+        android:id="@+id/newTeamAddBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_add_btn"
+        android:text="@string/add_team"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerTeam" />
+        app:layout_constraintTop_toBottomOf="@+id/newTeamEst" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="356dp" />
 
     <CalendarView
-        android:id="@+id/newPlayerBorn"
-        android:layout_width="371dp"
-        android:layout_height="313dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/newTeamEst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPlayerLName" />
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
