@@ -86,20 +86,20 @@ namespace Zapasovnik.API.Controllers
             return Players.ToArray();
         }
 
-        [HttpGet("Teams")]
-        public IEnumerable<Team> APITeams()
-        {
-            return Teams.ToArray();
-        }
+        //[HttpGet("Teams")]
+        //public IEnumerable<Team> APITeams()
+        //{
+        //    return Teams.ToArray();
+        //}
 
-        [HttpPost("Teams")]
-        public IEnumerable<Team> APITeams(string teamName, DateTime teamEstablished)
-        {
-            Team newTeam = new Team { TeamName = teamName, TeamEstablished = teamEstablished };
-            DbContext.Teams.Add(newTeam);
-            DbContext.SaveChanges();
-            Teams = DbContext.Teams.ToList();
-            return Teams.ToArray();
-        }
+        //[HttpPost("Teams")]
+        //public IEnumerable<Team> APITeams(string teamName, DateTime teamEstablished)
+        //{
+        //    Team newTeam = new Team { TeamName = teamName, TeamEstablished = teamEstablished };
+        //    DbContext.Teams.Add(newTeam);
+        //    DbContext.SaveChanges();
+        //    Teams = DbContext.Teams.ToList();
+        //    return Teams.ToArray();
+        //}
     }
 }
