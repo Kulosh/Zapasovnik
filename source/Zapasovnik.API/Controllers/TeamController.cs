@@ -32,5 +32,13 @@ namespace Zapasovnik.API.Controllers
 
             return teams;
         }
+
+        [HttpGet("TeamDetail/{id}")]
+        public Team APITeamDetail(int id)
+        {
+            Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
+
+            return team;
+        }
     }
 }
