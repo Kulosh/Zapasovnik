@@ -15,14 +15,12 @@ namespace Zapasovnik.API.Controllers
         public List<UserFavTeam> UserFavTeams { get; set; }
         public List<TeamMatch> TeamMatches { get; set; }
         public List<TeamPlayer> TeamPlayers { get; set; }
+        public List<Match> Matches { get; set; }
 
         public TeamController()
         {
             DbContext = new();
             Teams = DbContext.Teams.ToList();
-            TeamMatches = DbContext.TeamMatches.ToList();
-            TeamPlayers = DbContext.TeamPlayers.ToList();
-            UserFavTeams = DbContext.UserFavTeams.ToList();
         }
 
         [HttpGet("Teams")]
@@ -70,22 +68,39 @@ namespace Zapasovnik.API.Controllers
         [HttpDelete("DeleteTeam/{id}")]
         public bool APIDeleteTeam(int id)
         {
+            TeamMatches = DbContext.TeamMatches.ToList();
+            TeamPlayers = DbContext.TeamPlayers.ToList();
+            UserFavTeams = DbContext.UserFavTeams.ToList();
+            Matches = DbContext.Matches.ToList();
+
             try
             {
                 List<UserFavTeam> favTeams = UserFavTeams.FindAll(t => t.TeamId == id);
-                List<TeamMatch> teamMatches = TeamMatches.FindAll(t => t.TeamId == id);
+                List<int> matchIds = TeamMatches
+                        .Where(tm => tm.TeamId == id)
+                        .Select(tm => tm.MatchId)
+                        .ToList();
                 List<TeamPlayer> teamPlayers = TeamPlayers.FindAll(t => t.TeamId == id);
                 Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
 
                 if (favTeams.Count > 0 || favTeams != null)
-                {
+                { 
                     DbContext.UserFavTeams.RemoveRange(favTeams);
                     DbContext.SaveChanges();
                 }
 
-                if (teamMatches.Count > 0 || teamMatches != null)
+                if (matchIds.Count > 0 || matchIds != null)
                 {
-                    DbContext.TeamMatches.RemoveRange(teamMatches);
+
+                    foreach (int i in matchIds)
+                    {
+                        List<TeamMatch> tm = TeamMatches
+                            .Where(tm => tm.MatchId == i)
+                            .ToList();
+                        DbContext.TeamMatches.RemoveRange(tm);
+                        Match m = Matches.Where(m => m.MatchId == i).FirstOrDefault();
+                        DbContext.Matches.Remove(m);
+                    }
                     DbContext.SaveChanges();
                 }
 
