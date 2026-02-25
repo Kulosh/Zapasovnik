@@ -42,11 +42,23 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("AddTeam")]
-        public bool APIAddTeam([FromBody] Team team)
+        public bool APIAddTeam([FromBody] AddTeamDto team)
         {
-            Teams.Add(team);
-            DbContext.Teams.Add(team);
-            return true;
+            try
+            {
+                Team newTeam = new Team();
+
+                newTeam.TeamName = team.TeamName;
+                newTeam.TeamEstablished = Convert.ToDateTime(team.TeamEstablished);
+
+                Teams.Add(newTeam);
+                DbContext.Teams.Add(newTeam);
+                return true;
+            } catch
+            {
+                return false;
+            }
+
         }
     }
 }
