@@ -40,5 +40,13 @@ namespace Zapasovnik.API.Controllers
 
             return team;
         }
+
+        [HttpPost("AddTeam")]
+        public bool APIAddTeam([FromBody] Team team)
+        {
+            Teams.Add(team);
+            DbContext.Teams.Add(team);
+            return true;
+        }
     }
 }
