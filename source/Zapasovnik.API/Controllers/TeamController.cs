@@ -53,6 +53,7 @@ namespace Zapasovnik.API.Controllers
 
                 Teams.Add(newTeam);
                 DbContext.Teams.Add(newTeam);
+                DbContext.SaveChanges();
                 return true;
             } catch
             {
