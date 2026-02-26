@@ -57,6 +57,11 @@ interface Api {
         @Body userId: JsonObject
     ): List<Match>
 
+    @POST("favTeams")
+    suspend fun postFavTeams (
+        @Body userId: JsonObject
+    ): List<Team>
+
     @POST("Register")
     suspend fun postRegister (
         @Body newUser: JsonObject
