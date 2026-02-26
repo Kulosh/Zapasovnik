@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
@@ -98,10 +98,11 @@ namespace Zapasovnik.API.Controllers
                             .Where(tm => tm.MatchId == i)
                             .ToList();
                         DbContext.TeamMatches.RemoveRange(tm);
+                        DbContext.SaveChanges();
                         Match m = Matches.Where(m => m.MatchId == i).FirstOrDefault();
                         DbContext.Matches.Remove(m);
+                        DbContext.SaveChanges();
                     }
-                    DbContext.SaveChanges();
                 }
 
                 if (teamPlayers.Count > 0 || teamPlayers != null)
