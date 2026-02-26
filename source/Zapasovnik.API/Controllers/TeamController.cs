@@ -154,6 +154,8 @@ namespace Zapasovnik.API.Controllers
         [HttpPost("FavTeams")]
         public List<TeamsDto> APIFavTeams([FromBody] UserDto userId)
         {
+            UserFavTeams = DbContext.UserFavTeams.ToList();
+
             List<TeamsDto> favTeams = UserFavTeams
                 .Where(t => t.TeamId == userId.UserId)
                 .Join(DbContext.Teams,
