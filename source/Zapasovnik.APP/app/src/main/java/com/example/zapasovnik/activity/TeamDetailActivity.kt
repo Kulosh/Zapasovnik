@@ -46,6 +46,18 @@ class TeamDetailActivity : ComponentActivity() {
             loggedIn = userData.loggedInFlow.first().toBoolean()
             name.text = team.body()?.Name
             est.text = team.body()?.Established
+
+            if (loggedIn)
+            {
+                if (isFav) {
+                    favBtn.visibility = Button.GONE
+                } else {
+                    unfavBtn.visibility = Button.GONE
+                }
+            } else {
+                favBtn.visibility = Button.GONE
+                unfavBtn.visibility = Button.GONE
+            }
         }
 
         delTeamBtn.setOnClickListener {
@@ -63,13 +75,6 @@ class TeamDetailActivity : ComponentActivity() {
                     ).show()
                 }
             }
-        }
-
-        if (loggedIn == true) {
-            if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
-        } else {
-            favBtn.visibility = Button.GONE
-            unfavBtn.visibility = Button.GONE
         }
 
         favBtn.setOnClickListener {
