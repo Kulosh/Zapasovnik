@@ -135,5 +135,20 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        [HttpPost("DeleteFavTeam")]
+        public bool APIDeleteFavTeam([FromBody] UserFavTeam team)
+        {
+            try
+            {
+                DbContext.UserFavTeams.Remove(team);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
     }
 }
