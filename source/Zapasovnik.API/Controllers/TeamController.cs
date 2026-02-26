@@ -120,5 +120,20 @@ namespace Zapasovnik.API.Controllers
                 return false; 
             }
         }
+
+        [HttpPost("AddFavTeam")]
+        public bool APIAddFavTeam([FromBody] UserFavTeam team)
+        {
+            try
+            {
+                DbContext.UserFavTeams.Add(team);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
     }
 }
