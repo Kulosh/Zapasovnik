@@ -163,6 +163,7 @@ namespace Zapasovnik.API.Controllers
                 .Select(t => new TeamsDto
                 {
                     TeamName = t.TeamName,
+                    TeamId = t.TeamId
                 })
                 .ToList();
 
