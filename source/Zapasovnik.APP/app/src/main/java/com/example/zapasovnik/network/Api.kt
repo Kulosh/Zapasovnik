@@ -6,6 +6,7 @@ import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.model.MatchDetail
 import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.Team
+import com.example.zapasovnik.model.TeamDetail
 import kotlinx.serialization.json.JsonObject
 import retrofit2.Response
 import retrofit2.http.Body
@@ -33,15 +34,13 @@ interface Api {
     @GET("MatchDetail/{id}")
     suspend fun getMatchDetail(@Path("id") id: Int): Response<MatchDetail>
 
+    @GET("TeamDetail/{id}")
+    suspend fun getTeamDetail(@Path("id") id: Int): Response<TeamDetail>
+
     @POST("User")
     suspend fun postUser(
         @Body user: JsonObject
     ): Response<JsonObject>
-
-//    @POST("Login")
-//    suspend fun postLogin(
-//        @Body loginString: JsonObject
-//    ): Response<Boolean>
 
     @POST("chgpwd")
     suspend fun postChangePassword(
@@ -57,6 +56,11 @@ interface Api {
     suspend fun postFavMatch (
         @Body userId: JsonObject
     ): List<Match>
+
+    @POST("favTeams")
+    suspend fun postFavTeams (
+        @Body userId: JsonObject
+    ): List<Team>
 
     @POST("Register")
     suspend fun postRegister (
@@ -93,9 +97,27 @@ interface Api {
         @Body favMatch: JsonObject
     ): Response<Boolean>
 
+    @POST("AddTeam")
+    suspend fun postAddTeam(
+        @Body newTeam: JsonObject
+    ): Response<Boolean>
+
+    @POST("AddFavTeam")
+    suspend fun postAddFavTeam(
+        @Body favTeam: JsonObject
+    ): Response<Boolean>
+
+    @POST("DeleteFavTeam")
+    suspend fun postDeleteFavTeam(
+        @Body favTeam: JsonObject
+    ): Response<Boolean>
+
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
 
     @DELETE("DeleteMatch/{id}")
     suspend fun deleteMatch(@Path("id") id: Int): Response<Boolean>
+
+    @DELETE("DeleteTeam/{id}")
+    suspend fun deleteTeam(@Path("id") id: Int): Response<Boolean>
 }

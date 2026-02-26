@@ -47,5 +47,12 @@
     <string name="match_detail_t2">Tým2</string>
     <string name="match_detail_date">Datum</string>
     <string name="match_detail_league">Liga</string>
-    <string name="del_match">Smaza zápas</string>
+    <string name="del_match">Smazat zápas</string>
+    <string name="add_team">Přidat tým</string>
+    <string name="delete_team">Smazat tým</string>
+    <string name="team_name">Jméno týmu</string>
+    <string name="team_est">Založení týmu</string>
+    <string name="new_team_name">Zadejte jméno týmu</string>
+    <string name="new_team_est">Tým založen</string>
+    <string name="new_team_success">Tým úspěšně přidán</string>
 </resources>

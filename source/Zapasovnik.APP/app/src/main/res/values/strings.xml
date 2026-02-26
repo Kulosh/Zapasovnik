@@ -47,4 +47,11 @@
     <string name="match_detail_date">Date</string>
     <string name="match_detail_league">League</string>
     <string name="del_match">Delete match</string>
+    <string name="add_team">Add team</string>
+    <string name="delete_team">Delete Team</string>
+    <string name="team_name">Team name</string>
+    <string name="team_est">Team established</string>
+    <string name="new_team_name">Enter team name</string>
+    <string name="new_team_est">Team established</string>
+    <string name="new_team_success">Team added succesfully</string>
 </resources>

@@ -14,34 +14,14 @@ namespace Zapasovnik.API.Controllers
     public class ZapasovnikController : ControllerBase
     {
         public List<League> Leagues { get; set; }
-        public List<Match> Matches { get; set; }
-        public List<Team> Teams { get; set; }
-        public List<TeamMatch> TeamsMatches { get; set; }
-        public List<Player> Players { get; set; }
-        public List<TeamPlayer> TeamsPlayers { get; set; }
-        public List<TeamPlayerArchive> TeamsPlayersArchive { get; set; }
-        public List<User> Users { get; set; }
-        public List<UserFavPlayer> UsersFavPlayers { get; set; }
-        public List<UserFavMatch> UsersFavMatches { get; set; }
-        public List<UserFavTeam> UsersFavTeams { get; set; }
-
 
         public dbZapasovnikContext DbContext { get; set; }
+
 
         public ZapasovnikController()
         {
             DbContext = new();
             Leagues = DbContext.Leagues.ToList();
-            Matches = DbContext.Matches.ToList();
-            Teams = DbContext.Teams.ToList();
-            TeamsMatches = DbContext.TeamsMatches.ToList();
-            Players = DbContext.Players.ToList();
-            TeamsPlayers = DbContext.TeamsPlayers.ToList();
-            TeamsPlayersArchive = DbContext.TeamsPlayersArchive.ToList();
-            Users = DbContext.Users.ToList();
-            UsersFavPlayers = DbContext.UsersFavPlayers.ToList();
-            UsersFavMatches = DbContext.UsersFavMatches.ToList();
-            UsersFavTeams = DbContext.UsersFavTeams.ToList();
         }
 
         [HttpGet("Leagues")]
@@ -58,48 +38,6 @@ namespace Zapasovnik.API.Controllers
             DbContext.SaveChanges();
             Leagues = DbContext.Leagues.ToList();
             return Leagues.ToArray();
-        }
-
-        [HttpGet("Matches")]
-        public IEnumerable<Match> APIMatches()
-        {
-            return Matches.ToArray();
-        }
-
-        [HttpPost("Matches")]
-        public IEnumerable<Match> APIMatches(int leagueId, DateTime matchDate)
-        {
-            Match newMatch = new Match { MatchDate = matchDate, LeagueId = leagueId };
-            DbContext.Matches.Add(newMatch);
-            DbContext.SaveChanges();
-            Matches = DbContext.Matches.ToList();
-            return Matches.ToArray();
-        }
-
-        [HttpPost("Players")]
-        public IEnumerable<Player> APIPlayers(string firstName, string lastName, DateTime playerBorn)
-        {
-            Player newPlayer = new Player { FirstName = firstName, LastName = lastName, PlayerBorn = playerBorn };
-            DbContext.Players.Add(newPlayer);
-            DbContext.SaveChanges();
-            Players = DbContext.Players.ToList();
-            return Players.ToArray();
-        }
-
-        [HttpGet("Teams")]
-        public IEnumerable<Team> APITeams()
-        {
-            return Teams.ToArray();
-        }
-
-        [HttpPost("Teams")]
-        public IEnumerable<Team> APITeams(string teamName, DateTime teamEstablished)
-        {
-            Team newTeam = new Team { TeamName = teamName, TeamEstablished = teamEstablished };
-            DbContext.Teams.Add(newTeam);
-            DbContext.SaveChanges();
-            Teams = DbContext.Teams.ToList();
-            return Teams.ToArray();
         }
     }
 }
