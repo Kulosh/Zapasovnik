@@ -150,5 +150,23 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        [HttpPost("FavTeams")]
+        public List<TeamsDto> APIFavTeams([FromBody] UserDto userId)
+        {
+            List<TeamsDto> favTeams = UserFavTeams
+                .Where(t => t.TeamId == userId.UserId)
+                .Join(DbContext.Teams,
+                    fav => fav.TeamId,
+                    t => t.TeamId,
+                    (fav,t) => t)
+                .Select(t => new TeamsDto
+                {
+                    TeamName = t.TeamName,
+                })
+                .ToList();
+
+            return favTeams;
+        }
     }
 }
