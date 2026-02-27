@@ -10,13 +10,13 @@ using Zapasovnik.API.Entities;
 namespace Zapasovnik.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ZapasovnikController : ControllerBase
+    [Route("zapasovnik")]
+    public class LeagueController : ControllerBase
     {
-        public dbZapasovnikContext DbContext { get; set; }
+        public LeaguesDbContext DbContext { get; set; }
 
 
-        public ZapasovnikController()
+        public LeagueController()
         {
             DbContext = new();
         }
@@ -59,6 +59,20 @@ namespace Zapasovnik.API.Controllers
             try
             {
                 League league = DbContext.Leagues.Where(l => l.LeagueId == id).First();
+                List<Match> matches = DbContext.Matches.Where(m => m.LeagueId == id).ToList();
+                if (matches.Count > 0)
+                {
+                    foreach (Match match in matches)
+                    {
+                        List<TeamMatch> teamMatches = DbContext.TeamMatches.Where(tm => tm.MatchId == match.MatchId).ToList();
+                        DbContext.TeamMatches.RemoveRange(teamMatches);
+                        DbContext.SaveChanges();
+                    }
+
+                    DbContext.Matches.RemoveRange(matches);
+                    DbContext.SaveChanges();
+                }
+
                 DbContext.Leagues.Remove(league);
                 DbContext.SaveChanges();
 

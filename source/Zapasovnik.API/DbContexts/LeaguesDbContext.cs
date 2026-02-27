@@ -6,6 +6,8 @@ namespace Zapasovnik.API.DbContexts
     public class LeaguesDbContext : DbContext
     {
         public DbSet<League> Leagues{ get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<TeamMatch> TeamMatches { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connection;
