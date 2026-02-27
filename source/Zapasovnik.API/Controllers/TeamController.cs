@@ -40,8 +40,7 @@ namespace Zapasovnik.API.Controllers
         [HttpPost("TeamDetail")]
         public TeamDetail APITeamDetail([FromBody] FavDto user)
         {
-            
-            //Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
+            UserFavTeams = DbContext.UserFavTeams.ToList();
             
             TeamDetail team = Teams
                 .Where(t => t.TeamId == user.EntityId)
