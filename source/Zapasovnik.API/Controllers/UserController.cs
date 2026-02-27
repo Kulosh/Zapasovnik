@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
+using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Controllers
 {
@@ -23,6 +24,13 @@ namespace Zapasovnik.API.Controllers
         public UserDto APIUser([FromBody] User incomeUser)
         {
             UserDto user = new();
+
+            incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
+
+            if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).First() != incomeUser.UserPassword)
+            {
+                return new UserDto { Success = false, Email = "", UserId = -1, Username = "" };
+            }
 
             user.Username = incomeUser.UserName;
 

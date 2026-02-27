@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
+using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Controllers
 {
@@ -28,6 +29,8 @@ namespace Zapasovnik.API.Controllers
                 Username = incomeUser.UserName,
                 Email = incomeUser.UserEmail,
             };
+
+            incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
             DbContext.Users.Add(incomeUser);
             DbContext.SaveChanges();
