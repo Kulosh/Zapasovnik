@@ -37,10 +37,24 @@ namespace Zapasovnik.API.Controllers
             return teams;
         }
 
-        [HttpGet("TeamDetail/{id}")]
-        public Team APITeamDetail(int id)
+        [HttpPost("TeamDetail")]
+        public TeamDetail APITeamDetail([FromBody] FavDto user)
         {
-            Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
+            
+            //Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
+            
+            TeamDetail team = Teams
+                .Where(t => t.TeamId == user.EntityId)
+                .Select(t => new TeamDetail
+                {
+                    TeamId = t.TeamId,
+                    TeamName = t.TeamName,
+                    TeamEstablished = t.TeamEstablished,
+                    isFavorite = false
+                })
+                .First();
+
+            team.isFavorite = UserFavTeams.Where(uft => uft.TeamId == user.EntityId && uft.UserId == user.UserId).FirstOrDefault() != null ? true : false ;
 
             return team;
         }
