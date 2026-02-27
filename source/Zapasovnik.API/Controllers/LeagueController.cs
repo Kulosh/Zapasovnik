@@ -37,13 +37,11 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost("AddLeague")]
-        public bool APIAddLeague(string leagueName)
+        public bool APIAddLeague([FromBody] AddLeagueDto league)
         {
-            List<League> Leagues = DbContext.Leagues.ToList();
-
             try
             {
-                League newLeague = new League { LeagueName = leagueName };
+                League newLeague = new League { LeagueName = league.LeagueName};
                 DbContext.Leagues.Add(newLeague);
                 DbContext.SaveChanges();
                 return true;
