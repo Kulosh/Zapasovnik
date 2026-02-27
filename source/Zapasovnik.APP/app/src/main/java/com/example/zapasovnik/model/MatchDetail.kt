@@ -18,5 +18,8 @@ data class MatchDetail (
     var Date: String,
 
     @SerialName("league")
-    var League: String
+    var League: String,
+
+    @SerialName("isFavorite")
+    var IsFavorite: Boolean
 )

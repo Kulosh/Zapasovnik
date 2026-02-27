@@ -33,8 +33,10 @@ interface Api {
         @Body user: JsonObject
     ): Response<PlayerDetail>
 
-    @GET("MatchDetail/{id}")
-    suspend fun getMatchDetail(@Path("id") id: Int): Response<MatchDetail>
+    @POST("MatchDetail")
+    suspend fun postMatchDetail(
+        @Body user: JsonObject
+    ): Response<MatchDetail>
 
     @POST("TeamDetail")
     suspend fun postTeamDetail(
