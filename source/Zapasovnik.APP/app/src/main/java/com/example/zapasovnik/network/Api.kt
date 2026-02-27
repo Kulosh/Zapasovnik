@@ -28,8 +28,10 @@ interface Api {
     @GET("Leagues")
     suspend fun getLeagues(): List<League>
 
-    @GET("PlayerDetail/{id}")
-    suspend fun getPlayerDetail(@Path("id") id: Int): Response<PlayerDetail>
+    @POST("PlayerDetail")
+    suspend fun postPlayerDetail(
+        @Body user: JsonObject
+    ): Response<PlayerDetail>
 
     @GET("MatchDetail/{id}")
     suspend fun getMatchDetail(@Path("id") id: Int): Response<MatchDetail>

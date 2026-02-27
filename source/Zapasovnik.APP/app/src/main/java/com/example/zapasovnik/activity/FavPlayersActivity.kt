@@ -40,7 +40,6 @@ class FavPlayersActivity : ComponentActivity() {
             recyclerView.adapter = PlayersTableAdapter(favPlayers) { player ->
                 val intent = Intent(this@FavPlayersActivity, PlayerDetailActivity::class.java)
                 intent.putExtra("id", player.Id)
-                intent.putExtra("isFav", true)
                 startActivity(intent)
             }
         }

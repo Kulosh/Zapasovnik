@@ -28,7 +28,6 @@ class PlayerDetailActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.player_detail_layout)
 
-        val isFav = intent.getBooleanExtra("isFav", false)
         val playerId = intent.getIntExtra("id", -1)
         val fname = findViewById<TextView>(R.id.playerDetaliFname)
         val lname = findViewById<TextView>(R.id.playerDetailLname)
@@ -39,15 +38,19 @@ class PlayerDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavPlayers)
         var player: Response<PlayerDetail> ?= null
         userData = UserData(this)
-        var loggedIn: Boolean ?= false
 
         lifecycleScope.launch {
-            player = RetrofitClient.api.getPlayerDetail(playerId)
+            val user = buildJsonObject {
+                put("userId", userData.userIdFlow.first().toInt())
+                put("entityId", playerId)
+            }
+            player = RetrofitClient.api.postPlayerDetail(user)
 
-            loggedIn = userData.loggedInFlow.first().toBoolean()
+            val isFav = player.body()?.IsFavorite
+            val loggedIn = userData.loggedInFlow.first().toBoolean()
 
             if (loggedIn) {
-                if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+                if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
             } else {
                 favBtn.visibility = Button.GONE
                 unfavBtn.visibility = Button.GONE
