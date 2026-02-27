@@ -81,10 +81,10 @@ namespace Zapasovnik.API.Controllers
             return rows;
         }
 
-        [HttpGet("PlayerDetail/{id}")]
-        public PlayerDetailDto APIPlayerDetail(int id)
+        [HttpPost("PlayerDetail")]
+        public PlayerDetailDto APIPlayerDetail([FromBody] FavDto user)
         {
-            var player = Players.FirstOrDefault(p => p.PlayerId == id);
+            var player = Players.FirstOrDefault(p => p.PlayerId == user.EntityId);
             if (player == null)
             {
                 return null!;
@@ -103,7 +103,8 @@ namespace Zapasovnik.API.Controllers
                 Fname = player.FirstName,
                 Lname = player.LastName,
                 Birth = Convert.ToString(player.PlayerBorn),
-                Team = team
+                Team = team,
+                IsFavorite = UsersFavPlayers.Where(ufp => ufp.PlayerId == user.EntityId && ufp.UserId == user.UserId).FirstOrDefault() != null ? true : false
             };
         }
 
