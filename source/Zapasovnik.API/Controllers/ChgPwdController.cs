@@ -33,7 +33,7 @@ namespace Zapasovnik.API.Controllers
             if (user.UserPassword != chg.Old) return false;
             else
             {
-                PasswordHelper.HashPassword(chg.New);
+                chg.Old = PasswordHelper.HashPassword(chg.New);
                 user.UserPassword = chg.New;
 
                 DbContext.Users.Update(user);
