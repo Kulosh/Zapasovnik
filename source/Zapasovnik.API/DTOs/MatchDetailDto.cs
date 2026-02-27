@@ -8,5 +8,6 @@ namespace Zapasovnik.API.DTOs
         public string Team2 { get; set; }
         public string League { get; set; }
         public string Date { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }

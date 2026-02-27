@@ -64,45 +64,81 @@ namespace Zapasovnik.API.Controllers
             return rows;
         }
 
-        [HttpGet("MatchDetail/{id}")]
-        public MatchDetailDto APIMatchDetail(int id)
+        [HttpPost("MatchDetail")]
+        public MatchDetailDto APIMatchDetail([FromBody] FavDto user)
         {
             try
             {
-                MatchDetailDto match = Matches
-                .Select(m => new MatchDetailDto
+                //MatchDetailDto match = Matches
+                //.Select(m => new MatchDetailDto
+                //{
+                //    Date = m.MatchDate.ToString()!,
+
+                //    MatchId = m.MatchId,
+
+                //    Team1 = TeamsMatches
+                //        .Where(tm => tm.MatchId == m.MatchId)
+                //        .Join(Teams,
+                //                tm => tm.TeamId,
+                //                t => t.TeamId,
+                //                (tm, t) => t.TeamName)
+                //        .OrderBy(name => name)
+                //        .First(),
+
+                //    Team2 = TeamsMatches
+                //        .Where(tm => tm.MatchId == m.MatchId)
+                //        .Join(Teams,
+                //                tm => tm.TeamId,
+                //                t => t.TeamId,
+                //                (tm, t) => t.TeamName)
+                //        .OrderBy(name => name)
+                //        .Skip(1)
+                //        .First(),
+                //    League = Matches
+                //        .Where(ml => ml.LeagueId == 1)
+                //        .Join(Leagues,
+                //            ml => ml.LeagueId,
+                //            l => l.LeagueId,
+                //            (ml, l) => l.LeagueName)
+                //        .First()
+                //})
+                //.First();
+
+                //return match;
+
+                MatchDetailDto match = new MatchDetailDto()
                 {
-                    Date = m.MatchDate.ToString()!,
-
-                    MatchId = m.MatchId,
-
+                    MatchId = user.EntityId,
                     Team1 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
+                        .Where(tm => tm.MatchId == user.EntityId)
                         .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
+                            tm => tm.TeamId,
+                            t => t.TeamId,
+                            (tm, t) => t.TeamName)
+                        .OrderBy(team => team)
                         .First(),
-
                     Team2 = TeamsMatches
-                        .Where(tm => tm.MatchId == m.MatchId)
+                        .Where(tm => tm.MatchId == user.EntityId)
                         .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
+                            tm => tm.TeamId,
+                            t => t.TeamId,
+                            (tm, t) => t.TeamName)
+                        .OrderBy(team => team)
                         .Skip(1)
                         .First(),
                     League = Matches
-                        .Where(ml => ml.LeagueId == 1)
+                        .Where(m => m.MatchId == user.EntityId)
                         .Join(Leagues,
-                            ml => ml.LeagueId,
+                            m => m.LeagueId,
                             l => l.LeagueId,
-                            (ml, l) => l.LeagueName)
-                        .First()
-                })
-                .First();
+                            (m, l) => l.LeagueName)
+                        .First(),
+                    Date = Matches
+                        .Where(m => m.MatchId == user.EntityId)
+                        .Select(m => Convert.ToString(m.MatchDate)!)
+                        .First(),
+                    IsFavorite = UserFavMatches.Where(ufm => ufm.MatchId == user.EntityId && ufm.UserId == user.UserId).FirstOrDefault() != null ? true : false
+                };
 
                 return match;
             }
