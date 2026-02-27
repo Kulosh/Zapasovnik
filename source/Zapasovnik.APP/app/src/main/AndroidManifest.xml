@@ -69,6 +69,15 @@
         <activity android:name=".activity.FavTeamsActivity">
 
         </activity>
+        <activity android:name=".activity.LeagueDetailActivity">
+
+        </activity>
+        <activity android:name=".activity.LeaguesActivity">
+
+        </activity>
+        <activity android:name=".activity.NewLeagueActivity">
+
+        </activity>
     </application>
 
 </manifest>

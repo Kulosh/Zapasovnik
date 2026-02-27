@@ -55,4 +55,10 @@
     <string name="new_team_name">Zadejte jméno týmu</string>
     <string name="new_team_est">Tým založen</string>
     <string name="new_team_success">Tým úspěšně přidán</string>
+    <string name="leagues_btn">Ligy</string>
+    <string name="del_league">Smazat ligu</string>
+    <string name="league_name">Jméno ligy</string>
+    <string name="add_league">Přidat ligu</string>
+    <string name="new_league_name">Zadejte jméno ligy</string>
+    <string name="new_league_success">Liga úspěšně přidána</string>
 </resources>

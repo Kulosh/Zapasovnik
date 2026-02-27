@@ -123,4 +123,14 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
+    <Button
+        android:id="@+id/profileLeaguesBtn"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/leagues_btn"
+        app:layout_constraintBottom_toTopOf="@+id/favPlayersBtn"
+        app:layout_constraintEnd_toEndOf="@+id/favPlayersBtn"
+        app:layout_constraintStart_toStartOf="@+id/favPlayersBtn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

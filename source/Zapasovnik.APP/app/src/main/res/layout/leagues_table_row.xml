@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/leagueRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/LeagueName"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/home_match_table_border"
+        android:gravity="center_vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textAlignment="gravity"
+        android:textColor="@color/white" />
+
+</LinearLayout>
