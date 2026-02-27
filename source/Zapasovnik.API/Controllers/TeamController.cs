@@ -170,7 +170,7 @@ namespace Zapasovnik.API.Controllers
             UserFavTeams = DbContext.UserFavTeams.ToList();
 
             List<TeamsDto> favTeams = UserFavTeams
-                .Where(t => t.TeamId == userId.UserId)
+                .Where(uft => uft.UserId == userId.UserId)
                 .Join(DbContext.Teams,
                     fav => fav.TeamId,
                     t => t.TeamId,
