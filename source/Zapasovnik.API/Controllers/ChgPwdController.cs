@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
+using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Controllers
 {
@@ -27,9 +28,12 @@ namespace Zapasovnik.API.Controllers
                 .Where(u => Convert.ToString(u.UserId) == chg.UserId)
                 .First();
 
+            chg.Old = PasswordHelper.HashPassword(chg.Old);
+
             if (user.UserPassword != chg.Old) return false;
             else
             {
+                chg.New = PasswordHelper.HashPassword(chg.New);
                 user.UserPassword = chg.New;
 
                 DbContext.Users.Update(user);

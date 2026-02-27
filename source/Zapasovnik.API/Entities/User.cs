@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
+using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Entities
 {
@@ -19,5 +20,6 @@ namespace Zapasovnik.API.Entities
 
         [Column("user_password")]
         public string UserPassword { get; set; }
+
     }
 }
