@@ -13,4 +13,6 @@ data class TeamDetail (
 
     @SerialName("teamEstablished")
     var Established: String,
+    @SerialName("isFavorite")
+    var IsFavorite: Boolean
 )
