@@ -54,4 +54,10 @@
     <string name="new_team_name">Enter team name</string>
     <string name="new_team_est">Team established</string>
     <string name="new_team_success">Team added succesfully</string>
+    <string name="leagues_btn">Leagues</string>
+    <string name="del_league">Delete league</string>
+    <string name="league_name">League name</string>
+    <string name="add_league">Add league</string>
+    <string name="new_league_name">Enter league name</string>
+    <string name="new_league_success">League added succesfully</string>
 </resources>

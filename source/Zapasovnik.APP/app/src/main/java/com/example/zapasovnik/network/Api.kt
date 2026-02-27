@@ -28,6 +28,9 @@ interface Api {
     @GET("Leagues")
     suspend fun getLeagues(): List<League>
 
+    @GET("LeagueDetail/{id}")
+    suspend fun getLeagueDetail(@Path("id") id: Int): Response<League>
+
     @POST("PlayerDetail")
     suspend fun postPlayerDetail(
         @Body user: JsonObject
@@ -118,6 +121,11 @@ interface Api {
         @Body favTeam: JsonObject
     ): Response<Boolean>
 
+    @POST("AddLeague")
+    suspend fun postAddLeague(
+        @Body newLeague: JsonObject
+    ): Response<Boolean>
+
     @DELETE("DeletePlayer/{id}")
     suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
 
@@ -126,4 +134,7 @@ interface Api {
 
     @DELETE("DeleteTeam/{id}")
     suspend fun deleteTeam(@Path("id") id: Int): Response<Boolean>
+
+    @DELETE("DeleteLeague/{id}")
+    suspend fun deleteLeague(@Path("id") id: Int): Response<Boolean>
 }
