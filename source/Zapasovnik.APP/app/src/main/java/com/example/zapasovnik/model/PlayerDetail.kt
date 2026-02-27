@@ -18,5 +18,8 @@ data class PlayerDetail (
     var Team: String? = "No team",
 
     @SerialName("birth")
-    var Birth: String
+    var Birth: String,
+
+    @SerialName("isFavorite")
+    var IsFavorite: Boolean
 )

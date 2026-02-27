@@ -42,7 +42,6 @@ class FavMatchesActivity : ComponentActivity() {
             recyclerView.adapter = HomeMatchTableAdapter(favMatches) { match ->
                 val intent = Intent(this@FavMatchesActivity, MatchDetailActivity::class.java)
                 intent.putExtra("id", match.Id)
-                intent.putExtra("isFav", true)
                 startActivity(intent)
             }
         }
