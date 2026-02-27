@@ -21,19 +21,5 @@ namespace Zapasovnik.API.Entities
         [Column("user_password")]
         public string UserPassword { get; set; }
 
-<<<<<<< HEAD
-        //public string Password { get; set; }
-
-        public void HashMyPassword()
-        {
-            UserPassword = PasswordHelper.HashPassword(UserPassword);
-=======
-        public string Password { get; set; }
-
-        public void HashMyPassword()
-        {
-            Password = PasswordHelper.HashPassword(Password);
->>>>>>> origin/havryHash
-        }
     }
 }
