@@ -46,6 +46,13 @@ class PlayerDetailActivity : ComponentActivity() {
 
             loggedIn = userData.loggedInFlow.first().toBoolean()
 
+            if (loggedIn) {
+                if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+            } else {
+                favBtn.visibility = Button.GONE
+                unfavBtn.visibility = Button.GONE
+            }
+
             fname.text = player.body()?.FName
             lname.text = player.body()?.LName
             birth.text = player.body()?.Birth
@@ -67,13 +74,6 @@ class PlayerDetailActivity : ComponentActivity() {
                     ).show()
                 }
             }
-        }
-
-        if (loggedIn == true) {
-            if (isFav) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
-        } else {
-            favBtn.visibility = Button.GONE
-            unfavBtn.visibility = Button.GONE
         }
 
         favBtn.setOnClickListener {
