@@ -34,6 +34,7 @@ class LeagueDetailActivity : ComponentActivity() {
         val name = findViewById<TextView>(R.id.leagueDetailName)
         val delTeamBtn = findViewById<Button>(R.id.deleteLeagueBtn)
         userData = UserData(this)
+        val edit = findViewById<Button>(R.id.editLeagueBtn)
 
         lifecycleScope.launch {
             val league = RetrofitClient.api.getLeagueDetail(leagueId)
@@ -69,6 +70,12 @@ class LeagueDetailActivity : ComponentActivity() {
                     ).show()
                 }
             }
+        }
+
+        edit.setOnClickListener {
+            val intent = Intent(this, EditLeagueActivity::class.java)
+            intent.putExtra("leagueId", leagueId)
+            startActivity(intent)
         }
     }
 }

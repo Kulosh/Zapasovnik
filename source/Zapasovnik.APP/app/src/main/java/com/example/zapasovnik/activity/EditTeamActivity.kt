@@ -23,6 +23,7 @@ import kotlinx.serialization.json.put
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class EditTeamActivity : ComponentActivity() {
 
@@ -48,8 +49,8 @@ class EditTeamActivity : ComponentActivity() {
             val team = RetrofitClient.api.postTeamDetail(user)
 
             fname.setText(team.body()?.Name)
-            val oldDate = team.body()?.Established
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val oldDate = team.body()?.Established?.replace(Regex("[\\p{Z}\\s]+"), " ")
+            val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
             val ldt = LocalDateTime.parse(oldDate, formatter)
             val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
             date.date = millis

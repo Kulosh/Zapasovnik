@@ -129,4 +129,14 @@
         app:layout_constraintStart_toStartOf="@+id/addToFavPlayers"
         app:layout_constraintTop_toBottomOf="@+id/addToFavPlayers" />
 
+    <Button
+        android:id="@+id/editPlayerBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/edit_player"
+        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
+        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
+        app:layout_constraintTop_toBottomOf="@+id/delFromFavPlayers" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

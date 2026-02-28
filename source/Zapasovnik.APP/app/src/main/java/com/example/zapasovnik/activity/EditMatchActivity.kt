@@ -25,6 +25,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
+import java.util.Locale
 import kotlin.collections.addAll
 import kotlin.text.clear
 import kotlin.toString
@@ -63,8 +64,8 @@ class EditMatchActivity : ComponentActivity() {
             team2.setText(match.body()?.Team2)
             league.setText(match.body()?.League)
 
-            val oldDate = match.body()?.Date
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val oldDate = match.body()?.Date?.replace(Regex("[\\p{Z}\\s]+"), " ")
+            val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
             val ldt = LocalDateTime.parse(oldDate, formatter)
             val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
             dateSel.date = millis

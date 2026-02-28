@@ -23,6 +23,7 @@ import kotlinx.serialization.json.put
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class EditPlayerActivity : ComponentActivity() {
 
@@ -55,8 +56,8 @@ class EditPlayerActivity : ComponentActivity() {
             lname.text = player.body()?.LName
             teamSel.setText(player.body()?.Team)
 
-            val oldDate = player.body()?.Birth
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+            val oldDate = player.body()?.Birth?.replace(Regex("[\\p{Z}\\s]+"), " ")
+            val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
             val ldt = LocalDateTime.parse(oldDate, formatter)
             val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
             date.date = millis
