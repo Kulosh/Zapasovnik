@@ -55,4 +55,14 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="357dp" />
 
+    <Button
+        android:id="@+id/editLeagueBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/edit_league"
+        app:layout_constraintEnd_toEndOf="@+id/deleteLeagueBtn"
+        app:layout_constraintStart_toStartOf="@+id/deleteLeagueBtn"
+        app:layout_constraintTop_toBottomOf="@+id/deleteLeagueBtn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

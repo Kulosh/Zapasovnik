@@ -61,4 +61,8 @@
     <string name="add_league">Přidat ligu</string>
     <string name="new_league_name">Zadejte jméno ligy</string>
     <string name="new_league_success">Liga úspěšně přidána</string>
+    <string name="edit_league">Upravit ligu</string>
+    <string name="edit_player">Upravit hráče</string>
+    <string name="edit_team">Upravit tým</string>
+    <string name="edit_match">Upravit zápas</string>
 </resources>

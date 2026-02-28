@@ -38,6 +38,7 @@ class PlayerDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavPlayers)
         var player: Response<PlayerDetail> ?= null
         userData = UserData(this)
+        val edit = findViewById<Button>(R.id.editPlayerBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
@@ -109,6 +110,12 @@ class PlayerDetailActivity : ComponentActivity() {
                     startActivity(intent)
                 }
             }
+        }
+
+        edit.setOnClickListener {
+            val intent = Intent(this, EditPlayerActivity::class.java)
+            intent.putExtra("playerId", playerId)
+            startActivity(intent)
         }
     }
 }

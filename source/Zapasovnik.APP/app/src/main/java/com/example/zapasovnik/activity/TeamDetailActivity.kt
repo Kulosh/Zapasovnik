@@ -38,6 +38,7 @@ class TeamDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavTeams)
         var team: Response<TeamDetail> ?= null
         userData = UserData(this)
+        val edit = findViewById<Button>(R.id.editTeamBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
@@ -109,6 +110,12 @@ class TeamDetailActivity : ComponentActivity() {
                     startActivity(intent)
                 }
             }
+        }
+
+        edit.setOnClickListener {
+            val intent = Intent(this, EditTeamActivity::class.java)
+            intent.putExtra("teamId", teamId)
+            startActivity(intent)
         }
     }
 }

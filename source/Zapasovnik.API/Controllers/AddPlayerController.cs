@@ -6,7 +6,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
-    [Route("Zapasovnik/[controller]")]
+    [Route("Zapasovnik")]
     [ApiController]
     public class AddPlayerController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace Zapasovnik.API.Controllers
             TeamPlayers = DbContext.TeamPlayers.ToList();
         }
 
-        [HttpPost]
+        [HttpPost("AddPlayer")]
         public bool AddPlayer([FromBody] AddPlayerDto newPlayer)
         {
             try
@@ -48,6 +48,42 @@ namespace Zapasovnik.API.Controllers
                 Team team = Teams.Where(t => t.TeamName == newPlayer.Team).First();
 
                 TeamPlayer teamPlayer = new() { PlayerId = pId.PlayerId, TeamId = team.TeamId, };
+                DbContext.TeamPlayers.Add(teamPlayer);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        [HttpPatch("EditPlayer/{id}")]
+        public bool APIEditPlayer(int id, [FromBody] AddPlayerDto newPlayer)
+        {
+            try
+            {
+                Player player = Players.Where(p => p.PlayerId == id).First();
+
+                TeamPlayer oldTP = TeamPlayers.Where(tp => tp.PlayerId == id).First();
+                DbContext.TeamPlayers.Remove(oldTP);
+                DbContext.SaveChanges();
+
+                player.FirstName = newPlayer.FName;
+                player.LastName = newPlayer.LName;
+                player.PlayerBorn = Convert.ToDateTime(newPlayer.Birth);
+
+                DbContext.Players.Update(player);
+                DbContext.SaveChanges();
+                Players = DbContext.Players.ToList();
+
+                if (newPlayer.Team == "") return true;
+
+                Team team = Teams.Where(t => t.TeamName == newPlayer.Team).First();
+
+                TeamPlayer teamPlayer = new() { PlayerId = id, TeamId = team.TeamId, };
                 DbContext.TeamPlayers.Add(teamPlayer);
                 DbContext.SaveChanges();
 

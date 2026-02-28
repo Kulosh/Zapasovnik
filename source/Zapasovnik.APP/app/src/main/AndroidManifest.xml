@@ -78,6 +78,18 @@
         <activity android:name=".activity.NewLeagueActivity">
 
         </activity>
+        <activity android:name=".activity.EditMatchActivity">
+
+        </activity>
+        <activity android:name=".activity.EditPlayerActivity">
+
+        </activity>
+        <activity android:name=".activity.EditTeamActivity">
+
+        </activity>
+        <activity android:name=".activity.EditLeagueActivity">
+
+        </activity>
     </application>
 
 </manifest>

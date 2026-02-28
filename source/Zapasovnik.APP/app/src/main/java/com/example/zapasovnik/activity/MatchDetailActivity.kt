@@ -39,6 +39,7 @@ class MatchDetailActivity : ComponentActivity() {
         val unfavBtn = findViewById<Button>(R.id.delFromFavMatches)
         var match: Response<MatchDetail> ?= null
         userData = UserData(this)
+        val edit = findViewById<Button>(R.id.editMatchBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
@@ -112,6 +113,12 @@ class MatchDetailActivity : ComponentActivity() {
                     startActivity(intent)
                 }
             }
+        }
+
+        edit.setOnClickListener {
+            val intent = Intent(this, EditMatchActivity::class.java)
+            intent.putExtra("matchId", matchId)
+            startActivity(intent)
         }
     }
 }

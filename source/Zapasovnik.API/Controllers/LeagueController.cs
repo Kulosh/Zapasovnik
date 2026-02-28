@@ -80,5 +80,26 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        [HttpPatch("EditLeague/{id}")]
+        public bool APIEditLeague(int id, [FromBody] AddLeagueDto league)
+        {
+            List<League> leagues = DbContext.Leagues.ToList();
+
+            try
+            {
+                League newLeague = leagues.Where(l => l.LeagueId == id).First();
+
+                newLeague.LeagueName = league.LeagueName;
+
+                DbContext.Leagues.Update(newLeague);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

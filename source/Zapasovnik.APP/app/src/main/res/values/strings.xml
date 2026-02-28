@@ -60,4 +60,8 @@
     <string name="add_league">Add league</string>
     <string name="new_league_name">Enter league name</string>
     <string name="new_league_success">League added succesfully</string>
+    <string name="edit_league">Edit league</string>
+    <string name="edit_player">Edit player</string>
+    <string name="edit_team">Edit team</string>
+    <string name="edit_match">Edit match</string>
 </resources>

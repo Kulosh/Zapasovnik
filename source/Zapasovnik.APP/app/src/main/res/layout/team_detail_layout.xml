@@ -93,4 +93,14 @@
         app:layout_constraintStart_toStartOf="@+id/addToFavTeams"
         app:layout_constraintTop_toBottomOf="@+id/addToFavTeams" />
 
+    <Button
+        android:id="@+id/editTeamBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/edit_team"
+        app:layout_constraintEnd_toEndOf="@+id/deleteTeamBtn"
+        app:layout_constraintStart_toStartOf="@+id/deleteTeamBtn"
+        app:layout_constraintTop_toBottomOf="@+id/delFromFavTeams" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

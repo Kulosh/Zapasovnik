@@ -184,5 +184,26 @@ namespace Zapasovnik.API.Controllers
 
             return favTeams;
         }
+
+        [HttpPatch("EditTeam/{id}")]
+        public bool APIEditTeam(int id,[FromBody] AddTeamDto team)
+        {
+            try
+            {
+                Team newTeam = Teams.Where(t => t.TeamId == id).First();
+
+                newTeam.TeamName = team.TeamName;
+                newTeam.TeamEstablished = Convert.ToDateTime(team.TeamEstablished);
+
+                DbContext.Teams.Update(newTeam);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }
