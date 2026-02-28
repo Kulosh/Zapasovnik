@@ -292,5 +292,58 @@ namespace Zapasovnik.API.Controllers
                 .ToList();
             return favMatches;
         }
+
+        [HttpPatch("EditMatch/{id}")]
+        public bool APIEditMatch(int id, [FromBody] AddMatchDto newMatch)
+        {
+            try
+            {
+                Match match = Matches.Where(m => m.MatchId == id).First();
+
+                int leagueId = Leagues
+                .Where(l => l.LeagueName == newMatch.League)
+                .First()
+                .LeagueId;
+
+                match.MatchDate = Convert.ToDateTime(newMatch.Date);
+                match.LeagueId = leagueId;
+
+                DbContext.Matches.Update(match);
+                DbContext.SaveChanges();
+                Matches = DbContext.Matches.ToList();
+
+                List<TeamMatch> oldTM = TeamsMatches.Where(tm => tm.MatchId == id).ToList();
+                DbContext.TeamsMatches.RemoveRange(oldTM);
+                DbContext.SaveChanges();
+
+                TeamMatch t1 = new TeamMatch
+                {
+                    MatchId = id,
+                    TeamId = Teams
+                        .Where(t => t.TeamName == newMatch.Team1)
+                        .First()
+                        .TeamId
+                };
+
+                TeamMatch t2 = new TeamMatch
+                {
+                    MatchId = id,
+                    TeamId = Teams
+                        .Where(t => t.TeamName == newMatch.Team2)
+                        .First()
+                        .TeamId
+                };
+
+                DbContext.TeamsMatches.Add(t1);
+                DbContext.TeamsMatches.Add(t2);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
