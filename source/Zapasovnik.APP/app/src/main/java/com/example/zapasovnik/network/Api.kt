@@ -12,6 +12,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -137,4 +138,28 @@ interface Api {
 
     @DELETE("DeleteLeague/{id}")
     suspend fun deleteLeague(@Path("id") id: Int): Response<Boolean>
+
+    @PATCH("EditPlayer/{id}")
+    suspend fun patchEditPlayer(
+        @Path("id") id: Int,
+        @Body player: JsonObject
+    ): Response<Boolean>
+
+    @PATCH("EditMatch/{id}")
+    suspend fun patchEditMatch(
+        @Path("id") id: Int,
+        @Body match: JsonObject
+    ): Response<Boolean>
+
+    @PATCH("EditTeam/{id}")
+    suspend fun patchEditTeam(
+        @Path("id") id: Int,
+        @Body team: JsonObject
+    ): Response<Boolean>
+
+    @PATCH("EditLeague/{id}")
+    suspend fun patchEditLeague(
+        @Path("id") id: Int,
+        @Body league: JsonObject
+    ): Response<Boolean>
 }
