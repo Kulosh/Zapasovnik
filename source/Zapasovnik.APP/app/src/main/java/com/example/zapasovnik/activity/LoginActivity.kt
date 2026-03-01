@@ -47,18 +47,20 @@ class LoginActivity : ComponentActivity() {
                 lifecycleScope.launch {
                     try {
                         val resp = RetrofitClient.api.postUser(loginString)
+                        val user = resp.body()!!.user
 
 //                        Log.d("Response", resp.toString())
+                        Log.d("TOKEN", resp.body()!!.token)
 
                         if (resp.isSuccessful) {
-                            val ok = resp.body()?.getValue("success").toString()
-                            val email = resp.body()?.getValue("email").toString()
-                            val id = resp.body()?.getValue("userId").toString()
+                            val ok = user.success
+                            val email = user.email
+                            val id = user.userId
 
 //                            Log.d("Success", ok)
 //                            Log.d("Email", email)
 
-                            if (ok == "true") {
+                            if (ok) {
                                 userData.storeUser(id, username, email, "true")
                                 startActivity(intent)
                             }
