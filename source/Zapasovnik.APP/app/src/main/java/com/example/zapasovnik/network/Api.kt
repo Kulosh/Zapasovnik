@@ -9,6 +9,7 @@ import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.Team
 import com.example.zapasovnik.model.TeamDetail
 import kotlinx.serialization.json.JsonObject
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -51,7 +52,7 @@ interface Api {
     @POST("User")
     suspend fun postUser(
         @Body user: JsonObject
-    ): Response<String>
+    ): ResponseBody
 
     @POST("chgpwd")
     suspend fun postChangePassword(
@@ -76,7 +77,7 @@ interface Api {
     @POST("Register")
     suspend fun postRegister (
         @Body newUser: JsonObject
-    ): Response<JwtResponse>
+    ): ResponseBody
 
     @POST("AddPlayer")
     suspend fun postAddPlayer (

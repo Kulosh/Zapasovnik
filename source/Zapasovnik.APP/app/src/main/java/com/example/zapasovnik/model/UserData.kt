@@ -19,15 +19,19 @@ class UserData (
         val USER_ID_KEY = intPreferencesKey("USER_ID")
         val USERNAME_KEY = stringPreferencesKey("USERNAME")
         val USER_EMAIL_KEY = stringPreferencesKey("USER_EMAIL")
-        val LOGGED_IN_KEY = stringPreferencesKey("LOGGED_IN_STATUS")
+        val JWT_TOKEN_KEY = stringPreferencesKey("JWT_TOKEN")
+
+        val JWT_EXPIRE_KEY = intPreferencesKey("JWT_EXPIRE")
     }
 
-    suspend fun storeUser(userId: Int, username: String, email: String, loggedIn: String) {
+    suspend fun storeUser(userId: Int, username: String, email: String, jwtToken: String, jwtExpire: Int) {
         context.datastore.edit {
             it[USER_ID_KEY] = userId
             it[USERNAME_KEY] = username
             it[USER_EMAIL_KEY] = email
-            it[LOGGED_IN_KEY] = loggedIn
+            it[JWT_TOKEN_KEY] = jwtToken
+            it[JWT_EXPIRE_KEY] = jwtExpire
+
         }
     }
 
@@ -39,11 +43,15 @@ class UserData (
         it[USER_EMAIL_KEY] ?: ""
     }
 
-    val loggedInFlow: Flow<String> = context.datastore.data.map {
-        it[LOGGED_IN_KEY] ?: ""
+    val jwtTokenFlow: Flow<String> = context.datastore.data.map {
+        it[JWT_TOKEN_KEY] ?: ""
     }
 
     val userIdFlow: Flow<Int> = context.datastore.data.map {
         it[USER_ID_KEY]!!
+    }
+
+    val jwtExpireFlow: Flow<Int> = context.datastore.data.map {
+        it[JWT_EXPIRE_KEY]!!
     }
 }

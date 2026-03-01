@@ -48,33 +48,32 @@ class LoginActivity : ComponentActivity() {
                 lifecycleScope.launch {
                     try {
                         val resp = RetrofitClient.api.postUser(loginString)
-//                        val user = resp.body()!!.user
-                        val JwtToken = JwtDecoder.decodeJwtWithoutVerification(resp.body().toString())
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp.string())
 
-                        Log.d("PAYLOAD", JwtToken.payload.toString())
+//                        Log.d("PAYLOAD", jwtToken.payload.toString())
 
-//                        if (resp.isSuccessful) {
-//                            val ok = user.success
-//                            val email = user.email
-//                            val id = user.userId
-//
-////                            Log.d("Success", ok)
-////                            Log.d("Email", email)
-//
-//                            if (ok) {
-//                                userData.storeUser(id, username, email, "true")
-//                                startActivity(intent)
-//                            }
-//                            else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
-//                        } else {
-////                            val err = resp.errorBody()?.string()
-////                            Log.d("LoginString", "$loginString")
-////                            Log.e("API", "HTTP ${resp.code()} error=$err")
-//                            Toast.makeText(applicationContext, "${R.string.login_failed}: ${resp.code()}", Toast.LENGTH_SHORT).show()
-//                        }
+                        if (jwtToken.payload.has("uid")) {
+                            val email = jwtToken.payload.getString("email")
+                            val id = jwtToken.payload.getString("uid")
+                            val expire = jwtToken.payload.getInt("exp")
+
+//                            Log.d("Success", ok)
+//                            Log.d("Email", email)
+
+                            if (id != "-1") {
+                                userData.storeUser(id.toInt(), username, email, resp.string(), expire)
+                                startActivity(intent)
+                            }
+                            else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
+                        } else {
+//                            val err = resp.errorBody()?.string()
+//                            Log.d("LoginString", "$loginString")
+//                            Log.e("API", "HTTP ${resp.code()} error=$err")
+                            Toast.makeText(applicationContext, "${R.string.login_failed}", Toast.LENGTH_SHORT).show()
+                        }
                     } catch (e: Exception) {
-                        Log.d("LoginString", "$loginString")
-                        Log.e("API", "Network/serialization error", e)
+//                        Log.d("LoginString", "$loginString")
+//                        Log.e("API", "Network/serialization error", e)
                         Toast.makeText(applicationContext, R.string.network_error, Toast.LENGTH_SHORT).show()
                     }
                 }

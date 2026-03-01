@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.example.zapasovnik.JwtDecoder
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
@@ -48,18 +49,25 @@ class RegisterActivity : ComponentActivity() {
 
                     lifecycleScope.launch {
                         val resp = RetrofitClient.api.postRegister(regString)
-                        val user = resp.body()!!.user
-                        if (resp.isSuccessful){
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp.string())
+                        val email = jwtToken.payload.getString("email")
+                        val id = jwtToken.payload.getString("uid").toInt()
+                        val expire = jwtToken.payload.getInt("exp")
+
+
+                        if (id != -1){
                             userData.storeUser(
-                                userId = user.userId,
+                                userId = id,
                                 username = username.text.toString(),
-                                email = email.text.toString(),
-                                loggedIn = user.success.toString())
+                                email = email,
+                                jwtToken = resp.string(),
+                                jwtExpire = expire
+                            )
                             startActivity(intent)
                         } else {
                             Toast.makeText(
                                 applicationContext,
-                                "${R.string.login_failed}: ${resp.code()}",
+                                "${R.string.login_failed}",
                                 Toast.LENGTH_SHORT).show()
                         }
                     }
