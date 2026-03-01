@@ -51,7 +51,7 @@ interface Api {
     @POST("User")
     suspend fun postUser(
         @Body user: JsonObject
-    ): Response<JwtResponse>
+    ): Response<String>
 
     @POST("chgpwd")
     suspend fun postChangePassword(
