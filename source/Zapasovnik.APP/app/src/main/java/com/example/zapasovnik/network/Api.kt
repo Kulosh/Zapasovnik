@@ -1,6 +1,7 @@
 package com.example.zapasovnik.network
 
 import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.JwtResponse
 import com.example.zapasovnik.model.League
 import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.model.MatchDetail
@@ -50,7 +51,7 @@ interface Api {
     @POST("User")
     suspend fun postUser(
         @Body user: JsonObject
-    ): Response<JsonObject>
+    ): Response<JwtResponse>
 
     @POST("chgpwd")
     suspend fun postChangePassword(
