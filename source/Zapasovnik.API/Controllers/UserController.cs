@@ -27,36 +27,21 @@ namespace Zapasovnik.API.Controllers
         [HttpPost]
         public IActionResult APIUser([FromBody] User incomeUser)
         {
-            UserDto user = new();
-
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
             if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).FirstOrDefault() != incomeUser.UserPassword)
             {
-                return Unauthorized(new UserDto { Success = false, Email = "", UserId = -1, Username = "" });
+                return Unauthorized(JwtTokenGen.GenerateJwtToken(-1, "", "", false));
             }
 
-            user.Username = incomeUser.UserName;
+            User user = Users.Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword).First();
 
-            user.UserId = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
+            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
 
-            user.Email = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserEmail)
-                .FirstOrDefault()!;
-
-            if (user.Email == null) user.Success = false;
-            else user.Success = true;
-
-            string token = JwtTokenGen.GenerateJwtToken(incomeUser.UserName);
-
-            return Ok(new { token, user });
+            return Ok(token);
         }
 
-        [Authorize]
+        [Authorize(Roles = "True")]
         [HttpGet]
         public IActionResult APIGetUsers()
         {

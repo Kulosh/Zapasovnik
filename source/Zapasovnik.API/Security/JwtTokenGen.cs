@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -6,12 +7,15 @@ namespace Zapasovnik.API.Security
 {
     public class JwtTokenGen
     {
-        public static string GenerateJwtToken(string username)
+        public static string GenerateJwtToken(int id, string username, string email, bool admin)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(ClaimTypes.Role, admin.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString())
             };
 
             var key = new SymmetricSecurityKey(JwtSecret.LoadSecrete());

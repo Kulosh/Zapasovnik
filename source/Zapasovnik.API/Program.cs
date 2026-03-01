@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API
@@ -58,7 +60,8 @@ namespace Zapasovnik.API
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = "kulosh.eu",
                         ValidAudience = "kulosh.eu",
-                        IssuerSigningKey = new SymmetricSecurityKey(JwtSecret.LoadSecrete())
+                        IssuerSigningKey = new SymmetricSecurityKey(JwtSecret.LoadSecrete()),
+                        RoleClaimType = ClaimTypes.Role                        
                     };
                 });
 
