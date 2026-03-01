@@ -25,20 +25,20 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult APIUser([FromBody] User incomeUser)
+        public string APIUser([FromBody] User incomeUser)
         {
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
             if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).FirstOrDefault() != incomeUser.UserPassword)
             {
-                return Unauthorized(JwtTokenGen.GenerateJwtToken(-1, "", "", false));
+                return JwtTokenGen.GenerateJwtToken(-1, "", "", false);
             }
 
             User user = Users.Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword).First();
 
             string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
 
-            return Ok(token);
+            return token;
         }
 
         [Authorize(Roles = "True")]
