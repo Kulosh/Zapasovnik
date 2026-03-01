@@ -2,6 +2,7 @@ package com.example.zapasovnik.model
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -15,13 +16,13 @@ class UserData (
     private val context: Context
 ) {
     companion object {
-        val USER_ID_KEY = stringPreferencesKey("USER_ID")
+        val USER_ID_KEY = intPreferencesKey("USER_ID")
         val USERNAME_KEY = stringPreferencesKey("USERNAME")
         val USER_EMAIL_KEY = stringPreferencesKey("USER_EMAIL")
         val LOGGED_IN_KEY = stringPreferencesKey("LOGGED_IN_STATUS")
     }
 
-    suspend fun storeUser(userId: String, username: String, email: String, loggedIn: String) {
+    suspend fun storeUser(userId: Int, username: String, email: String, loggedIn: String) {
         context.datastore.edit {
             it[USER_ID_KEY] = userId
             it[USERNAME_KEY] = username
@@ -42,7 +43,7 @@ class UserData (
         it[LOGGED_IN_KEY] ?: ""
     }
 
-    val userIdFlow: Flow<String> = context.datastore.data.map {
-        it[USER_ID_KEY] ?: ""
+    val userIdFlow: Flow<Int> = context.datastore.data.map {
+        it[USER_ID_KEY]!!
     }
 }
