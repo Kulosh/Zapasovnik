@@ -22,7 +22,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public UserDto APIRegister([FromBody] User incomeUser)
+        public IActionResult APIRegister([FromBody] User incomeUser)
         {
             UserDto newUser = new UserDto
             {
@@ -40,7 +40,10 @@ namespace Zapasovnik.API.Controllers
                 .Select(u => u.UserId)
                 .FirstOrDefault();
             newUser.Success = true;
-            return newUser;
+
+            string token = JwtTokenGen.GenerateJwtToken(incomeUser.UserName);
+
+            return Ok(new { token, newUser });
         }
     }
 }

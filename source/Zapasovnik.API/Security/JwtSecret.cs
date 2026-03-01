@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Zapasovnik.API
+namespace Zapasovnik.API.Security
 {
     public class JwtSecret
     {
