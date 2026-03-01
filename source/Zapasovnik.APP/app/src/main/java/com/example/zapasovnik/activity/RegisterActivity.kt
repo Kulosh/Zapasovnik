@@ -48,12 +48,13 @@ class RegisterActivity : ComponentActivity() {
 
                     lifecycleScope.launch {
                         val resp = RetrofitClient.api.postRegister(regString)
+                        val user = resp.body()!!.user
                         if (resp.isSuccessful){
                             userData.storeUser(
-                                userId = resp.body()?.getValue("userId").toString(),
+                                userId = user.userId,
                                 username = username.text.toString(),
                                 email = email.text.toString(),
-                                loggedIn = resp.body()?.getValue("success").toString())
+                                loggedIn = user.success.toString())
                             startActivity(intent)
                         } else {
                             Toast.makeText(

@@ -76,7 +76,7 @@ interface Api {
     @POST("Register")
     suspend fun postRegister (
         @Body newUser: JsonObject
-    ): Response<JsonObject>
+    ): Response<JwtResponse>
 
     @POST("AddPlayer")
     suspend fun postAddPlayer (

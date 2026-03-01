@@ -50,7 +50,7 @@ class LoginActivity : ComponentActivity() {
                         val user = resp.body()!!.user
 
 //                        Log.d("Response", resp.toString())
-                        Log.d("TOKEN", resp.body()!!.token)
+//                        Log.d("TOKEN", resp.body()!!.token)
 
                         if (resp.isSuccessful) {
                             val ok = user.success
