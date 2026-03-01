@@ -15,7 +15,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -27,9 +29,14 @@ import kotlin.text.clear
 import kotlin.toString
 
 class NewMatchActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_match_layout)
+
+        userData = UserData(this)
 
         val team1 = findViewById<AutoCompleteTextView>(R.id.newMatchTeam1)
         val team2 = findViewById<AutoCompleteTextView>(R.id.newMatchTeam2)
@@ -88,7 +95,7 @@ class NewMatchActivity : ComponentActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 lifecycleScope.launch {
-                    val teams = RetrofitClient.api.getLeagues().map { it.LeagueName }
+                    val teams = RetrofitClient.api.getLeagues("Bearer ${userData.jwtTokenFlow.first()}").map { it.LeagueName }
 
                     adapter.clear()
                     adapter.addAll(teams)
@@ -123,7 +130,7 @@ class NewMatchActivity : ComponentActivity() {
                         put("Date", date)
                     }
 
-                    val resp = RetrofitClient.api.postAddMatch(newMatchString)
+                    val resp = RetrofitClient.api.postAddMatch(newMatchString, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,

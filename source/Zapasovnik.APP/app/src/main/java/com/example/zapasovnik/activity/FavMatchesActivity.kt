@@ -37,7 +37,7 @@ class FavMatchesActivity : ComponentActivity() {
             val userId = buildJsonObject {
                 put("userId", userData.userIdFlow.first())
             }
-            val favMatches = RetrofitClient.api.postFavMatch(userId)
+            val favMatches = RetrofitClient.api.postFavMatch(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = HomeMatchTableAdapter(favMatches) { match ->
                 val intent = Intent(this@FavMatchesActivity, MatchDetailActivity::class.java)

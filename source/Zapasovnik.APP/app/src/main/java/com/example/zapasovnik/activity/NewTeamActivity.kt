@@ -14,13 +14,18 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import java.time.LocalDateTime
 
 class NewTeamActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_team_layout)
@@ -56,7 +61,7 @@ class NewTeamActivity : ComponentActivity() {
 
 //                    Log.d("String", newPlayerString.toString())
 
-                    val resp = RetrofitClient.api.postAddTeam(newTeamString)
+                    val resp = RetrofitClient.api.postAddTeam(newTeamString, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,

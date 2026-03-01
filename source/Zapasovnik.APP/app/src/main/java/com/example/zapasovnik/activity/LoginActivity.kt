@@ -47,8 +47,11 @@ class LoginActivity : ComponentActivity() {
             if (username != "" && password != "") {
                 lifecycleScope.launch {
                     try {
-                        val resp = RetrofitClient.api.postUser(loginString)
-                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp.string())
+                        val resp = RetrofitClient.api.postUser(loginString).string()
+
+//                        Log.d("Token", resp)
+
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp)
 
 //                        Log.d("PAYLOAD", jwtToken.payload.toString())
 
@@ -56,12 +59,12 @@ class LoginActivity : ComponentActivity() {
                             val email = jwtToken.payload.getString("email")
                             val id = jwtToken.payload.getString("uid")
                             val expire = jwtToken.payload.getInt("exp")
+                            val admin = jwtToken.payload.getBoolean("role")
 
-//                            Log.d("Success", ok)
-//                            Log.d("Email", email)
+//                            Log.d("Token", resp)
 
                             if (id != "-1") {
-                                userData.storeUser(id.toInt(), username, email, resp.string(), expire)
+                                userData.storeUser(id.toInt(), username, email, resp, expire, admin)
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()

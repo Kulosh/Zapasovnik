@@ -45,7 +45,7 @@ class ProfileActivity : ComponentActivity() {
         logoutBtn.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             lifecycleScope.launch {
-                userData.storeUser(-1, "", "", "", 0)
+                userData.storeUser(-1, "", "", "", 0, false)
                 startActivity(intent)
             }
         }

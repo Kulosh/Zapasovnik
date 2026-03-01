@@ -14,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -29,10 +30,15 @@ interface Api {
     suspend fun getTeams(): List<Team>
 
     @GET("Leagues")
-    suspend fun getLeagues(): List<League>
+    suspend fun getLeagues(
+        @Header("Authorization") token: String
+    ): List<League>
 
     @GET("LeagueDetail/{id}")
-    suspend fun getLeagueDetail(@Path("id") id: Int): Response<League>
+    suspend fun getLeagueDetail(
+        @Path("id") id: Int,
+        @Header("Authorization") authorization: String
+    ): Response<League>
 
     @POST("PlayerDetail")
     suspend fun postPlayerDetail(
@@ -56,22 +62,26 @@ interface Api {
 
     @POST("chgpwd")
     suspend fun postChangePassword(
-        @Body changePassword: JsonObject
+        @Body changePassword: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("favPlayer")
     suspend fun postFavPlayer (
-        @Body userId: JsonObject
+        @Body userId: JsonObject,
+        @Header("Authorization") authorization: String
     ): List<FavPlayer>
 
     @POST("favMatch")
     suspend fun postFavMatch (
-        @Body userId: JsonObject
+        @Body userId: JsonObject,
+        @Header("Authorization") authorization: String
     ): List<Match>
 
     @POST("favTeams")
     suspend fun postFavTeams (
-        @Body userId: JsonObject
+        @Body userId: JsonObject,
+        @Header("Authorization") authorization: String
     ): List<Team>
 
     @POST("Register")
@@ -81,87 +91,113 @@ interface Api {
 
     @POST("AddPlayer")
     suspend fun postAddPlayer (
-        @Body newPlayer: JsonObject
+        @Body newPlayer: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddFavPlayer")
     suspend fun postAddFavPlayer (
-        @Body favPlayer: JsonObject
+        @Body favPlayer: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("DeleteFavPlayer")
     suspend fun postDeleteFavPlayer(
-        @Body favPlayer: JsonObject
+        @Body favPlayer: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddMatch")
     suspend fun postAddMatch(
-        @Body newMatch: JsonObject
+        @Body newMatch: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddFavMatch")
     suspend fun postAddFavMatch(
-        @Body favMatch: JsonObject
+        @Body favMatch: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("DeleteFavMatch")
     suspend fun postDeleteFavMatch(
-        @Body favMatch: JsonObject
+        @Body favMatch: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddTeam")
     suspend fun postAddTeam(
-        @Body newTeam: JsonObject
+        @Body newTeam: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddFavTeam")
     suspend fun postAddFavTeam(
-        @Body favTeam: JsonObject
+        @Body favTeam: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("DeleteFavTeam")
     suspend fun postDeleteFavTeam(
-        @Body favTeam: JsonObject
+        @Body favTeam: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @POST("AddLeague")
     suspend fun postAddLeague(
-        @Body newLeague: JsonObject
+        @Body newLeague: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @DELETE("DeletePlayer/{id}")
-    suspend fun deletePlayer(@Path("id") id: Int): Response<Boolean>
+    suspend fun deletePlayer(
+        @Path("id") id: Int,
+        @Header("Authorization") authorization: String
+    ): Response<Boolean>
 
     @DELETE("DeleteMatch/{id}")
-    suspend fun deleteMatch(@Path("id") id: Int): Response<Boolean>
+    suspend fun deleteMatch(
+        @Path("id") id: Int,
+        @Header("Authorization") authorization: String
+    ): Response<Boolean>
 
     @DELETE("DeleteTeam/{id}")
-    suspend fun deleteTeam(@Path("id") id: Int): Response<Boolean>
+    suspend fun deleteTeam(
+        @Path("id") id: Int,
+        @Header("Authorization") authorization: String
+    ): Response<Boolean>
 
     @DELETE("DeleteLeague/{id}")
-    suspend fun deleteLeague(@Path("id") id: Int): Response<Boolean>
+    suspend fun deleteLeague(
+        @Path("id") id: Int,
+        @Header("Authorization") authorization: String
+    ): Response<Boolean>
 
     @PATCH("EditPlayer/{id}")
     suspend fun patchEditPlayer(
         @Path("id") id: Int,
-        @Body player: JsonObject
+        @Body player: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @PATCH("EditMatch/{id}")
     suspend fun patchEditMatch(
         @Path("id") id: Int,
-        @Body match: JsonObject
+        @Body match: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @PATCH("EditTeam/{id}")
     suspend fun patchEditTeam(
         @Path("id") id: Int,
-        @Body team: JsonObject
+        @Body team: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 
     @PATCH("EditLeague/{id}")
     suspend fun patchEditLeague(
         @Path("id") id: Int,
-        @Body league: JsonObject
+        @Body league: JsonObject,
+        @Header("Authorization") authorization: String
     ): Response<Boolean>
 }

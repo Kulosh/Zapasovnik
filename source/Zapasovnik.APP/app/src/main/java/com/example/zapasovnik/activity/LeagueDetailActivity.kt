@@ -37,7 +37,7 @@ class LeagueDetailActivity : ComponentActivity() {
         val edit = findViewById<Button>(R.id.editLeagueBtn)
 
         lifecycleScope.launch {
-            val league = RetrofitClient.api.getLeagueDetail(leagueId)
+            val league = RetrofitClient.api.getLeagueDetail(leagueId, "Bearer ${userData.jwtTokenFlow.first()}")
 //            val loggedIn = userData.loggedInFlow.first().toBoolean()
 
             name.text = league.body()?.LeagueName
@@ -57,7 +57,7 @@ class LeagueDetailActivity : ComponentActivity() {
 
         delTeamBtn.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deleteLeague(leagueId)
+                val resp = RetrofitClient.api.deleteLeague(leagueId, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@LeagueDetailActivity, HomeActivity::class.java)

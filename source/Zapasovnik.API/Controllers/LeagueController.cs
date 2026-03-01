@@ -10,6 +10,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
+    [Authorize(Roles = "True")]
     [ApiController]
     [Route("zapasovnik")]
     public class LeagueController : ControllerBase
@@ -37,7 +38,6 @@ namespace Zapasovnik.API.Controllers
             return league;
         }
 
-        [Authorize(Roles = "True")]
         [HttpPost("AddLeague")]
         public bool APIAddLeague([FromBody] AddLeagueDto league)
         {

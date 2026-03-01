@@ -48,11 +48,12 @@ class RegisterActivity : ComponentActivity() {
                     }
 
                     lifecycleScope.launch {
-                        val resp = RetrofitClient.api.postRegister(regString)
-                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp.string())
+                        val resp = RetrofitClient.api.postRegister(regString).string()
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp)
                         val email = jwtToken.payload.getString("email")
                         val id = jwtToken.payload.getString("uid").toInt()
                         val expire = jwtToken.payload.getInt("exp")
+                        val admin = jwtToken.payload.getBoolean("role")
 
 
                         if (id != -1){
@@ -60,8 +61,9 @@ class RegisterActivity : ComponentActivity() {
                                 userId = id,
                                 username = username.text.toString(),
                                 email = email,
-                                jwtToken = resp.string(),
-                                jwtExpire = expire
+                                jwtToken = resp,
+                                jwtExpire = expire,
+                                admin = admin
                             )
                             startActivity(intent)
                         } else {

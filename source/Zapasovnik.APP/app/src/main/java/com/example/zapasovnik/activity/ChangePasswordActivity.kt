@@ -42,16 +42,17 @@ class ChangePasswordActivity : ComponentActivity() {
 
                 lifecycleScope.launch {
                     val userId = userData.userIdFlow.first()
+                    val token = userData.jwtTokenFlow.first()
 
                     val pwdString = buildJsonObject {
                         put("userId", userId)
                         put("old", oldPwd.text.toString())
                         put("new", newPwd.text.toString())
                     }
-                    val resp = RetrofitClient.api.postChangePassword(pwdString)
+                    val resp = RetrofitClient.api.postChangePassword(pwdString, "Bearer ${userData.jwtTokenFlow.first()}")
                     val success = resp.body()
-                    Log.d("response", "$resp")
-                    Log.d("PWD string", pwdString.toString())
+//                    Log.d("response", "$resp")
+//                    Log.d("PWD string", pwdString.toString())
                     if (success == true) {
                         startActivity(intent)
                     } else Toast.makeText(
