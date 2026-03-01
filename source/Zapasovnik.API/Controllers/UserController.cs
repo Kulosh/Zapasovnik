@@ -40,12 +40,5 @@ namespace Zapasovnik.API.Controllers
 
             return Ok($"{token}");
         }
-
-        [Authorize(Roles = "True")]
-        [HttpGet]
-        public IActionResult APIGetUsers()
-        {
-            return Ok( Users.ToList() );
-        }
     }
 }

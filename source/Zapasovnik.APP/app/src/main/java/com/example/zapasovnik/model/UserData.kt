@@ -48,10 +48,10 @@ class UserData (
     }
 
     val userIdFlow: Flow<Int> = context.datastore.data.map {
-        it[USER_ID_KEY]!!
+        it[USER_ID_KEY] ?: -1
     }
 
     val jwtExpireFlow: Flow<Int> = context.datastore.data.map {
-        it[JWT_EXPIRE_KEY]!!
+        it[JWT_EXPIRE_KEY] ?: 0
     }
 }

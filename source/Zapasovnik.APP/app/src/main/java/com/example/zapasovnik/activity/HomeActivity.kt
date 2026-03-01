@@ -54,10 +54,10 @@ class HomeActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            val loginSuccess = userData.loggedInFlow.first()
+            val loginSuccess = userData.userIdFlow.first()
 //            Log.e("Login success", loginSuccess)
 
-            if (loginSuccess == "true") {
+            if (loginSuccess != -1) {
                 val loginClick = findViewById<ImageView>(R.id.loginIcon)
                 loginClick.setOnClickListener {
                     startActivity(profileIntent)

@@ -47,12 +47,12 @@ class TeamDetailActivity : ComponentActivity() {
             }
             team = RetrofitClient.api.postTeamDetail(user)
             val isFav = team.body()?.IsFavorite
-            val loggedIn = userData.loggedInFlow.first().toBoolean()
+            val loggedIn = userData.userIdFlow.first()
 
             name.text = team.body()?.Name
             est.text = team.body()?.Established
 
-            if (loggedIn)
+            if (loggedIn != -1)
             {
                 if (isFav!!) {
                     favBtn.visibility = Button.GONE

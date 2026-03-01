@@ -48,9 +48,9 @@ class PlayerDetailActivity : ComponentActivity() {
             player = RetrofitClient.api.postPlayerDetail(user)
 
             val isFav = player.body()?.IsFavorite
-            val loggedIn = userData.loggedInFlow.first().toBoolean()
+            val loggedIn = userData.userIdFlow.first()
 
-            if (loggedIn) {
+            if (loggedIn != -1) {
                 if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
             } else {
                 favBtn.visibility = Button.GONE
