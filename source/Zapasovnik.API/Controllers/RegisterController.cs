@@ -24,7 +24,7 @@ namespace Zapasovnik.API.Controllers
         [HttpPost]
         public IActionResult APIRegister([FromBody] User incomeUser)
         {
-            UserDto newUser = new UserDto
+            UserDto user= new UserDto
             {
                 Username = incomeUser.UserName,
                 Email = incomeUser.UserEmail,
@@ -35,15 +35,15 @@ namespace Zapasovnik.API.Controllers
             DbContext.Users.Add(incomeUser);
             DbContext.SaveChanges();
 
-            newUser.UserId = DbContext.Users
+            user.UserId = DbContext.Users
                 .Where(u => u.UserName == incomeUser.UserName)
                 .Select(u => u.UserId)
                 .FirstOrDefault();
-            newUser.Success = true;
+            user.Success = true;
 
             string token = JwtTokenGen.GenerateJwtToken(incomeUser.UserName);
 
-            return Ok(new { token, newUser });
+            return Ok(new { token, user });
         }
     }
 }
