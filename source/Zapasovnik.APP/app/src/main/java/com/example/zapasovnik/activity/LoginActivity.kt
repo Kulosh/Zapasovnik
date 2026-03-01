@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.example.zapasovnik.JwtDecoder
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
@@ -46,20 +47,24 @@ class LoginActivity : ComponentActivity() {
             if (username != "" && password != "") {
                 lifecycleScope.launch {
                     try {
-                        val resp = RetrofitClient.api.postUser(loginString)
+                        val resp = RetrofitClient.api.postUser(loginString).string()
 
-//                        Log.d("Response", resp.toString())
+//                        Log.d("Token", resp)
 
-                        if (resp.isSuccessful) {
-                            val ok = resp.body()?.getValue("success").toString()
-                            val email = resp.body()?.getValue("email").toString()
-                            val id = resp.body()?.getValue("userId").toString()
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp)
 
-//                            Log.d("Success", ok)
-//                            Log.d("Email", email)
+//                        Log.d("PAYLOAD", jwtToken.payload.toString())
 
-                            if (ok == "true") {
-                                userData.storeUser(id, username, email, "true")
+                        if (jwtToken.payload.has("uid")) {
+                            val email = jwtToken.payload.getString("email")
+                            val id = jwtToken.payload.getString("uid")
+                            val expire = jwtToken.payload.getInt("exp")
+                            val admin = jwtToken.payload.getBoolean("role")
+
+//                            Log.d("Token", resp)
+
+                            if (id != "-1") {
+                                userData.storeUser(id.toInt(), username, email, resp, expire, admin)
                                 startActivity(intent)
                             }
                             else Toast.makeText(applicationContext, R.string.invalid_credentials, Toast.LENGTH_SHORT).show()
@@ -67,7 +72,7 @@ class LoginActivity : ComponentActivity() {
 //                            val err = resp.errorBody()?.string()
 //                            Log.d("LoginString", "$loginString")
 //                            Log.e("API", "HTTP ${resp.code()} error=$err")
-                            Toast.makeText(applicationContext, "${R.string.login_failed}: ${resp.code()}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "${R.string.login_failed}", Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: Exception) {
 //                        Log.d("LoginString", "$loginString")

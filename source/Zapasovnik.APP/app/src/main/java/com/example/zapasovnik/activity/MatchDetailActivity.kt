@@ -49,9 +49,9 @@ class MatchDetailActivity : ComponentActivity() {
             match = RetrofitClient.api.postMatchDetail(user)
 
             val isFav = match.body()?.IsFavorite
-            val loggedIn = userData.loggedInFlow.first().toBoolean()
+            val loggedIn = userData.userIdFlow.first()
 
-            if (loggedIn) {
+            if (loggedIn != -1) {
                 if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
             } else {
                 favBtn.visibility = Button.GONE
@@ -66,7 +66,7 @@ class MatchDetailActivity : ComponentActivity() {
 
         delMatchBtn.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deleteMatch(matchId)
+                val resp = RetrofitClient.api.deleteMatch(matchId, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@MatchDetailActivity, HomeActivity::class.java)
@@ -85,10 +85,10 @@ class MatchDetailActivity : ComponentActivity() {
             lifecycleScope.launch {
                 val favMatch = buildJsonObject {
                     put("matchId", match?.body()?.Id)
-                    put("userId", userData.userIdFlow.first().toInt())
+                    put("userId", userData.userIdFlow.first())
                 }
 //                     TODO: PostFav
-                val resp = RetrofitClient.api.postAddFavMatch(favMatch)
+                val resp = RetrofitClient.api.postAddFavMatch(favMatch, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true){
                     finish()
@@ -104,7 +104,7 @@ class MatchDetailActivity : ComponentActivity() {
                     put("userId", userData.userIdFlow.first().toInt())
                 }
                     // TODO: PostUnFav
-                val resp = RetrofitClient.api.postDeleteFavMatch(favMatch)
+                val resp = RetrofitClient.api.postDeleteFavMatch(favMatch, "Bearer ${userData.jwtTokenFlow.first()}")
 //                Log.d("String", favPlayer.toString())
 //                Log.d("Response", resp.toString())
 

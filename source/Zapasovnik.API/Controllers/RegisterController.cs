@@ -22,25 +22,26 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public UserDto APIRegister([FromBody] User incomeUser)
+        public IActionResult APIRegister([FromBody] RegisterDto incomeUser)
         {
-            UserDto newUser = new UserDto
-            {
-                Username = incomeUser.UserName,
-                Email = incomeUser.UserEmail,
-            };
-
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
-            DbContext.Users.Add(incomeUser);
+            User newUser = new User
+            {
+                UserName = incomeUser.UserName,
+                UserEmail = incomeUser.UserEmail,
+                UserPassword = incomeUser.UserPassword,
+                Admin = false
+            };
+
+            DbContext.Users.Add(newUser);
             DbContext.SaveChanges();
 
-            newUser.UserId = DbContext.Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
-            newUser.Success = true;
-            return newUser;
+            User user = Users.OrderBy(u => u.UserId).Last();
+
+            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
+
+            return Ok(token);
         }
     }
 }

@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -22,16 +24,22 @@ import java.time.LocalDateTime
 import kotlin.toString
 
 class EditLeagueActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_league_layout)
+
+        userData = UserData(this)
 
         val nameField = findViewById<TextView>(R.id.newLeagueName)
         val addBtn = findViewById<Button>(R.id.newLeagueAddBtn)
         val id = intent.getIntExtra("leagueId", -1)
 
         lifecycleScope.launch {
-            val league = RetrofitClient.api.getLeagueDetail(id).body()
+            val token = userData.jwtTokenFlow.first()
+            val league = RetrofitClient.api.getLeagueDetail(id, "Bearer ${userData.jwtTokenFlow.first()}").body()
             nameField.text = league!!.LeagueName
         }
 
@@ -51,11 +59,12 @@ class EditLeagueActivity : ComponentActivity() {
                 val intent = Intent(this, HomeActivity::class.java)
 
                 lifecycleScope.launch {
+                    val token = userData.jwtTokenFlow.first()
                     val league = buildJsonObject {
                         put("LeagueName", name)
                     }
 
-                    val resp = RetrofitClient.api.patchEditLeague(id, league)
+                    val resp = RetrofitClient.api.patchEditLeague(id, league, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body()!!) {
                         Toast.makeText(
                             applicationContext,

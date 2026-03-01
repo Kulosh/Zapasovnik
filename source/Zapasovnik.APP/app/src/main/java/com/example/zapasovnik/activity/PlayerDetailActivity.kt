@@ -48,9 +48,9 @@ class PlayerDetailActivity : ComponentActivity() {
             player = RetrofitClient.api.postPlayerDetail(user)
 
             val isFav = player.body()?.IsFavorite
-            val loggedIn = userData.loggedInFlow.first().toBoolean()
+            val loggedIn = userData.userIdFlow.first()
 
-            if (loggedIn) {
+            if (loggedIn != -1) {
                 if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
             } else {
                 favBtn.visibility = Button.GONE
@@ -65,7 +65,7 @@ class PlayerDetailActivity : ComponentActivity() {
 
         delPlayerBtn.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deletePlayer(playerId)
+                val resp = RetrofitClient.api.deletePlayer(playerId, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@PlayerDetailActivity, HomeActivity::class.java)
@@ -84,9 +84,11 @@ class PlayerDetailActivity : ComponentActivity() {
             lifecycleScope.launch {
                 val favPlayer = buildJsonObject {
                     put("playerId", player?.body()?.Id)
-                    put("userId", userData.userIdFlow.first().toInt())
+                    put("userId", userData.userIdFlow.first())
                 }
-                val resp = RetrofitClient.api.postAddFavPlayer(favPlayer)
+//                Log.d("String", "Bearer ${userData.jwtTokenFlow.first()}")
+
+                val resp = RetrofitClient.api.postAddFavPlayer(favPlayer, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true){
                     finish()
@@ -99,11 +101,11 @@ class PlayerDetailActivity : ComponentActivity() {
             lifecycleScope.launch {
                 val favPlayer = buildJsonObject {
                     put("playerId", player?.body()?.Id)
-                    put("userId", userData.userIdFlow.first().toInt())
+                    put("userId", userData.userIdFlow.first())
                 }
-                val resp = RetrofitClient.api.postDeleteFavPlayer(favPlayer)
-                Log.d("String", favPlayer.toString())
-                Log.d("Response", resp.toString())
+                val resp = RetrofitClient.api.postDeleteFavPlayer(favPlayer, "Bearer ${userData.jwtTokenFlow.first()}")
+//                Log.d("String", favPlayer.toString())
+//                Log.d("Response", resp.toString())
 
                 if (resp.isSuccessful && resp.body() == true) {
                     finish()

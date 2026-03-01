@@ -38,7 +38,7 @@ class FavTeamsActivity : ComponentActivity() {
             val userId = buildJsonObject {
                 put("userId", userData.userIdFlow.first())
             }
-            val favTeams = RetrofitClient.api.postFavTeams(userId)
+            val favTeams = RetrofitClient.api.postFavTeams(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = FavTeamsTableAdapter(favTeams) { team ->
                 val intent = Intent(this@FavTeamsActivity, TeamDetailActivity::class.java)

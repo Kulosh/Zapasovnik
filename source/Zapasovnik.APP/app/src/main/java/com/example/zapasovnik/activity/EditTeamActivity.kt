@@ -81,7 +81,7 @@ class EditTeamActivity : ComponentActivity() {
 
 //                    Log.d("String", newPlayerString.toString())
 
-                    val resp = RetrofitClient.api.patchEditTeam(id,newTeamString)
+                    val resp = RetrofitClient.api.patchEditTeam(id,newTeamString, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,

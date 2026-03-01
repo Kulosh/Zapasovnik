@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
@@ -21,33 +25,20 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public UserDto APIUser([FromBody] User incomeUser)
+        public IActionResult APIUser([FromBody] User incomeUser)
         {
-            UserDto user = new();
-
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
-            if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).First() != incomeUser.UserPassword)
+            if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).FirstOrDefault() != incomeUser.UserPassword)
             {
-                return new UserDto { Success = false, Email = "", UserId = -1, Username = "" };
+                return Unauthorized($"{JwtTokenGen.GenerateJwtToken(-1, "", "", false)}");
             }
 
-            user.Username = incomeUser.UserName;
+            User user = Users.Where(u => u.UserName == incomeUser.UserName && u.UserPassword == incomeUser.UserPassword).First();
 
-            user.UserId = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserId)
-                .FirstOrDefault();
+            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
 
-            user.Email = Users
-                .Where(u => u.UserName == incomeUser.UserName)
-                .Select(u => u.UserEmail)
-                .FirstOrDefault()!;
-
-            if (user.Email == null) user.Success = false;
-            else user.Success = true;
-
-            return user;
+            return Ok($"{token}");
         }
     }
 }

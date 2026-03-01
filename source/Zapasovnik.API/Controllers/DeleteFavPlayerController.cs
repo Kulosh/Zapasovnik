@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
@@ -7,6 +8,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
+    [Authorize(Roles = "False")]
     [Route("Zapasovnik/[controller]")]
     [ApiController]
     public class DeleteFavPlayerController : ControllerBase

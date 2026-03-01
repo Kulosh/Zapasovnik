@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
@@ -6,6 +7,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
+    [Authorize(Roles = "True")]
     [Route("Zapasovnik")]
     [ApiController]
     public class AddPlayerController : ControllerBase

@@ -21,5 +21,7 @@ namespace Zapasovnik.API.Entities
         [Column("user_password")]
         public string UserPassword { get; set; }
 
+        [Column("admin")]
+        public bool Admin { get; set; } = false;
     }
 }

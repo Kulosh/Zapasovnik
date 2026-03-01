@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata.Ecma335;
@@ -9,6 +10,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
+    [Authorize(Roles = "True")]
     [ApiController]
     [Route("zapasovnik")]
     public class LeagueController : ControllerBase
@@ -51,6 +53,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "True")]
         [HttpDelete("DeleteLeague/{id}")]
         public bool APIDeleteLeague(int id)
         {
@@ -81,6 +84,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "True")]
         [HttpPatch("EditLeague/{id}")]
         public bool APIEditLeague(int id, [FromBody] AddLeagueDto league)
         {

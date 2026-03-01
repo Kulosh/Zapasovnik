@@ -14,17 +14,23 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
+import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import java.time.LocalDateTime
 
 class NewLeagueActivity : ComponentActivity() {
+
+    private lateinit var userData: UserData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_league_layout)
 
+        userData = UserData(this)
         val addBtn = findViewById<Button>(R.id.newLeagueAddBtn)
 
         addBtn.setOnClickListener {
@@ -49,7 +55,7 @@ class NewLeagueActivity : ComponentActivity() {
                         put("LeagueName", name)
                     }
 
-                    val resp = RetrofitClient.api.postAddLeague(league)
+                    val resp = RetrofitClient.api.postAddLeague(league, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body()!!) {
                         Toast.makeText(
                             applicationContext,

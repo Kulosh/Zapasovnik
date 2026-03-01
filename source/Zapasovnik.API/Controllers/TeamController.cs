@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
@@ -58,6 +59,7 @@ namespace Zapasovnik.API.Controllers
             return team;
         }
 
+        [Authorize(Roles = "True")]
         [HttpPost("AddTeam")]
         public bool APIAddTeam([FromBody] AddTeamDto team)
         {
@@ -78,6 +80,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "True")]
         [HttpDelete("DeleteTeam/{id}")]
         public bool APIDeleteTeam(int id)
         {
@@ -134,6 +137,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("AddFavTeam")]
         public bool APIAddFavTeam([FromBody] UserFavTeam team)
         {
@@ -149,6 +153,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("DeleteFavTeam")]
         public bool APIDeleteFavTeam([FromBody] UserFavTeam team)
         {
@@ -164,6 +169,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("FavTeams")]
         public List<TeamsDto> APIFavTeams([FromBody] UserDto userId)
         {
@@ -185,6 +191,7 @@ namespace Zapasovnik.API.Controllers
             return favTeams;
         }
 
+        [Authorize(Roles = "True")]
         [HttpPatch("EditTeam/{id}")]
         public bool APIEditTeam(int id,[FromBody] AddTeamDto team)
         {

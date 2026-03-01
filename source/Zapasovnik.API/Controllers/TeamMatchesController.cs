@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
@@ -148,6 +149,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "True")]
         [HttpPost("AddMatch")]
         public bool APIAddMatch([FromBody] AddMatchDto newMatch)
         {
@@ -204,6 +206,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "True")]
         [HttpDelete("DeleteMatch/{id}")]
         public bool APIDeleteMatch(int id)
         {
@@ -243,6 +246,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("AddFavMatch")]
         public bool APIAddFavMatch([FromBody] UserFavMatch newFavMatch)
         {
@@ -258,6 +262,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("FavMatch")]
         public List<MatchWithTeamsDto> APIFavMatches([FromBody] UserDto userId)
         {
@@ -293,6 +298,7 @@ namespace Zapasovnik.API.Controllers
             return favMatches;
         }
 
+        [Authorize(Roles = "True")]
         [HttpPatch("EditMatch/{id}")]
         public bool APIEditMatch(int id, [FromBody] AddMatchDto newMatch)
         {

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.example.zapasovnik.JwtDecoder
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
@@ -47,18 +48,28 @@ class RegisterActivity : ComponentActivity() {
                     }
 
                     lifecycleScope.launch {
-                        val resp = RetrofitClient.api.postRegister(regString)
-                        if (resp.isSuccessful){
+                        val resp = RetrofitClient.api.postRegister(regString).string()
+                        val jwtToken = JwtDecoder.decodeJwtWithoutVerification(resp)
+                        val email = jwtToken.payload.getString("email")
+                        val id = jwtToken.payload.getString("uid").toInt()
+                        val expire = jwtToken.payload.getInt("exp")
+                        val admin = jwtToken.payload.getBoolean("role")
+
+
+                        if (id != -1){
                             userData.storeUser(
-                                userId = resp.body()?.getValue("userId").toString(),
+                                userId = id,
                                 username = username.text.toString(),
-                                email = email.text.toString(),
-                                loggedIn = resp.body()?.getValue("success").toString())
+                                email = email,
+                                jwtToken = resp,
+                                jwtExpire = expire,
+                                admin = admin
+                            )
                             startActivity(intent)
                         } else {
                             Toast.makeText(
                                 applicationContext,
-                                "${R.string.login_failed}: ${resp.code()}",
+                                "${R.string.login_failed}",
                                 Toast.LENGTH_SHORT).show()
                         }
                     }

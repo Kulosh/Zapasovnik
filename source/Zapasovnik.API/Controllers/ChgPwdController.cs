@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
@@ -8,6 +9,7 @@ using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Controllers
 {
+    [Authorize]
     [Route("Zapasovnik/[controller]")]
     [ApiController]
     public class ChgPwdController : ControllerBase

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
@@ -27,6 +28,7 @@ namespace Zapasovnik.API.Controllers
             TeamsPlayers = DbContext.TeamsPlayers.ToList();
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("FavPlayer")]
         public List<FavPlayersDto> APIFavPlayers([FromBody] UserDto userId)
         {
@@ -108,6 +110,7 @@ namespace Zapasovnik.API.Controllers
             };
         }
 
+        [Authorize(Roles = "True")]
         [HttpDelete("DeletePlayer/{id}")]
         public bool APIDeletePlayer(int id)
         {
@@ -141,6 +144,7 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        [Authorize(Roles = "False")]
         [HttpPost("AddFavPlayer")]
         public bool APIAddFavPlayer([FromBody] UserFavPlayer newFavPlayer)
         {

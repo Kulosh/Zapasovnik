@@ -115,7 +115,8 @@ class EditMatchActivity : ComponentActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 lifecycleScope.launch {
-                    val teams = RetrofitClient.api.getLeagues().map { it.LeagueName }
+                    val token = userData.jwtTokenFlow.first()
+                    val teams = RetrofitClient.api.getLeagues("Bearer ${userData.jwtTokenFlow.first()}").map { it.LeagueName }
 
                     adapter.clear()
                     adapter.addAll(teams)
@@ -150,7 +151,7 @@ class EditMatchActivity : ComponentActivity() {
                         put("Date", date)
                     }
 
-                    val resp = RetrofitClient.api.patchEditMatch(id,newMatchString)
+                    val resp = RetrofitClient.api.patchEditMatch(id,newMatchString, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,

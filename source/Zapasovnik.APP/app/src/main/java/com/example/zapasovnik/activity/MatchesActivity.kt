@@ -32,12 +32,12 @@ class MatchesActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val matches = RetrofitClient.api.getTeamMatches()
-            Log.d("Matches", "${matches}")
+//            Log.d("Matches", "${matches}")
 
             recyclerView.adapter = HomeMatchTableAdapter(matches) { match ->
                 val intent = Intent(this@MatchesActivity, MatchDetailActivity::class.java)
                 intent.putExtra("id", match.Id)
-                Log.d("Match CLICK", match.toString())
+//                Log.d("Match CLICK", match.toString())
                 startActivity(intent)
             }
         }
