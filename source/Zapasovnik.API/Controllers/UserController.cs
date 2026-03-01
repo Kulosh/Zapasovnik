@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,15 +25,15 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public UserDto APIUser([FromBody] User incomeUser)
+        public IActionResult APIUser([FromBody] User incomeUser)
         {
             UserDto user = new();
 
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 
-            if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).First() != incomeUser.UserPassword)
+            if (Users.Where(u => u.UserName == incomeUser.UserName).Select(u => u.UserPassword).FirstOrDefault() != incomeUser.UserPassword)
             {
-                return new UserDto { Success = false, Email = "", UserId = -1, Username = "" };
+                return Unauthorized(new UserDto { Success = false, Email = "", UserId = -1, Username = "" });
             }
 
             user.Username = incomeUser.UserName;
@@ -50,16 +51,25 @@ namespace Zapasovnik.API.Controllers
             if (user.Email == null) user.Success = false;
             else user.Success = true;
 
-            return user;
+            string token = GenerateJwtToken(incomeUser.UserName);
+
+            return Ok(new { token, user });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult APIGetUsers()
+        {
+            return Ok( Users.ToList() );
         }
 
         private string GenerateJwtToken(string username)
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
             var key = new SymmetricSecurityKey(JwtSecret.LoadSecrete());
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -69,7 +79,8 @@ namespace Zapasovnik.API.Controllers
                 audience: "kulosh.eu",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
