@@ -22,8 +22,8 @@ namespace Zapasovnik.API.Security
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "kulosh.eu",
-                audience: "kulosh.eu",
+                issuer: "api.kulosh.eu",
+                audience: "api.kulosh.eu",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
