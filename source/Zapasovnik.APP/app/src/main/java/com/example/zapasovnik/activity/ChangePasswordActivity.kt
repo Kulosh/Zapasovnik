@@ -45,9 +45,9 @@ class ChangePasswordActivity : ComponentActivity() {
                     val token = userData.jwtTokenFlow.first()
 
                     val pwdString = buildJsonObject {
-                        put("userId", userId)
-                        put("old", oldPwd.text.toString())
-                        put("new", newPwd.text.toString())
+                        put("UserId", userId)
+                        put("Old", oldPwd.text.toString())
+                        put("New", newPwd.text.toString())
                     }
                     val resp = RetrofitClient.api.postChangePassword(pwdString, "Bearer ${userData.jwtTokenFlow.first()}")
                     val success = resp.body()
