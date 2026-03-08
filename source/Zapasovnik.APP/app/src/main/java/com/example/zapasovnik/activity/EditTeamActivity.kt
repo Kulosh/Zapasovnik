@@ -49,11 +49,11 @@ class EditTeamActivity : ComponentActivity() {
             val team = RetrofitClient.api.postTeamDetail(user)
 
             fname.setText(team.body()?.Name)
-            val oldDate = team.body()?.Established?.replace(Regex("[\\p{Z}\\s]+"), " ")
-            val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
-            val ldt = LocalDateTime.parse(oldDate, formatter)
-            val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            date.date = millis
+            Log.d("DATE FROM SERVER", team.body()?.Established.toString())
+
+            val oldDate = team.body()?.Established
+            val ldt = LocalDateTime.parse(oldDate).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            date.date = ldt
         }
 
         date.setOnDateChangeListener { view, year, month, dayOfMonth ->
