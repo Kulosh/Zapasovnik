@@ -51,8 +51,9 @@ class TeamDetailActivity : ComponentActivity() {
 
             name.text = team.body()?.Name
             est.text = team.body()?.Established
+            val isAdmin = userData.adminFlow.first()
 
-            if (loggedIn != -1)
+            if (loggedIn != -1 && !isAdmin)
             {
                 if (isFav!!) {
                     favBtn.visibility = Button.GONE
@@ -62,6 +63,11 @@ class TeamDetailActivity : ComponentActivity() {
             } else {
                 favBtn.visibility = Button.GONE
                 unfavBtn.visibility = Button.GONE
+            }
+
+            if (loggedIn == -1 || !isAdmin) {
+                edit.visibility = Button.GONE
+                delTeamBtn.visibility = Button.GONE
             }
         }
 

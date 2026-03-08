@@ -84,6 +84,12 @@ class ProfileActivity : ComponentActivity() {
 
             usernameText.text = username
             emailText.text = email.replace("\"", "")
+
+            val isAdmin = userData.adminFlow.first()
+            if (!isAdmin) {
+                leaguesBtn.visibility = Button.GONE
+            }
+
         }
 
 

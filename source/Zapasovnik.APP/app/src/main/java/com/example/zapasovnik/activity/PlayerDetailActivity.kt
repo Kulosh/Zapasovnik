@@ -49,12 +49,18 @@ class PlayerDetailActivity : ComponentActivity() {
 
             val isFav = player.body()?.IsFavorite
             val loggedIn = userData.userIdFlow.first()
+            val isAdmin = userData.adminFlow.first()
 
-            if (loggedIn != -1) {
+            if (loggedIn != -1  && !isAdmin) {
                 if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
             } else {
                 favBtn.visibility = Button.GONE
                 unfavBtn.visibility = Button.GONE
+            }
+
+            if (loggedIn == -1 || !isAdmin) {
+                edit.visibility = Button.GONE
+                delPlayerBtn.visibility = Button.GONE
             }
 
             fname.text = player.body()?.FName
