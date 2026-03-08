@@ -27,7 +27,7 @@ namespace Zapasovnik.API.Controllers
         public bool APIChangePassword([FromBody] ChangePasswordDto chg)
         {
             User user = Users
-                .Where(u => Convert.ToString(u.UserId) == chg.UserId)
+                .Where(u => u.UserId == chg.UserId)
                 .First();
 
             chg.Old = PasswordHelper.HashPassword(chg.Old);
