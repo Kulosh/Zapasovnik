@@ -58,10 +58,9 @@ namespace Zapasovnik.API
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "kulosh.eu",
-                        ValidAudience = "kulosh.eu",
-                        IssuerSigningKey = new SymmetricSecurityKey(JwtSecret.LoadSecrete()),
-                        RoleClaimType = ClaimTypes.Role                        
+                        ValidIssuer = "api.kulosh.eu",
+                        ValidAudience = "api.kulosh.eu",
+                        IssuerSigningKey = new SymmetricSecurityKey(JwtSecret.LoadSecrete())
                     };
                 });
 
