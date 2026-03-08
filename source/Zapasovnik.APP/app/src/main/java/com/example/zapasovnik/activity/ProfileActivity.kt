@@ -88,6 +88,10 @@ class ProfileActivity : ComponentActivity() {
             val isAdmin = userData.adminFlow.first()
             if (!isAdmin) {
                 leaguesBtn.visibility = Button.GONE
+            } else {
+                favPlayersBtn.visibility = Button.GONE
+                favMatchesBtn.visibility = Button.GONE
+                favTeamsBtn.visibility = Button.GONE
             }
 
         }
