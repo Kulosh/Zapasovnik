@@ -59,6 +59,11 @@ class MatchDetailActivity : ComponentActivity() {
                 unfavBtn.visibility = Button.GONE
             }
 
+            if (loggedIn == -1 || !isAdmin) {
+                edit.visibility = Button.GONE
+                delMatchBtn.visibility = Button.GONE
+            }
+
             team1.text = match.body()?.Team1
             team2.text = match.body()?.Team2
             date.text = match.body()?.Date

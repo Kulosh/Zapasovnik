@@ -58,6 +58,11 @@ class PlayerDetailActivity : ComponentActivity() {
                 unfavBtn.visibility = Button.GONE
             }
 
+            if (loggedIn == -1 || !isAdmin) {
+                edit.visibility = Button.GONE
+                delPlayerBtn.visibility = Button.GONE
+            }
+
             fname.text = player.body()?.FName
             lname.text = player.body()?.LName
             birth.text = player.body()?.Birth

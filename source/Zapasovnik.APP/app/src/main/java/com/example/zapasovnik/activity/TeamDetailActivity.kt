@@ -64,6 +64,11 @@ class TeamDetailActivity : ComponentActivity() {
                 favBtn.visibility = Button.GONE
                 unfavBtn.visibility = Button.GONE
             }
+
+            if (loggedIn == -1 || !isAdmin) {
+                edit.visibility = Button.GONE
+                delTeamBtn.visibility = Button.GONE
+            }
         }
 
         delTeamBtn.setOnClickListener {
