@@ -5,89 +5,135 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Zapasovnik">
         <activity
             android:name=".activity.HomeActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Zapasovnik">
+            android:theme="@style/Theme.Zapasovnik"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PlayersActivity">
+        <activity
+            android:name=".activity.PlayersActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.ProfileActivity">
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.ChangePasswordActivity">
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:screenOrientation="portrait">
             
         </activity>
-        <activity android:name=".activity.FavPlayersActivity">
+        <activity
+            android:name=".activity.FavPlayersActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.RegisterActivity">
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait">
             
         </activity>
-        <activity android:name=".activity.NewPlayerActivity">
+        <activity
+            android:name=".activity.NewPlayerActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.PlayerDetailActivity">
+        <activity
+            android:name=".activity.PlayerDetailActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.MatchesActivity">
+        <activity
+            android:name=".activity.MatchesActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.NewMatchActivity">
+        <activity
+            android:name=".activity.NewMatchActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.MatchDetailActivity">
+        <activity
+            android:name=".activity.MatchDetailActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.FavMatchesActivity">
+        <activity
+            android:name=".activity.FavMatchesActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.TeamsActivity">
+        <activity
+            android:name=".activity.TeamsActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.TeamDetailActivity">
+        <activity
+            android:name=".activity.TeamDetailActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.NewTeamActivity">
+        <activity
+            android:name=".activity.NewTeamActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.FavTeamsActivity">
+        <activity
+            android:name=".activity.FavTeamsActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.LeagueDetailActivity">
+        <activity
+            android:name=".activity.LeagueDetailActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.LeaguesActivity">
+        <activity
+            android:name=".activity.LeaguesActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.NewLeagueActivity">
+        <activity
+            android:name=".activity.NewLeagueActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.EditMatchActivity">
+        <activity
+            android:name=".activity.EditMatchActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.EditPlayerActivity">
+        <activity
+            android:name=".activity.EditPlayerActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.EditTeamActivity">
+        <activity
+            android:name=".activity.EditTeamActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".activity.EditLeagueActivity">
+        <activity
+            android:name=".activity.EditLeagueActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>
