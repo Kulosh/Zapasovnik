@@ -29,9 +29,6 @@ class HomeActivity : ComponentActivity() {
 
         userData = UserData(this)
 
-        val loginIntent = Intent(this, LoginActivity::class.java)
-        val profileIntent = Intent(this, ProfileActivity::class.java)
-
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -54,8 +51,35 @@ class HomeActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            val loginSuccess = userData.userIdFlow.first()
-//            Log.e("Login success", loginSuccess)
+
+            try {
+                val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
+                recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+                    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+                    intent.putExtra("id", match.Id)
+                    startActivity(intent)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        userData = UserData(this)
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        val profileIntent = Intent(this, ProfileActivity::class.java)
+
+        lifecycleScope.launch {
+            val jwtExpTime = userData.jwtExpireFlow.first()
+            var loginSuccess = userData.userIdFlow.first()
+
+            if (loginSuccess != -1 && jwtExpTime < System.currentTimeMillis()/1000 + 60) {
+                userData.storeUser(-1, "", "", "", 0, false)
+                loginSuccess = -1
+            }
 
             if (loginSuccess != -1) {
                 val loginClick = findViewById<ImageView>(R.id.loginIcon)
@@ -67,17 +91,6 @@ class HomeActivity : ComponentActivity() {
                 loginClick.setOnClickListener {
                     startActivity(loginIntent)
                 }
-            }
-
-            try {
-                val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-                recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
-                    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
-                    intent.putExtra("id", match.Id)
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
