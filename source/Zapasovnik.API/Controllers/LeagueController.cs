@@ -22,6 +22,10 @@ namespace Zapasovnik.API.Controllers
             DbContext = new();
         }
 
+        // ------------------------------------
+        // GET requests
+        // ------------------------------------
+
         [HttpGet("Leagues")]
         public List<League> APILeagues()
         {
@@ -40,6 +44,10 @@ namespace Zapasovnik.API.Controllers
             return league;
         }
 
+        // ------------------------------------
+        // POST requests
+        // ------------------------------------
+
         [Authorize(Roles = "True")]
         [HttpPost("AddLeague")]
         public bool APIAddLeague([FromBody] LeagueDto newObject)
@@ -56,6 +64,39 @@ namespace Zapasovnik.API.Controllers
                 return false;
             }
         }
+
+        // ------------------------------------
+        // PATCH requests
+        // ------------------------------------
+
+        [Authorize(Roles = "True")]
+        [HttpPatch("EditLeague/{id}")]
+        public bool APIEditLeague(int id, [FromBody] LeagueDto editedObject)
+        {
+            List<League> leagues = DbContext.Leagues.ToList();
+
+            try
+            {
+                League editedLeague = leagues
+                    .Where(l => l.LeagueId == id)
+                    .First();
+
+                editedLeague.LeagueName = editedObject.LeagueName;
+
+                DbContext.Leagues.Update(editedLeague);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ------------------------------------
+        // DELETE requests
+        // ------------------------------------
 
         [Authorize(Roles = "True")]
         [HttpDelete("DeleteLeague/{id}")]
@@ -90,31 +131,6 @@ namespace Zapasovnik.API.Controllers
 
                 return true;
             } catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "True")]
-        [HttpPatch("EditLeague/{id}")]
-        public bool APIEditLeague(int id, [FromBody] LeagueDto editedObject)
-        {
-            List<League> leagues = DbContext.Leagues.ToList();
-
-            try
-            {
-                League editedLeague = leagues
-                    .Where(l => l.LeagueId == id)
-                    .First();
-
-                editedLeague.LeagueName = editedObject.LeagueName;
-
-                DbContext.Leagues.Update(editedLeague);
-                DbContext.SaveChanges();
-
-                return true;
-            }
-            catch
             {
                 return false;
             }

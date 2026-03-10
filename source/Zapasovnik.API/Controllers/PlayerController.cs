@@ -19,6 +19,10 @@ namespace Zapasovnik.API.Controllers
             DbContext = new();
         }
 
+        // ------------------------------------
+        // GET requests
+        // ------------------------------------
+
         [HttpGet("Players")]
         public List<PlayersListDto> APIPlayers()
         {
@@ -49,6 +53,10 @@ namespace Zapasovnik.API.Controllers
 
             return resp;
         }
+
+        // ------------------------------------
+        // POST requests
+        // ------------------------------------
 
         [HttpPost("PlayerDetail")]
         public PlayerDetailDto APIPlayerDetail([FromBody] FavDto user)
@@ -82,6 +90,122 @@ namespace Zapasovnik.API.Controllers
 
             return resp;
         }
+
+        [Authorize(Roles = "True")]
+        [HttpPost("AddPlayer")]
+        public bool AddPlayer([FromBody] PlayerDto newObject)
+        {
+            try
+            {
+                Player player = new()
+                {
+                    FirstName = newObject.FName,
+                    LastName = newObject.LName,
+                    PlayerBorn = Convert.ToDateTime(newObject.Birth)
+                };
+                DbContext.Players.Add(player);
+                DbContext.SaveChanges();
+                List<Player> players = DbContext.Players.ToList();
+
+                if (newObject.Team == "") return true;
+
+                int pId = DbContext.Players
+                    .Last()
+                    .PlayerId;
+                int tId = DbContext.Teams
+                    .Where(t => t.TeamName == newObject.Team)
+                    .First()
+                    .TeamId;
+
+                TeamPlayer teamPlayer = new() { PlayerId = pId, TeamId = tId };
+                DbContext.TeamsPlayers.Add(teamPlayer);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("FavPlayer")]
+        public List<PlayersListDto> APIFavPlayers([FromBody] int userId)
+        {
+            List<UserFavPlayer> userFavPlayers = DbContext.UsersFavPlayers.ToList();
+
+            List<PlayersListDto> resp = userFavPlayers
+                .Where(f => f.UserId == Convert.ToInt32(userId))
+                .Join(DbContext.Players,
+                    fav => fav.PlayerId,
+                    p => p.PlayerId,
+                    (fav, p) => p)
+                .Select(p => new PlayersListDto
+                {
+                    Id = p.PlayerId,
+                    FName = p.FirstName,
+                    LName = p.LastName,
+
+                    Team = DbContext.TeamsPlayers
+                        .Where(tp => tp.PlayerId == p.PlayerId)
+                        .Join(DbContext.Teams,
+                            tp => tp.TeamId,
+                            t => t.TeamId,
+                            (tp, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .FirstOrDefault()!
+                })
+                .OrderBy(p => p.Id)
+                .ThenBy(p => p.FName)
+                .ThenBy(p => p.LName)
+                .ToList();
+
+            return resp;
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("AddFavPlayer")]
+        public bool APIAddFavPlayer([FromBody] FavDto newFav)
+        {
+            try
+            {
+                UserFavPlayer userFavPlayer = new()
+                {
+                    PlayerId = newFav.EntityId,
+                    UserId = newFav.UserId,
+                };
+
+                DbContext.UsersFavPlayers.Add(userFavPlayer);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        [Authorize(Roles = "False")]
+        [HttpPost("DeleteFavPlayer")]
+        public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
+        {
+            try
+            {
+                DbContext.UsersFavPlayers.Remove(delFavPlayer);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ------------------------------------
+        // PATCH requests
+        // ------------------------------------
 
         [Authorize(Roles = "True")]
         [HttpPatch("EditPlayer/{id}")]
@@ -152,100 +276,9 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
-        [Authorize(Roles = "False")]
-        [HttpPost("FavPlayer")]
-        public List<PlayersListDto> APIFavPlayers([FromBody] int userId)
-        {
-            List<UserFavPlayer> userFavPlayers = DbContext.UsersFavPlayers.ToList();
-
-            List<PlayersListDto> resp = userFavPlayers
-                .Where(f => f.UserId == Convert.ToInt32(userId))
-                .Join(DbContext.Players,
-                    fav => fav.PlayerId,
-                    p => p.PlayerId,
-                    (fav, p) => p)
-                .Select(p => new PlayersListDto
-                {
-                    Id = p.PlayerId,
-                    FName = p.FirstName,
-                    LName = p.LastName,
-
-                    Team = DbContext.TeamsPlayers
-                        .Where(tp => tp.PlayerId == p.PlayerId)
-                        .Join(DbContext.Teams,
-                            tp => tp.TeamId,
-                            t => t.TeamId,
-                            (tp, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault()!
-                })
-                .OrderBy(p => p.Id)
-                .ThenBy(p => p.FName)
-                .ThenBy(p => p.LName)
-                .ToList();
-
-            return resp;
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("AddFavPlayer")]
-        public bool APIAddFavPlayer([FromBody] FavDto newFav)
-        {
-            try
-            {
-                UserFavPlayer userFavPlayer = new()
-                {
-                    PlayerId = newFav.EntityId,
-                    UserId = newFav.UserId,
-                };
-
-                DbContext.UsersFavPlayers.Add(userFavPlayer);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "True")]
-        [HttpPost("AddPlayer")]
-        public bool AddPlayer([FromBody] PlayerDto newObject)
-        {
-            try
-            {
-                Player player = new()
-                {
-                    FirstName = newObject.FName,
-                    LastName = newObject.LName,
-                    PlayerBorn = Convert.ToDateTime(newObject.Birth)
-                };
-                DbContext.Players.Add(player);
-                DbContext.SaveChanges();
-                List<Player> players = DbContext.Players.ToList();
-
-                if (newObject.Team == "") return true;
-
-                int pId = DbContext.Players
-                    .Last()
-                    .PlayerId;
-                int tId = DbContext.Teams
-                    .Where(t => t.TeamName == newObject.Team)
-                    .First()
-                    .TeamId;
-
-                TeamPlayer teamPlayer = new() { PlayerId = pId, TeamId = tId };
-                DbContext.TeamsPlayers.Add(teamPlayer);
-                DbContext.SaveChanges();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        // ------------------------------------
+        // DELETE requests
+        // ------------------------------------
 
         [Authorize(Roles = "True")]
         [HttpDelete("DeletePlayer/{id}")]
@@ -279,22 +312,6 @@ namespace Zapasovnik.API.Controllers
 
                 return true;
             } catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("DeleteFavPlayer")]
-        public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
-        {
-            try
-            {
-                DbContext.UsersFavPlayers.Remove(delFavPlayer);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch
             {
                 return false;
             }

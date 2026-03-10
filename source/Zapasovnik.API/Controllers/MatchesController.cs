@@ -19,6 +19,10 @@ namespace Zapasovnik.API.Controllers
             DbContext = new();
         }
 
+        // ------------------------------------
+        // GET requests
+        // ------------------------------------
+
         [HttpGet("TeamMatches")]
         public List<MatchesListDto> APITeamMatches()
         {
@@ -58,6 +62,10 @@ namespace Zapasovnik.API.Controllers
             return resp;
         }
 
+        // ------------------------------------
+        // POST requests
+        // ------------------------------------
+
         [HttpPost("MatchDetail")]
         public MatchDetailDto APIMatchDetail([FromBody] FavDto user)
         {
@@ -69,7 +77,7 @@ namespace Zapasovnik.API.Controllers
                 List<League> leagues = DbContext.Leagues.ToList();
                 List<UserFavMatch> userFavMatches = DbContext.UserFavMatches.ToList();
 
-                MatchDetailDto match = new()
+                MatchDetailDto resp = new()
                 {
                     MatchId = user.EntityId,
                     Team1 = teamMatches
@@ -104,7 +112,7 @@ namespace Zapasovnik.API.Controllers
                         .FirstOrDefault(ufm => ufm.MatchId == user.EntityId && ufm.UserId == user.UserId) != null
                 };
 
-                return match;
+                return resp;
             }
             catch
             {
@@ -173,22 +181,6 @@ namespace Zapasovnik.API.Controllers
         }
 
         [Authorize(Roles = "False")]
-        [HttpPost("AddFavMatch")]
-        public bool APIAddFavMatch([FromBody] UserFavMatch newFavMatch)
-        {
-            try
-            {
-                DbContext.UserFavMatches.Add(newFavMatch);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "False")]
         [HttpPost("FavMatch")]
         public List<MatchesListDto> APIFavMatches([FromBody] int userId)
         {
@@ -196,7 +188,7 @@ namespace Zapasovnik.API.Controllers
             List<Team> teams = DbContext.Teams.ToList();
             List<UserFavMatch> userFavMatches = DbContext.UserFavMatches.ToList();
 
-            List<MatchesListDto> favMatches = userFavMatches
+            List<MatchesListDto> resp = userFavMatches
                 .Where(ufm => ufm.UserId == Convert.ToInt32(userId))
                 .Join(DbContext.Matches,
                     fav => fav.MatchId,
@@ -225,8 +217,56 @@ namespace Zapasovnik.API.Controllers
                         .First()
                 })
                 .ToList();
-            return favMatches;
+            return resp;
         }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("AddFavMatch")]
+        public bool APIAddFavMatch([FromBody] FavDto match)
+        {
+            try
+            {
+                UserFavMatch userFavMatch = new()
+                {
+                    MatchId = match.EntityId,
+                    UserId = match.UserId
+                };
+
+                DbContext.UserFavMatches.Add(userFavMatch);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("DeleteFavMatch")]
+        public bool APIDelFavPlayer([FromBody] FavDto match)
+        {
+            try
+            {
+                UserFavMatch userFavMatch = new()
+                {
+                    MatchId = match.EntityId,
+                    UserId = match.UserId
+                };
+
+                DbContext.UserFavMatches.Remove(userFavMatch);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ------------------------------------
+        // PATCH requests
+        // ------------------------------------
 
         [Authorize(Roles = "True")]
         [HttpPatch("EditMatch/{id}")]
@@ -292,6 +332,10 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        // ------------------------------------
+        // DELETE requests
+        // ------------------------------------
+
         [Authorize(Roles = "True")]
         [HttpDelete("DeleteMatch/{id}")]
         public bool APIDeleteMatch(int id)
@@ -332,24 +376,6 @@ namespace Zapasovnik.API.Controllers
             }
             catch
             {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("DeleteFavMatch")]
-        public bool APIDelFavPlayer([FromBody] UserFavMatch delUserFavMatch)
-        {
-            try
-            {
-                DbContext.UserFavMatches.Remove(delUserFavMatch);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.StackTrace);
-                Console.WriteLine(e.Message);
                 return false;
             }
         }
