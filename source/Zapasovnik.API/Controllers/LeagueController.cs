@@ -17,7 +17,6 @@ namespace Zapasovnik.API.Controllers
     {
         public LeaguesDbContext DbContext { get; set; }
 
-
         public LeagueController()
         {
             DbContext = new();

@@ -177,7 +177,7 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("FavTeams")]
-        public List<TeamsListDto> APIFavTeams(int userId)
+        public List<TeamsListDto> APIFavTeams([FromBody] int userId)
         {
             List<UserFavTeam> userFavTeams = DbContext.UserFavTeams.ToList();
 

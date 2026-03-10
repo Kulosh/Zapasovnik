@@ -154,7 +154,7 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("FavPlayer")]
-        public List<PlayersListDto> APIFavPlayers(int userId)
+        public List<PlayersListDto> APIFavPlayers([FromBody] int userId)
         {
             List<UserFavPlayer> userFavPlayers = DbContext.UsersFavPlayers.ToList();
 

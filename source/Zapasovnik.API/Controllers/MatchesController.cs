@@ -12,7 +12,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
-        public TeamMatchesDb DbContext { get; set; }
+        public MatchesDb DbContext { get; set; }
 
         public MatchesController()
         {
@@ -190,7 +190,7 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("FavMatch")]
-        public List<MatchesListDto> APIFavMatches(int userId)
+        public List<MatchesListDto> APIFavMatches([FromBody] int userId)
         {
             List<TeamMatch> teamMatches = DbContext.TeamsMatches.ToList();
             List<Team> teams = DbContext.Teams.ToList();
