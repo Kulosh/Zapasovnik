@@ -13,12 +13,14 @@ namespace Zapasovnik.API.Controllers
 {
     [Route("Zapasovnik/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class LoginController : ControllerBase
     {
-        public dbZapasovnikContext DbContext { get; set; }
+        //TODO: rename on frontend
+
+        public UsersOnlyDb DbContext { get; set; }
         public List<User> Users { get; set; }
 
-        public UserController()
+        public LoginController()
         {
             DbContext = new();
             Users = DbContext.Users.ToList();

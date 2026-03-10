@@ -13,7 +13,7 @@ namespace Zapasovnik.API.Entities
         public int MatchId { get; set; }
 
         [Column("match_date")]
-        public DateTime? MatchDate { get; set; }
+        public DateTime MatchDate { get; set; }
 
         [Column("FK_league_id")]
         public int? LeagueId { get; set; }

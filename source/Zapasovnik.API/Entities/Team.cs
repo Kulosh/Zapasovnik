@@ -13,7 +13,7 @@ namespace Zapasovnik.API.Entities
         public int TeamId { get; set; }
 
         [Column("team_name")]
-        public string TeamName { get; set; }
+        public required string TeamName { get; set; }
 
         [Column("team_established")]
         public DateTime TeamEstablished { get; set; }

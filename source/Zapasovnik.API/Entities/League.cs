@@ -12,6 +12,6 @@ namespace Zapasovnik.API.Entities
         public int LeagueId { get; set; }
 
         [Column("league_name")]
-        public string LeagueName { get; set; }
+        public required string LeagueName { get; set; }
     }
 }

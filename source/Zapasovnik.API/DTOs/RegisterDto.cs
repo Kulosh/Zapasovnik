@@ -2,8 +2,8 @@
 {
     public class RegisterDto
     {
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public string UserPassword { get; set; }
+        public required string UserName { get; set; }
+        public required string UserEmail { get; set; }
+        public required string UserPassword { get; set; }
     }
 }

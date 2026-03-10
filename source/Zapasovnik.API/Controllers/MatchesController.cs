@@ -10,7 +10,7 @@ namespace Zapasovnik.API.Controllers
 {
     [Route("Zapasovnik")]
     [ApiController]
-    public class TeamMatchesController : ControllerBase
+    public class MatchesController : ControllerBase
     {
         public TeamMatchesDb DbContext { get; set; }
         public List<Team> Teams { get; set; }
@@ -19,7 +19,7 @@ namespace Zapasovnik.API.Controllers
         public List<League> Leagues { get; set; }
         public List<UserFavMatch> UserFavMatches { get; set; }
 
-        public TeamMatchesController()
+        public MatchesController()
         {
             DbContext = new();
 
@@ -31,10 +31,10 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpGet("TeamMatches")]
-        public List<MatchWithTeamsDto> APITeamMatches()
+        public List<MatchesListDto> APITeamMatches()
         {
-            List<MatchWithTeamsDto> rows = Matches
-                .Select(m => new MatchWithTeamsDto
+            List<MatchesListDto> resp = Matches
+                .Select(m => new MatchesListDto
                 {
                     MatchDate = m.MatchDate,
 
@@ -47,7 +47,7 @@ namespace Zapasovnik.API.Controllers
                                 t => t.TeamId,
                                 (tm, t) => t.TeamName)
                         .OrderBy(name => name)
-                        .FirstOrDefault(),
+                        .First(),
 
                     Team2 = TeamsMatches
                         .Where(tm => tm.MatchId == m.MatchId)
@@ -57,12 +57,12 @@ namespace Zapasovnik.API.Controllers
                                 (tm, t) => t.TeamName)
                         .OrderBy(name => name)
                         .Skip(1)
-                        .FirstOrDefault()
+                        .First()
                 })
                 .OrderBy(x => x.MatchDate)
                 .ToList();
 
-            return rows;
+            return resp;
         }
 
         [HttpPost("MatchDetail")]
@@ -70,44 +70,7 @@ namespace Zapasovnik.API.Controllers
         {
             try
             {
-                //MatchDetailDto match = Matches
-                //.Select(m => new MatchDetailDto
-                //{
-                //    Date = m.MatchDate.ToString()!,
-
-                //    MatchId = m.MatchId,
-
-                //    Team1 = TeamsMatches
-                //        .Where(tm => tm.MatchId == m.MatchId)
-                //        .Join(Teams,
-                //                tm => tm.TeamId,
-                //                t => t.TeamId,
-                //                (tm, t) => t.TeamName)
-                //        .OrderBy(name => name)
-                //        .First(),
-
-                //    Team2 = TeamsMatches
-                //        .Where(tm => tm.MatchId == m.MatchId)
-                //        .Join(Teams,
-                //                tm => tm.TeamId,
-                //                t => t.TeamId,
-                //                (tm, t) => t.TeamName)
-                //        .OrderBy(name => name)
-                //        .Skip(1)
-                //        .First(),
-                //    League = Matches
-                //        .Where(ml => ml.LeagueId == 1)
-                //        .Join(Leagues,
-                //            ml => ml.LeagueId,
-                //            l => l.LeagueId,
-                //            (ml, l) => l.LeagueName)
-                //        .First()
-                //})
-                //.First();
-
-                //return match;
-
-                MatchDetailDto match = new MatchDetailDto()
+                MatchDetailDto match = new()
                 {
                     MatchId = user.EntityId,
                     Team1 = TeamsMatches
@@ -138,20 +101,21 @@ namespace Zapasovnik.API.Controllers
                         .Where(m => m.MatchId == user.EntityId)
                         .Select(m => Convert.ToString(m.MatchDate)!)
                         .First(),
-                    IsFavorite = UserFavMatches.Where(ufm => ufm.MatchId == user.EntityId && ufm.UserId == user.UserId).FirstOrDefault() != null ? true : false
+                    IsFavorite = UserFavMatches
+                        .FirstOrDefault(ufm => ufm.MatchId == user.EntityId && ufm.UserId == user.UserId) != null
                 };
 
                 return match;
             }
             catch
             {
-                return null;
+                return null!;
             }
         }
 
         [Authorize(Roles = "True")]
         [HttpPost("AddMatch")]
-        public bool APIAddMatch([FromBody] AddMatchDto newMatch)
+        public bool APIAddMatch([FromBody] MatchDto newMatch)
         {
             try
             {
@@ -161,7 +125,7 @@ namespace Zapasovnik.API.Controllers
                 .First()
                 .LeagueId;
 
-                Match match = new Match
+                Match match = new()
                 {
                     LeagueId = leagueId,
                     MatchDate = Convert.ToDateTime(newMatch.Date)
@@ -176,7 +140,7 @@ namespace Zapasovnik.API.Controllers
                     .First()
                     .MatchId;
 
-                TeamMatch t1 = new TeamMatch
+                TeamMatch t1 = new()
                 {
                     MatchId = matchId,
                     TeamId = Teams
@@ -185,9 +149,120 @@ namespace Zapasovnik.API.Controllers
                         .TeamId
                 };
 
-                TeamMatch t2 = new TeamMatch
+                TeamMatch t2 = new()
                 {
                     MatchId = matchId,
+                    TeamId = Teams
+                        .Where(t => t.TeamName == newMatch.Team2)
+                        .First()
+                        .TeamId
+                };
+
+                DbContext.TeamsMatches.Add(t1);
+                DbContext.TeamsMatches.Add(t2);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("AddFavMatch")]
+        public bool APIAddFavMatch([FromBody] UserFavMatch newFavMatch)
+        {
+            try
+            {
+                DbContext.UserFavMatches.Add(newFavMatch);
+                DbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("FavMatch")]
+        public List<MatchesListDto> APIFavMatches(int userId)
+        {
+            List<MatchesListDto> favMatches = UserFavMatches
+                .Where(ufm => ufm.UserId == Convert.ToInt32(userId))
+                .Join(DbContext.Matches,
+                    fav => fav.MatchId,
+                    m => m.MatchId,
+                    (fav, m) => m)
+                .Select(mwt => new MatchesListDto
+                {
+                    MatchDate = mwt.MatchDate,
+                    MatchId = mwt.MatchId,
+                    Team1 = TeamsMatches
+                        .Where(tm => tm.MatchId == mwt.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .First(),
+                    Team2 = TeamsMatches
+                        .Where(tm => tm.MatchId == mwt.MatchId)
+                        .Join(Teams,
+                                tm => tm.TeamId,
+                                t => t.TeamId,
+                                (tm, t) => t.TeamName)
+                        .OrderBy(name => name)
+                        .Skip(1)
+                        .First()
+                })
+                .ToList();
+            return favMatches;
+        }
+
+        [Authorize(Roles = "True")]
+        [HttpPatch("EditMatch/{id}")]
+        public bool APIEditMatch(int id, [FromBody] MatchDto newMatch)
+        {
+            try
+            {
+                Match match = Matches
+                    .Where(m => m.MatchId == id)
+                    .First();
+
+                int leagueId = Leagues
+                    .Where(l => l.LeagueName == newMatch.League)
+                    .First()
+                    .LeagueId;
+
+                match.MatchDate = Convert.ToDateTime(newMatch.Date);
+                match.LeagueId = leagueId;
+
+                DbContext.Matches.Update(match);
+                DbContext.SaveChanges();
+                Matches = DbContext.Matches.ToList();
+
+                List<TeamMatch> oldTM = TeamsMatches
+                    .Where(tm => tm.MatchId == id)
+                    .ToList();
+                
+                DbContext.TeamsMatches.RemoveRange(oldTM);
+                DbContext.SaveChanges();
+
+                TeamMatch t1 = new()
+                {
+                    MatchId = id,
+                    TeamId = Teams
+                        .Where(t => t.TeamName == newMatch.Team1)
+                        .First()
+                        .TeamId
+                };
+
+                TeamMatch t2 = new()
+                {
+                    MatchId = id,
                     TeamId = Teams
                         .Where(t => t.TeamName == newMatch.Team2)
                         .First()
@@ -247,107 +322,19 @@ namespace Zapasovnik.API.Controllers
         }
 
         [Authorize(Roles = "False")]
-        [HttpPost("AddFavMatch")]
-        public bool APIAddFavMatch([FromBody] UserFavMatch newFavMatch)
+        [HttpPost("DeleteFavMatch")]
+        public bool APIDelFavPlayer([FromBody] UserFavMatch delUserFavMatch)
         {
             try
             {
-                DbContext.UserFavMatches.Add(newFavMatch);
+                DbContext.UserFavMatches.Remove(delUserFavMatch);
                 DbContext.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("FavMatch")]
-        public List<MatchWithTeamsDto> APIFavMatches([FromBody] UserDto userId)
-        {
-            List<MatchWithTeamsDto> favMatches = UserFavMatches
-                .Where(ufm => ufm.UserId == Convert.ToInt32(userId.UserId))
-                .Join(DbContext.Matches,
-                    fav => fav.MatchId,
-                    m => m.MatchId,
-                    (fav, m) => m)
-                .Select(mwt => new MatchWithTeamsDto
-                {
-                    MatchDate = mwt.MatchDate,
-                    MatchId = mwt.MatchId,
-                    Team1 = TeamsMatches
-                        .Where(tm => tm.MatchId == mwt.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .FirstOrDefault(),
-                    Team2 = TeamsMatches
-                        .Where(tm => tm.MatchId == mwt.MatchId)
-                        .Join(Teams,
-                                tm => tm.TeamId,
-                                t => t.TeamId,
-                                (tm, t) => t.TeamName)
-                        .OrderBy(name => name)
-                        .Skip(1)
-                        .FirstOrDefault()
-                })
-                .ToList();
-            return favMatches;
-        }
-
-        [Authorize(Roles = "True")]
-        [HttpPatch("EditMatch/{id}")]
-        public bool APIEditMatch(int id, [FromBody] AddMatchDto newMatch)
-        {
-            try
-            {
-                Match match = Matches.Where(m => m.MatchId == id).First();
-
-                int leagueId = Leagues
-                .Where(l => l.LeagueName == newMatch.League)
-                .First()
-                .LeagueId;
-
-                match.MatchDate = Convert.ToDateTime(newMatch.Date);
-                match.LeagueId = leagueId;
-
-                DbContext.Matches.Update(match);
-                DbContext.SaveChanges();
-                Matches = DbContext.Matches.ToList();
-
-                List<TeamMatch> oldTM = TeamsMatches.Where(tm => tm.MatchId == id).ToList();
-                DbContext.TeamsMatches.RemoveRange(oldTM);
-                DbContext.SaveChanges();
-
-                TeamMatch t1 = new TeamMatch
-                {
-                    MatchId = id,
-                    TeamId = Teams
-                        .Where(t => t.TeamName == newMatch.Team1)
-                        .First()
-                        .TeamId
-                };
-
-                TeamMatch t2 = new TeamMatch
-                {
-                    MatchId = id,
-                    TeamId = Teams
-                        .Where(t => t.TeamName == newMatch.Team2)
-                        .First()
-                        .TeamId
-                };
-
-                DbContext.TeamsMatches.Add(t1);
-                DbContext.TeamsMatches.Add(t2);
-                DbContext.SaveChanges();
-
-                return true;
-            }
-            catch
-            {
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
                 return false;
             }
         }

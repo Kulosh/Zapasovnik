@@ -14,11 +14,11 @@ namespace Zapasovnik.API.DbContexts
 
             if (Environment.GetEnvironmentVariable("ConnectionString") == null)
             {
-                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                ConfigurationBuilder configurationBuilder = new();
                 IConfiguration configuration = configurationBuilder
                     .AddUserSecrets<Program>()
                     .Build();
-                connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+                connection = configuration.GetSection("Zapasovnik")["ConnectionString"]!;
             }
             else
             {

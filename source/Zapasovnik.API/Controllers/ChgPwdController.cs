@@ -14,7 +14,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class ChgPwdController : ControllerBase
     {
-        public dbZapasovnikContext DbContext { get; set; }
+        public UsersOnlyDb DbContext { get; set; }
         public List<User> Users { get; set; }
 
         public ChgPwdController()
@@ -24,7 +24,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
+        public bool APIChangePassword([FromBody] ChgPwdDto chg)
         {
             User user = Users
                 .Where(u => u.UserId == chg.UserId)

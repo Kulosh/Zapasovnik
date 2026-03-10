@@ -10,11 +10,11 @@ namespace Zapasovnik.API.Security
 
             if (Environment.GetEnvironmentVariable("JwtSecrete") == null)
             {
-                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                ConfigurationBuilder configurationBuilder = new();
                 IConfiguration configuration = configurationBuilder
                     .AddUserSecrets<Program>()
                     .Build();
-                secrete = Encoding.UTF8.GetBytes(configuration.GetSection("Zapasovnik")["JwtSecrete"]);
+                secrete = Encoding.UTF8.GetBytes(configuration.GetSection("Zapasovnik")["JwtSecrete"]!);
             }
             else
             {
