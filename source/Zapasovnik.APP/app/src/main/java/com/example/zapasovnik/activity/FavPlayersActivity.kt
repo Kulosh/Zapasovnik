@@ -32,9 +32,8 @@ class FavPlayersActivity : ComponentActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
-            val userId = buildJsonObject {
-                put("userId", userData.userIdFlow.first())
-            }
+            val userId = userData.userIdFlow.first()
+
             val favPlayers = RetrofitClient.api.postFavPlayer(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = PlayersTableAdapter(favPlayers) { player ->

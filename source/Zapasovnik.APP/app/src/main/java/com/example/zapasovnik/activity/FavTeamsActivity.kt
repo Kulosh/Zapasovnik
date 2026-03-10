@@ -27,7 +27,6 @@ class FavTeamsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // TODO: Change layout
         setContentView(R.layout.fav_teams_layout)
 
         userData = UserData(this)
@@ -35,9 +34,7 @@ class FavTeamsActivity : ComponentActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
-            val userId = buildJsonObject {
-                put("userId", userData.userIdFlow.first())
-            }
+            val userId = userData.userIdFlow.first()
             val favTeams = RetrofitClient.api.postFavTeams(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = FavTeamsTableAdapter(favTeams) { team ->

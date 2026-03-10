@@ -42,9 +42,12 @@ class PlayerDetailActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val user = buildJsonObject {
-                put("userId", userData.userIdFlow.first().toInt())
+                put("userId", userData.userIdFlow.first())
                 put("entityId", playerId)
             }
+
+            Log.e("User", user.toString())
+
             player = RetrofitClient.api.postPlayerDetail(user)
 
             val isFav = player.body()?.IsFavorite
@@ -89,7 +92,7 @@ class PlayerDetailActivity : ComponentActivity() {
         favBtn.setOnClickListener {
             lifecycleScope.launch {
                 val favPlayer = buildJsonObject {
-                    put("playerId", player?.body()?.Id)
+                    put("entityId", playerId)
                     put("userId", userData.userIdFlow.first())
                 }
 //                Log.d("String", "Bearer ${userData.jwtTokenFlow.first()}")

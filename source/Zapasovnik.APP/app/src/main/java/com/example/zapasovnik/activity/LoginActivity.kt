@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -47,7 +46,7 @@ class LoginActivity : ComponentActivity() {
             if (username != "" && password != "") {
                 lifecycleScope.launch {
                     try {
-                        val resp = RetrofitClient.api.postUser(loginString).string()
+                        val resp = RetrofitClient.api.postLogin(loginString).string()
 
 //                        Log.d("Token", resp)
 

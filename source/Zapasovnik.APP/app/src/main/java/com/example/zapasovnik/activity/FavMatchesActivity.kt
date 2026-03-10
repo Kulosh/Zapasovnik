@@ -34,9 +34,7 @@ class FavMatchesActivity : ComponentActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
-            val userId = buildJsonObject {
-                put("userId", userData.userIdFlow.first())
-            }
+            val userId = userData.userIdFlow.first()
             val favMatches = RetrofitClient.api.postFavMatch(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = HomeMatchTableAdapter(favMatches) { match ->
