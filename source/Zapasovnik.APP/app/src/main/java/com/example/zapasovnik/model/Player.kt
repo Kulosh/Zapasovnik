@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FavPlayer (
+data class Player (
     @SerialName("id")
     var Id: Int,
 

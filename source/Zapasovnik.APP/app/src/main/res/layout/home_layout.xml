@@ -50,7 +50,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
-        android:text="@string/players_btn"
+        android:text="@string/players"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/matchBtn" />
@@ -60,7 +60,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/teams_btn"
+        android:text="@string/teams"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/matchBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
@@ -72,7 +72,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/matches_btn"
+        android:text="@string/matches"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/playerBtn"
         app:layout_constraintStart_toStartOf="@+id/teamBtn" />

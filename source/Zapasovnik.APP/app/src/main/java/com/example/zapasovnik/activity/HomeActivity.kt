@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
@@ -30,37 +29,34 @@ class HomeActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
+        val teamsButton = findViewById<Button>(R.id.teamBtn)
+        val matchesButton = findViewById<Button>(R.id.matchBtn)
+        val playersButton = findViewById<Button>(R.id.playerBtn)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val playersClick = findViewById<Button>(R.id.playerBtn)
-        playersClick.setOnClickListener {
-            val intent = Intent(this, PlayersActivity::class.java)
-            startActivity(intent)
-        }
-
-        val matchesClick = findViewById<Button>(R.id.matchBtn)
-        matchesClick.setOnClickListener {
-            val intent = Intent(this, MatchesActivity::class.java)
-            startActivity(intent)
-        }
-
-        val teamsClick = findViewById<Button>(R.id.teamBtn)
-        teamsClick.setOnClickListener {
+        teamsButton.setOnClickListener {
             val intent = Intent(this, TeamsActivity::class.java)
             startActivity(intent)
         }
 
-        lifecycleScope.launch {
+        matchesButton.setOnClickListener {
+            val intent = Intent(this, MatchesActivity::class.java)
+            startActivity(intent)
+        }
 
-            try {
-                val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-                recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
-                    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
-                    intent.putExtra("id", match.Id)
-                    startActivity(intent)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+        playersButton.setOnClickListener {
+            val intent = Intent(this, PlayersActivity::class.java)
+            startActivity(intent)
+        }
+
+        lifecycleScope.launch {
+            val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
+
+            recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+                val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+                intent.putExtra("id", match.Id)
+                startActivity(intent)
             }
         }
     }
@@ -69,6 +65,9 @@ class HomeActivity : ComponentActivity() {
         super.onStart()
 
         userData = UserData(this)
+
+        val loginButton = findViewById<ImageView>(R.id.loginIcon)
+
         val loginIntent = Intent(this, LoginActivity::class.java)
         val profileIntent = Intent(this, ProfileActivity::class.java)
 
@@ -82,13 +81,11 @@ class HomeActivity : ComponentActivity() {
             }
 
             if (loginSuccess != -1) {
-                val loginClick = findViewById<ImageView>(R.id.loginIcon)
-                loginClick.setOnClickListener {
+                loginButton.setOnClickListener {
                     startActivity(profileIntent)
                 }
             } else {
-                val loginClick = findViewById<ImageView>(R.id.loginIcon)
-                loginClick.setOnClickListener {
+                loginButton.setOnClickListener {
                     startActivity(loginIntent)
                 }
             }

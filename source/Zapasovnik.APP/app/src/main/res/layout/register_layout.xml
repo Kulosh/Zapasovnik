@@ -27,7 +27,7 @@
         android:layout_marginBottom="32dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/username_input"
+        android:hint="@string/username"
         android:autofillHints="username"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/regEmail"
@@ -77,7 +77,7 @@
         android:layout_width="128dp"
         android:layout_height="64dp"
         android:layout_marginTop="64dp"
-        android:text="@string/register_btn"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="@+id/regPwdRe"
         app:layout_constraintStart_toStartOf="@+id/regPwdRe"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />

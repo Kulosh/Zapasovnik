@@ -13,7 +13,7 @@
         android:layout_marginBottom="32dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/new_league_name"
+        android:hint="@string/enter_name"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"

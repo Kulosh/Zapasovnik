@@ -7,11 +7,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.Player
 
 class PlayersTableAdapter(
-    private val players: List<FavPlayer>,
-    private val onPlayerClick: (FavPlayer) -> Unit
+    private val players: List<Player>,
+    private val onPlayerClick: (Player) -> Unit
 ) : RecyclerView.Adapter<PlayersTableAdapter.PlayerTableHolder>() {
 
     class PlayerTableHolder(view: View) : RecyclerView.ViewHolder(view) {

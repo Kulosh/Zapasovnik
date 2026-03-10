@@ -2,13 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,8 +14,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import java.time.LocalDateTime
-import kotlin.toString
 
 class EditLeagueActivity : ComponentActivity() {
 
@@ -33,33 +25,26 @@ class EditLeagueActivity : ComponentActivity() {
 
         userData = UserData(this)
 
-        val nameField = findViewById<TextView>(R.id.newLeagueName)
-        val addBtn = findViewById<Button>(R.id.newLeagueAddBtn)
+        val nameInput = findViewById<TextView>(R.id.newLeagueName)
+        val addButton = findViewById<Button>(R.id.newLeagueAddBtn)
         val id = intent.getIntExtra("leagueId", -1)
 
         lifecycleScope.launch {
-            val token = userData.jwtTokenFlow.first()
             val league = RetrofitClient.api.getLeagueDetail(id, "Bearer ${userData.jwtTokenFlow.first()}").body()
-            nameField.text = league!!.LeagueName
+            nameInput.text = league!!.LeagueName
         }
 
-        addBtn.setOnClickListener {
-            val name = nameField.text.toString()
-
-//            Log.d("Birth", birth)
-//            Log.d("Team", team)
+        addButton.setOnClickListener {
+            val name = nameInput.text.toString()
 
             if (name == "") {
                 Toast.makeText(
                     applicationContext,
-                    R.string.new_player_enter_name,
+                    R.string.enter_name,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-
                 lifecycleScope.launch {
-                    val token = userData.jwtTokenFlow.first()
                     val league = buildJsonObject {
                         put("LeagueName", name)
                     }
@@ -68,14 +53,16 @@ class EditLeagueActivity : ComponentActivity() {
                     if (resp.isSuccessful && resp.body()!!) {
                         Toast.makeText(
                             applicationContext,
-                            R.string.new_league_success, //TODO: Added > Updated
+                            R.string.updated_successfully,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = Intent(this@EditLeagueActivity, HomeActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            R.string.network_error,
+                            R.string.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

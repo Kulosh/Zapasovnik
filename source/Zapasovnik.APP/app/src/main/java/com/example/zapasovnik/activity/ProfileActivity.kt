@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -10,11 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
-import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 class ProfileActivity : ComponentActivity() {
 
@@ -27,75 +23,64 @@ class ProfileActivity : ComponentActivity() {
 
         userData = UserData(this)
 
-        val usernameText = findViewById<TextView>(R.id.profileUsername)
-        val emailText = findViewById<TextView>(R.id.profileEmail)
-        val changPasswordBtn = findViewById<Button>(R.id.profileChangePassword)
-        val logoutBtn = findViewById<Button>(R.id.logoutBtn)
-        val favPlayersBtn = findViewById<Button>(R.id.favPlayersBtn)
-        val favMatchesBtn = findViewById<Button>(R.id.favMatchesBtn)
-        val favTeamsBtn = findViewById<Button>(R.id.favTeamsBtn)
-        val leaguesBtn = findViewById<Button>(R.id.profileLeaguesBtn)
+        val usernameView = findViewById<TextView>(R.id.profileUsername)
+        val emailView = findViewById<TextView>(R.id.profileEmail)
+        val changPasswordButton = findViewById<Button>(R.id.profileChangePassword)
+        val leaguesButton = findViewById<Button>(R.id.profileLeaguesBtn)
+        val favPlayersButton = findViewById<Button>(R.id.favPlayersBtn)
+        val favMatchesButton = findViewById<Button>(R.id.favMatchesBtn)
+        val favTeamsButton = findViewById<Button>(R.id.favTeamsBtn)
+        val logoutButton = findViewById<Button>(R.id.logoutBtn)
 
-        changPasswordBtn.setOnClickListener {
+        lifecycleScope.launch {
+            val username = userData.usernameFlow.first()
+            val email = userData.emailFlow.first()
+
+            usernameView.text = username
+            emailView.text = email
+
+            val isAdmin = userData.adminFlow.first()
+            if (!isAdmin) {
+                leaguesButton.visibility = Button.GONE
+            } else {
+                favPlayersButton.visibility = Button.GONE
+                favMatchesButton.visibility = Button.GONE
+                favTeamsButton.visibility = Button.GONE
+            }
+
+        }
+
+        changPasswordButton.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
-//            Log.d("username profile", username)
             startActivity(intent)
         }
 
-        logoutBtn.setOnClickListener {
+        leaguesButton.setOnClickListener {
+            val intent = Intent(this, LeaguesActivity::class.java)
+            startActivity(intent)
+        }
+
+        favPlayersButton.setOnClickListener {
+            val intent = Intent(this, FavPlayersActivity::class.java)
+            startActivity(intent)
+        }
+
+        favMatchesButton.setOnClickListener {
+            val intent = Intent(this, FavMatchesActivity::class.java)
+            startActivity(intent)
+        }
+
+        favTeamsButton.setOnClickListener {
+            val intent = Intent(this, FavTeamsActivity::class.java)
+            startActivity(intent)
+        }
+
+        logoutButton.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             lifecycleScope.launch {
                 userData.storeUser(-1, "", "", "", 0, false)
                 startActivity(intent)
             }
         }
-
-        favPlayersBtn.setOnClickListener {
-            val intent = Intent(this, FavPlayersActivity::class.java)
-            startActivity(intent)
-        }
-
-        favMatchesBtn.setOnClickListener {
-            val intent = Intent(this, FavMatchesActivity::class.java)
-            startActivity(intent)
-        }
-
-        favTeamsBtn.setOnClickListener {
-            val intent = Intent(this, FavTeamsActivity::class.java)
-            startActivity(intent)
-        }
-
-        leaguesBtn.setOnClickListener {
-            val intent = Intent(this, LeaguesActivity::class.java)
-            startActivity(intent)
-        }
-
-        lifecycleScope.launch {
-            val username = userData.usernameFlow.first()
-            val email = userData.emailFlow.first()
-
-            val usernameJson = buildJsonObject {
-                put("username", username)
-            }
-
-//            Log.d("USER ID", userData.userIdFlow.first())
-//            Log.d("Username", username)
-//            Log.d("Email", email)
-
-            usernameText.text = username
-            emailText.text = email.replace("\"", "")
-
-            val isAdmin = userData.adminFlow.first()
-            if (!isAdmin) {
-                leaguesBtn.visibility = Button.GONE
-            } else {
-                favPlayersBtn.visibility = Button.GONE
-                favMatchesBtn.visibility = Button.GONE
-                favTeamsBtn.visibility = Button.GONE
-            }
-
-        }
-
-
     }
 }

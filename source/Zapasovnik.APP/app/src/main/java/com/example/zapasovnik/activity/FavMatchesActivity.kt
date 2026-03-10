@@ -8,16 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
-import com.example.zapasovnik.viewModel.FavPlayersTableAdapter
 import com.example.zapasovnik.viewModel.HomeMatchTableAdapter
-import com.example.zapasovnik.viewModel.PlayersTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 class FavMatchesActivity : ComponentActivity() {
 
@@ -26,12 +21,11 @@ class FavMatchesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // TODO: Change layout
         setContentView(R.layout.fav_matches_layout)
 
         userData = UserData(this)
+
         val recyclerView = findViewById<RecyclerView>(R.id.favMatchesTableView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
             val userId = userData.userIdFlow.first()
@@ -43,5 +37,7 @@ class FavMatchesActivity : ComponentActivity() {
                 startActivity(intent)
             }
         }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }

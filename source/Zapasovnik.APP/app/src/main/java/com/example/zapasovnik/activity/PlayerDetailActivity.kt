@@ -28,53 +28,51 @@ class PlayerDetailActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.player_detail_layout)
 
-        val playerId = intent.getIntExtra("id", -1)
-        val fname = findViewById<TextView>(R.id.playerDetaliFname)
-        val lname = findViewById<TextView>(R.id.playerDetailLname)
-        val birth = findViewById<TextView>(R.id.playerDetailBirth)
-        val team = findViewById<TextView>(R.id.playerDetailTeam)
-        val delPlayerBtn = findViewById<Button>(R.id.deletePlayerBtn)
-        val favBtn = findViewById<Button>(R.id.addToFavPlayers)
-        val unfavBtn = findViewById<Button>(R.id.delFromFavPlayers)
-        var player: Response<PlayerDetail> ?= null
         userData = UserData(this)
-        val edit = findViewById<Button>(R.id.editPlayerBtn)
+
+        val id = intent.getIntExtra("id", -1)
+        val fnameView = findViewById<TextView>(R.id.playerDetaliFname)
+        val lnameView = findViewById<TextView>(R.id.playerDetailLname)
+        val birthView = findViewById<TextView>(R.id.playerDetailBirth)
+        val teamView = findViewById<TextView>(R.id.playerDetailTeam)
+        val deleteButton = findViewById<Button>(R.id.deletePlayerBtn)
+        val favButton = findViewById<Button>(R.id.addToFavPlayers)
+        val unfavButton = findViewById<Button>(R.id.delFromFavPlayers)
+        val editButton = findViewById<Button>(R.id.editPlayerBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
                 put("userId", userData.userIdFlow.first())
-                put("entityId", playerId)
+                put("entityId", id)
             }
 
-            Log.e("User", user.toString())
+            val player = RetrofitClient.api.postPlayerDetail(user)
 
-            player = RetrofitClient.api.postPlayerDetail(user)
-
-            val isFav = player.body()?.IsFavorite
+            val isFav = player.body()!!.IsFavorite
             val loggedIn = userData.userIdFlow.first()
             val isAdmin = userData.adminFlow.first()
 
             if (loggedIn != -1  && !isAdmin) {
-                if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+                if (isFav) favButton.visibility = Button.GONE else unfavButton.visibility = Button.GONE
             } else {
-                favBtn.visibility = Button.GONE
-                unfavBtn.visibility = Button.GONE
+                favButton.visibility = Button.GONE
+                unfavButton.visibility = Button.GONE
             }
 
             if (loggedIn == -1 || !isAdmin) {
-                edit.visibility = Button.GONE
-                delPlayerBtn.visibility = Button.GONE
+                editButton.visibility = Button.GONE
+                deleteButton.visibility = Button.GONE
             }
 
-            fname.text = player.body()?.FName
-            lname.text = player.body()?.LName
-            birth.text = player.body()?.Birth
-            team.text = player.body()?.Team
+            fnameView.text = player.body()!!.FName
+            lnameView.text = player.body()!!.LName
+            birthView.text = player.body()!!.Birth
+            teamView.text = player.body()!!.Team
         }
 
-        delPlayerBtn.setOnClickListener {
+        deleteButton.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deletePlayer(playerId, "Bearer ${userData.jwtTokenFlow.first()}")
+                val resp = RetrofitClient.api.deletePlayer(id, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@PlayerDetailActivity, HomeActivity::class.java)
@@ -82,20 +80,19 @@ class PlayerDetailActivity : ComponentActivity() {
                 } else {
                     Toast.makeText(
                         applicationContext,
-                        R.string.network_error,
+                        R.string.error,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
 
-        favBtn.setOnClickListener {
+        favButton.setOnClickListener {
             lifecycleScope.launch {
                 val favPlayer = buildJsonObject {
-                    put("entityId", playerId)
+                    put("entityId", id)
                     put("userId", userData.userIdFlow.first())
                 }
-//                Log.d("String", "Bearer ${userData.jwtTokenFlow.first()}")
 
                 val resp = RetrofitClient.api.postAddFavPlayer(favPlayer, "Bearer ${userData.jwtTokenFlow.first()}")
 
@@ -106,15 +103,13 @@ class PlayerDetailActivity : ComponentActivity() {
             }
         }
 
-        unfavBtn.setOnClickListener {
+        unfavButton.setOnClickListener {
             lifecycleScope.launch {
                 val favPlayer = buildJsonObject {
-                    put("playerId", player?.body()?.Id)
+                    put("entityId", id)
                     put("userId", userData.userIdFlow.first())
                 }
                 val resp = RetrofitClient.api.postDeleteFavPlayer(favPlayer, "Bearer ${userData.jwtTokenFlow.first()}")
-//                Log.d("String", favPlayer.toString())
-//                Log.d("Response", resp.toString())
 
                 if (resp.isSuccessful && resp.body() == true) {
                     finish()
@@ -123,9 +118,9 @@ class PlayerDetailActivity : ComponentActivity() {
             }
         }
 
-        edit.setOnClickListener {
+        editButton.setOnClickListener {
             val intent = Intent(this, EditPlayerActivity::class.java)
-            intent.putExtra("playerId", playerId)
+            intent.putExtra("playerId", id)
             startActivity(intent)
         }
     }

@@ -2,13 +2,7 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -20,7 +14,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import java.time.LocalDateTime
 
 class NewLeagueActivity : ComponentActivity() {
 
@@ -31,42 +24,38 @@ class NewLeagueActivity : ComponentActivity() {
         setContentView(R.layout.new_league_layout)
 
         userData = UserData(this)
-        val addBtn = findViewById<Button>(R.id.newLeagueAddBtn)
 
-        addBtn.setOnClickListener {
-            val name = findViewById<TextView>(R.id.newLeagueName).text.toString()
+        val nameInput = findViewById<TextView>(R.id.newLeagueName)
+        val addButton = findViewById<Button>(R.id.newLeagueAddBtn)
 
-//            Log.d("Birth", birth)
-//            Log.d("Team", team)
+        addButton.setOnClickListener {
 
-            if (name == "") {
+            if (nameInput.text.toString() == "") {
                 Toast.makeText(
                     applicationContext,
-                    R.string.new_player_enter_name,
+                    R.string.enter_name,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-
                 lifecycleScope.launch {
-//                    Log.d("String", newPlayerString.toString())
-
                     val league = buildJsonObject {
-                        put("LeagueName", name)
+                        put("LeagueName", nameInput.text.toString())
                     }
 
                     val resp = RetrofitClient.api.postAddLeague(league, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body()!!) {
                         Toast.makeText(
                             applicationContext,
-                            R.string.new_league_success,
+                            R.string.added_successfully,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = Intent(this@NewLeagueActivity, HomeActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            R.string.network_error,
+                            R.string.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

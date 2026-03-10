@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -10,15 +9,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.PlayerDetail
-import com.example.zapasovnik.model.TeamDetail
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import retrofit2.Response
 
 class TeamDetailActivity : ComponentActivity() {
 
@@ -29,51 +25,52 @@ class TeamDetailActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.team_detail_layout)
 
-//        val isFav = intent.getBooleanExtra("isFav", false)
-        val teamId = intent.getIntExtra("id", -1)
-        val name = findViewById<TextView>(R.id.teamDetailName)
-        val est = findViewById<TextView>(R.id.teamDetailEst)
-        val delTeamBtn = findViewById<Button>(R.id.deleteTeamBtn)
-        val favBtn = findViewById<Button>(R.id.addToFavTeams)
-        val unfavBtn = findViewById<Button>(R.id.delFromFavTeams)
-        var team: Response<TeamDetail> ?= null
         userData = UserData(this)
-        val edit = findViewById<Button>(R.id.editTeamBtn)
+
+        val id = intent.getIntExtra("id", -1)
+        val nameView = findViewById<TextView>(R.id.teamDetailName)
+        val estView = findViewById<TextView>(R.id.teamDetailEst)
+        val deleteButton = findViewById<Button>(R.id.deleteTeamBtn)
+        val favButton = findViewById<Button>(R.id.addToFavTeams)
+        val unfavButton = findViewById<Button>(R.id.delFromFavTeams)
+        val editButton = findViewById<Button>(R.id.editTeamBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
-                put("userId", userData.userIdFlow.first().toInt())
-                put("entityId", teamId)
+                put("userId", userData.userIdFlow.first())
+                put("entityId", id)
             }
-            team = RetrofitClient.api.postTeamDetail(user)
-            val isFav = team.body()?.IsFavorite
-            val loggedIn = userData.userIdFlow.first()
 
-            name.text = team.body()?.Name
-            est.text = team.body()?.Established
+            val team = RetrofitClient.api.postTeamDetail(user)
+
+            val isFav = team.body()!!.IsFavorite
+            val loggedIn = userData.userIdFlow.first()
             val isAdmin = userData.adminFlow.first()
+
+            nameView.text = team.body()?.Name
+            estView.text = team.body()?.Established
 
             if (loggedIn != -1 && !isAdmin)
             {
-                if (isFav!!) {
-                    favBtn.visibility = Button.GONE
+                if (isFav) {
+                    favButton.visibility = Button.GONE
                 } else {
-                    unfavBtn.visibility = Button.GONE
+                    unfavButton.visibility = Button.GONE
                 }
             } else {
-                favBtn.visibility = Button.GONE
-                unfavBtn.visibility = Button.GONE
+                favButton.visibility = Button.GONE
+                unfavButton.visibility = Button.GONE
             }
 
             if (loggedIn == -1 || !isAdmin) {
-                edit.visibility = Button.GONE
-                delTeamBtn.visibility = Button.GONE
+                editButton.visibility = Button.GONE
+                deleteButton.visibility = Button.GONE
             }
         }
 
-        delTeamBtn.setOnClickListener {
+        deleteButton.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deleteTeam(teamId, "Bearer ${userData.jwtTokenFlow.first()}")
+                val resp = RetrofitClient.api.deleteTeam(id, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@TeamDetailActivity, HomeActivity::class.java)
@@ -81,17 +78,17 @@ class TeamDetailActivity : ComponentActivity() {
                 } else {
                     Toast.makeText(
                         applicationContext,
-                        R.string.network_error,
+                        R.string.error,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
 
-        favBtn.setOnClickListener {
+        favButton.setOnClickListener {
             lifecycleScope.launch {
                 val favTeam = buildJsonObject {
-                    put("teamId", teamId)
+                    put("entityId", id)
                     put("userId", userData.userIdFlow.first())
                 }
                 val resp = RetrofitClient.api.postAddFavTeam(favTeam, "Bearer ${userData.jwtTokenFlow.first()}")
@@ -103,11 +100,11 @@ class TeamDetailActivity : ComponentActivity() {
             }
         }
 
-        unfavBtn.setOnClickListener {
+        unfavButton.setOnClickListener {
             lifecycleScope.launch {
                 val favTeam = buildJsonObject {
-                    put("teamId", teamId)
-                    put("userId", userData.userIdFlow.first().toInt())
+                    put("entityId", id)
+                    put("userId", userData.userIdFlow.first())
                 }
                 val resp = RetrofitClient.api.postDeleteFavTeam(favTeam, "Bearer ${userData.jwtTokenFlow.first()}")
 
@@ -118,9 +115,9 @@ class TeamDetailActivity : ComponentActivity() {
             }
         }
 
-        edit.setOnClickListener {
+        editButton.setOnClickListener {
             val intent = Intent(this, EditTeamActivity::class.java)
-            intent.putExtra("teamId", teamId)
+            intent.putExtra("teamId", id)
             startActivity(intent)
         }
     }

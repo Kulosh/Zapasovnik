@@ -1,6 +1,6 @@
 package com.example.zapasovnik.network
 
-import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.Player
 import com.example.zapasovnik.model.League
 import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.model.MatchDetail
@@ -23,15 +23,13 @@ interface Api {
     suspend fun getTeamMatches(): List<Match>
 
     @GET("Players")
-    suspend fun getPlayers(): List<FavPlayer>
+    suspend fun getPlayers(): List<Player>
 
     @GET("Teams")
     suspend fun getTeams(): List<Team>
 
     @GET("Leagues")
-    suspend fun getLeagues(
-        @Header("Authorization") token: String
-    ): List<League>
+    suspend fun getLeagues(): List<League>
 
     @GET("LeagueDetail/{id}")
     suspend fun getLeagueDetail(
@@ -69,7 +67,7 @@ interface Api {
     suspend fun postFavPlayer (
         @Body userId: Int,
         @Header("Authorization") authorization: String
-    ): List<FavPlayer>
+    ): List<Player>
 
     @POST("favMatch")
     suspend fun postFavMatch (

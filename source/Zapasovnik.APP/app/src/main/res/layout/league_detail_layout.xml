@@ -32,7 +32,7 @@
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
         android:padding="8dp"
-        android:text="@string/del_league"
+        android:text="@string/delete_league"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintStart_toStartOf="@+id/guideline12"

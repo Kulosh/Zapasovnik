@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -11,7 +10,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.MatchDetail
-import com.example.zapasovnik.model.PlayerDetail
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.flow.first
@@ -29,50 +27,53 @@ class MatchDetailActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.match_detail_layout)
 
-        val matchId = intent.getIntExtra("id", -1)
-        val team1 = findViewById<TextView>(R.id.matchDetailTeam1)
-        val team2 = findViewById<TextView>(R.id.matchDetailTeam2)
-        val date = findViewById<TextView>(R.id.matchDetailDate)
-        val league = findViewById<TextView>(R.id.matchDetailLeague)
-        val delMatchBtn = findViewById<Button>(R.id.deleteMatchBtn)
-        val favBtn = findViewById<Button>(R.id.addToFavMatches)
-        val unfavBtn = findViewById<Button>(R.id.delFromFavMatches)
-        var match: Response<MatchDetail> ?= null
         userData = UserData(this)
-        val edit = findViewById<Button>(R.id.editMatchBtn)
+
+        val id = intent.getIntExtra("id", -1)
+        val team1View = findViewById<TextView>(R.id.matchDetailTeam1)
+        val team2View = findViewById<TextView>(R.id.matchDetailTeam2)
+        val dateView = findViewById<TextView>(R.id.matchDetailDate)
+        val leagueView = findViewById<TextView>(R.id.matchDetailLeague)
+        val deleteButton = findViewById<Button>(R.id.deleteMatchBtn)
+        val favButton = findViewById<Button>(R.id.addToFavMatches)
+        val unfavButton = findViewById<Button>(R.id.delFromFavMatches)
+        val editButton = findViewById<Button>(R.id.editMatchBtn)
+
+        var match: Response<MatchDetail> ?= null
 
         lifecycleScope.launch {
             val user = buildJsonObject {
-                put("userId", userData.userIdFlow.first().toInt())
-                put("entityId", matchId)
+                put("userId", userData.userIdFlow.first())
+                put("entityId", id)
             }
+
             match = RetrofitClient.api.postMatchDetail(user)
 
-            val isFav = match.body()?.IsFavorite
+            val isFav = match.body()!!.IsFavorite
             val loggedIn = userData.userIdFlow.first()
             val isAdmin = userData.adminFlow.first()
 
             if (loggedIn != -1  && !isAdmin) {
-                if (isFav!!) favBtn.visibility = Button.GONE else unfavBtn.visibility = Button.GONE
+                if (isFav) favButton.visibility = Button.GONE else unfavButton.visibility = Button.GONE
             } else {
-                favBtn.visibility = Button.GONE
-                unfavBtn.visibility = Button.GONE
+                favButton.visibility = Button.GONE
+                unfavButton.visibility = Button.GONE
             }
 
             if (loggedIn == -1 || !isAdmin) {
-                edit.visibility = Button.GONE
-                delMatchBtn.visibility = Button.GONE
+                editButton.visibility = Button.GONE
+                deleteButton.visibility = Button.GONE
             }
 
-            team1.text = match.body()?.Team1
-            team2.text = match.body()?.Team2
-            date.text = match.body()?.Date
-            league.text = match.body()?.League
+            team1View.text = match.body()!!.Team1
+            team2View.text = match.body()!!.Team2
+            dateView.text = match.body()!!.Date
+            leagueView.text = match.body()!!.League
         }
 
-        delMatchBtn.setOnClickListener {
+        deleteButton.setOnClickListener {
             lifecycleScope.launch {
-                val resp = RetrofitClient.api.deleteMatch(matchId, "Bearer ${userData.jwtTokenFlow.first()}")
+                val resp = RetrofitClient.api.deleteMatch(id, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true) {
                     val intent = Intent(this@MatchDetailActivity, HomeActivity::class.java)
@@ -80,20 +81,20 @@ class MatchDetailActivity : ComponentActivity() {
                 } else {
                     Toast.makeText(
                         applicationContext,
-                        R.string.network_error,
+                        R.string.error,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
 
-        favBtn.setOnClickListener {
+        favButton.setOnClickListener {
             lifecycleScope.launch {
                 val favMatch = buildJsonObject {
-                    put("matchId", match?.body()?.Id)
+                    put("entityId", match?.body()?.Id)
                     put("userId", userData.userIdFlow.first())
                 }
-//                     TODO: PostFav
+
                 val resp = RetrofitClient.api.postAddFavMatch(favMatch, "Bearer ${userData.jwtTokenFlow.first()}")
 
                 if (resp.isSuccessful && resp.body() == true){
@@ -103,16 +104,14 @@ class MatchDetailActivity : ComponentActivity() {
             }
         }
 
-        unfavBtn.setOnClickListener {
+        unfavButton.setOnClickListener {
             lifecycleScope.launch {
                 val favMatch = buildJsonObject {
-                    put("matchId", match?.body()?.Id)
-                    put("userId", userData.userIdFlow.first().toInt())
+                    put("entityId", match?.body()?.Id)
+                    put("userId", userData.userIdFlow.first())
                 }
-                    // TODO: PostUnFav
+
                 val resp = RetrofitClient.api.postDeleteFavMatch(favMatch, "Bearer ${userData.jwtTokenFlow.first()}")
-//                Log.d("String", favPlayer.toString())
-//                Log.d("Response", resp.toString())
 
                 if (resp.isSuccessful && resp.body() == true) {
                     finish()
@@ -121,9 +120,9 @@ class MatchDetailActivity : ComponentActivity() {
             }
         }
 
-        edit.setOnClickListener {
+        editButton.setOnClickListener {
             val intent = Intent(this, EditMatchActivity::class.java)
-            intent.putExtra("matchId", matchId)
+            intent.putExtra("matchId", id)
             startActivity(intent)
         }
     }

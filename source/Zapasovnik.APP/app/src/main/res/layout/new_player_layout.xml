@@ -13,7 +13,7 @@
         android:layout_marginTop="64dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/new_player_fname"
+        android:hint="@string/player_fname"
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
@@ -26,7 +26,7 @@
         android:layout_marginTop="32dp"
         android:background="@color/white"
         android:ems="10"
-        android:hint="@string/new_player_lname"
+        android:hint="@string/player_lname"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="@+id/newPlayerFName"
         app:layout_constraintTop_toBottomOf="@+id/newPlayerFName" />
@@ -37,7 +37,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@color/white"
-        android:hint="@string/new_player_team"
+        android:hint="@string/player_team"
         app:layout_constraintEnd_toEndOf="@+id/newPlayerLName"
         app:layout_constraintStart_toStartOf="@+id/newPlayerLName"
         app:layout_constraintTop_toBottomOf="@+id/newPlayerBorn" />
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_add_btn"
+        android:text="@string/add_player"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toBottomOf="@+id/newPlayerTeam" />

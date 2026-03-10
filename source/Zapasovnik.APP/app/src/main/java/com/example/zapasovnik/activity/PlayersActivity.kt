@@ -27,25 +27,26 @@ class PlayersActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.playersTableView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val addPlayer = findViewById<Button>(R.id.addPlayerBtn)
-
-        addPlayer.setOnClickListener {
-            val intent = Intent(this, NewPlayerActivity::class.java)
-            startActivity(intent)
-        }
+        val addButton = findViewById<Button>(R.id.addPlayerBtn)
 
         lifecycleScope.launch {
             val players = RetrofitClient.api.getPlayers()
             val isAdmin = userData.adminFlow.first()
 
-            if (!isAdmin) addPlayer.visibility = Button.GONE
+            if (!isAdmin) addButton.visibility = Button.GONE
 
             recyclerView.adapter = PlayersTableAdapter(players) { player ->
                 val intent = Intent(this@PlayersActivity, PlayerDetailActivity::class.java)
                 intent.putExtra("id", player.Id)
                 startActivity(intent)
             }
+        }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        addButton.setOnClickListener {
+            val intent = Intent(this, NewPlayerActivity::class.java)
+            startActivity(intent)
         }
     }
 }

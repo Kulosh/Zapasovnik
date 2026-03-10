@@ -2,11 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
@@ -30,49 +25,46 @@ class NewTeamActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_team_layout)
 
-        val addBtn = findViewById<Button>(R.id.newTeamAddBtn)
-        var now = LocalDateTime.now().toString()
-        val date = findViewById<CalendarView>(R.id.newTeamEst)
+        userData = UserData(this)
 
-        date.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            now = "$year-${month + 1}-$dayOfMonth"
+        val nameInput = findViewById<TextView>(R.id.newTeamName).text.toString()
+        val dateSelect = findViewById<CalendarView>(R.id.newTeamEst)
+        val addButton = findViewById<Button>(R.id.newTeamAddBtn)
+
+        var date = LocalDateTime.now().toString()
+
+        dateSelect.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            date = "$year-${month + 1}-$dayOfMonth"
         }
 
-        addBtn.setOnClickListener {
-            val fname = findViewById<TextView>(R.id.newTeamName).text.toString()
-
-//            Log.d("Birth", birth)
-//            Log.d("Team", team)
-
-            if (fname == "") {
+        addButton.setOnClickListener {
+            if (nameInput == "") {
                 Toast.makeText(
                     applicationContext,
-                    R.string.new_player_enter_name,
+                    R.string.enter_name,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-
                 lifecycleScope.launch {
                     val newTeamString = buildJsonObject {
-                        put("TeamName", fname)
-                        put("TeamEstablished", now)
+                        put("TeamName", nameInput)
+                        put("TeamEstablished", date)
                     }
-
-//                    Log.d("String", newPlayerString.toString())
 
                     val resp = RetrofitClient.api.postAddTeam(newTeamString, "Bearer ${userData.jwtTokenFlow.first()}")
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,
-                            R.string.new_team_success,
+                            R.string.added_successfully,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = Intent(this@NewTeamActivity, HomeActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            R.string.network_error,
+                            R.string.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

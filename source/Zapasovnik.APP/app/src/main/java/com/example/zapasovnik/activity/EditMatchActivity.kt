@@ -4,13 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CalendarView
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
@@ -24,10 +21,7 @@ import kotlinx.serialization.json.put
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Date
 import java.util.Locale
-import kotlin.collections.addAll
-import kotlin.text.clear
 import kotlin.toString
 
 class EditMatchActivity : ComponentActivity() {
@@ -39,39 +33,52 @@ class EditMatchActivity : ComponentActivity() {
         setContentView(R.layout.new_match_layout)
 
         userData = UserData(this)
+
         val id = intent.getIntExtra("matchId", -1)
+        val team1Input = findViewById<AutoCompleteTextView>(R.id.newMatchTeam1)
+        val team2Input = findViewById<AutoCompleteTextView>(R.id.newMatchTeam2)
+        val leagueInput = findViewById<AutoCompleteTextView>(R.id.newMatchLeague)
+        val dateSelect = findViewById<CalendarView>(R.id.newMatchDate)
+        val addButton = findViewById<Button>(R.id.newMatchAddBtn)
 
-        val team1 = findViewById<AutoCompleteTextView>(R.id.newMatchTeam1)
-        val team2 = findViewById<AutoCompleteTextView>(R.id.newMatchTeam2)
-        val league = findViewById<AutoCompleteTextView>(R.id.newMatchLeague)
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
-        team1.setAdapter(adapter)
-        team2.setAdapter(adapter)
-        league.setAdapter(adapter)
+        team1Input.setAdapter(adapter)
+        team2Input.setAdapter(adapter)
+        leagueInput.setAdapter(adapter)
 
+        // For storing date to send to server
         var date = LocalDateTime.now().toString()
-        val dateSel = findViewById<CalendarView>(R.id.newMatchDate)
-        val addBtn = findViewById<Button>(R.id.newMatchAddBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {
-                put("userId", userData.userIdFlow.first().toInt())
+                put("userId", userData.userIdFlow.first())
                 put("entityId", id)
             }
             val match = RetrofitClient.api.postMatchDetail(user)
 
-            team1.setText(match.body()?.Team1)
-            team2.setText(match.body()?.Team2)
-            league.setText(match.body()?.League)
+            team1Input.setText(match.body()!!.Team1)
+            team2Input.setText(match.body()!!.Team2)
+            leagueInput.setText(match.body()!!.League)
 
-            val oldDate = match.body()?.Date?.replace(Regex("[\\p{Z}\\s]+"), " ")
+            // Set date from DB
+            val rawDate = match.body()!!.Date
+
+            val normalizedDate = rawDate
+                .replace('\u202F', ' ')   // narrow no-break space
+                .replace('\u00A0', ' ')   // no-break space
+                .replace(Regex("\\s+"), " ")
+                .trim()
+
             val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
-            val ldt = LocalDateTime.parse(oldDate, formatter)
-            val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            dateSel.date = millis
+
+            normalizedDate.let {
+                val ldt = LocalDateTime.parse(it, formatter)
+                val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                dateSelect.date = millis
+            }
         }
 
-        team1.addTextChangedListener(object: TextWatcher {
+        team1Input.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -83,14 +90,14 @@ class EditMatchActivity : ComponentActivity() {
                     adapter.addAll(teams)
                     adapter.notifyDataSetChanged()
 
-                    if (teams.isNotEmpty() && !team1.isPopupShowing) {
-                        team1.showDropDown()
+                    if (teams.isNotEmpty() && !team1Input.isPopupShowing) {
+                        team1Input.showDropDown()
                     }
                 }
             }
         })
 
-        team2.addTextChangedListener(object: TextWatcher {
+        team2Input.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -102,67 +109,67 @@ class EditMatchActivity : ComponentActivity() {
                     adapter.addAll(teams)
                     adapter.notifyDataSetChanged()
 
-                    if (teams.isNotEmpty() && !team2.isPopupShowing) {
-                        team2.showDropDown()
+                    if (teams.isNotEmpty() && !team2Input.isPopupShowing) {
+                        team2Input.showDropDown()
                     }
                 }
             }
         })
 
-        league.addTextChangedListener(object: TextWatcher {
+        leagueInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 lifecycleScope.launch {
-                    val token = userData.jwtTokenFlow.first()
-                    val teams = RetrofitClient.api.getLeagues("Bearer ${userData.jwtTokenFlow.first()}").map { it.LeagueName }
+                    val teams = RetrofitClient.api.getLeagues().map { it.LeagueName }
 
                     adapter.clear()
                     adapter.addAll(teams)
                     adapter.notifyDataSetChanged()
 
-                    if (teams.isNotEmpty() && !league.isPopupShowing) {
-                        league.showDropDown()
+                    if (teams.isNotEmpty() && !leagueInput.isPopupShowing) {
+                        leagueInput.showDropDown()
                     }
                 }
             }
         })
 
-        dateSel.setOnDateChangeListener { view, year, month, dayOfMonth ->
+        dateSelect.setOnDateChangeListener { _, year, month, dayOfMonth ->
             date = "$year-${month + 1}-$dayOfMonth"
         }
 
-        addBtn.setOnClickListener {
-            if (team1.text.toString() == "" || team2.text.toString() == "" || league.text.toString() == "") {
+        addButton.setOnClickListener {
+            if (team1Input.text.toString() == "" || team2Input.text.toString() == "" || leagueInput.text.toString() == "") {
                 Toast.makeText(
                     applicationContext,
                     R.string.fill_all_fields,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-
                 lifecycleScope.launch {
                     val newMatchString = buildJsonObject {
-                        put("Team1", team1.text.toString())
-                        put("Team2", team2.text.toString())
-                        put("League", league.text.toString())
+                        put("Team1", team1Input.text.toString())
+                        put("Team2", team2Input.text.toString())
+                        put("League", leagueInput.text.toString())
                         put("Date", date)
                     }
 
                     val resp = RetrofitClient.api.patchEditMatch(id,newMatchString, "Bearer ${userData.jwtTokenFlow.first()}")
+
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,
-                            R.string.new_match_success, //TODO: Added > Updated
+                            R.string.updated_successfully,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = Intent(this@EditMatchActivity, HomeActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            R.string.network_error,
+                            R.string.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
