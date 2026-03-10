@@ -83,7 +83,7 @@ namespace Zapasovnik.API.Controllers
                 Birth = $"{player.PlayerBorn}",
                 Team = team ?? "No team",
                 IsFavorite = userFavPlayers
-                    .FirstOrDefault(ufp => ufp.PlayerId == user.EntityId && ufp.UserId == user.UserId) != null ? true : false
+                    .FirstOrDefault(ufp => ufp.PlayerId == user.EntityId && ufp.UserId == user.UserId) != null
             };
 
             return resp;
@@ -164,14 +164,14 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("AddFavPlayer")]
-        public bool APIAddFavPlayer([FromBody] FavDto newFav)
+        public bool APIAddFavPlayer([FromBody] FavDto player)
         {
             try
             {
                 UserFavPlayer userFavPlayer = new()
                 {
-                    PlayerId = newFav.EntityId,
-                    UserId = newFav.UserId,
+                    PlayerId = player.EntityId,
+                    UserId = player.UserId,
                 };
 
                 DbContext.UsersFavPlayers.Add(userFavPlayer);
@@ -187,11 +187,17 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("DeleteFavPlayer")]
-        public bool APIDelFavPlayer([FromBody] UserFavPlayer delFavPlayer)
+        public bool APIDelFavPlayer([FromBody] FavDto player)
         {
             try
             {
-                DbContext.UsersFavPlayers.Remove(delFavPlayer);
+                UserFavPlayer userFavPlayer = new()
+                {
+                    PlayerId = player.EntityId,
+                    UserId = player.UserId
+                };
+
+                DbContext.UsersFavPlayers.Remove(userFavPlayer);
                 DbContext.SaveChanges();
                 return true;
             }
@@ -235,8 +241,7 @@ namespace Zapasovnik.API.Controllers
 
                 if (oldPlayer.FirstName != editedObject.FName ||
                     oldPlayer.LastName != editedObject.LName ||
-                    oldPlayer.PlayerBorn != DateTime.Parse(editedObject.Birth)
-                )
+                    oldPlayer.PlayerBorn != DateTime.Parse(editedObject.Birth))
                 {
                     oldPlayer.FirstName = editedObject.FName;
                     oldPlayer.LastName = editedObject.LName;

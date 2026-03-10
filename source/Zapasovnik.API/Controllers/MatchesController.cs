@@ -120,7 +120,7 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "True")]
         [HttpPost("AddMatch")]
-        public bool APIAddMatch([FromBody] MatchDto newMatch)
+        public bool APIAddMatch([FromBody] MatchDto newObject)
         {
             try
             {
@@ -129,14 +129,14 @@ namespace Zapasovnik.API.Controllers
                 List<League> leagues = DbContext.Leagues.ToList();
 
                 int leagueId = leagues
-                .Where(l => l.LeagueName == newMatch.League)
-                .First()
-                .LeagueId;
+                    .Where(l => l.LeagueName == newObject.League)
+                    .First()
+                    .LeagueId;
 
                 Match match = new()
                 {
                     LeagueId = leagueId,
-                    MatchDate = Convert.ToDateTime(newMatch.Date)
+                    MatchDate = Convert.ToDateTime(newObject.Date)
                 };
 
                 DbContext.Matches.Add(match);
@@ -152,7 +152,7 @@ namespace Zapasovnik.API.Controllers
                 {
                     MatchId = matchId,
                     TeamId = teams
-                        .Where(t => t.TeamName == newMatch.Team1)
+                        .Where(t => t.TeamName == newObject.Team1)
                         .First()
                         .TeamId
                 };
@@ -161,7 +161,7 @@ namespace Zapasovnik.API.Controllers
                 {
                     MatchId = matchId,
                     TeamId = teams
-                        .Where(t => t.TeamName == newMatch.Team2)
+                        .Where(t => t.TeamName == newObject.Team2)
                         .First()
                         .TeamId
                 };
@@ -268,7 +268,7 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "True")]
         [HttpPatch("EditMatch/{id}")]
-        public bool APIEditMatch(int id, [FromBody] MatchDto newMatch)
+        public bool APIEditMatch(int id, [FromBody] MatchDto editedMatch)
         {
             try
             {
@@ -282,11 +282,11 @@ namespace Zapasovnik.API.Controllers
                     .First();
 
                 int leagueId = leagues
-                    .Where(l => l.LeagueName == newMatch.League)
+                    .Where(l => l.LeagueName == editedMatch.League)
                     .First()
                     .LeagueId;
 
-                match.MatchDate = Convert.ToDateTime(newMatch.Date);
+                match.MatchDate = Convert.ToDateTime(editedMatch.Date);
                 match.LeagueId = leagueId;
 
                 DbContext.Matches.Update(match);
@@ -304,7 +304,7 @@ namespace Zapasovnik.API.Controllers
                 {
                     MatchId = id,
                     TeamId = teams
-                        .Where(t => t.TeamName == newMatch.Team1)
+                        .Where(t => t.TeamName == editedMatch.Team1)
                         .First()
                         .TeamId
                 };
@@ -313,7 +313,7 @@ namespace Zapasovnik.API.Controllers
                 {
                     MatchId = id,
                     TeamId = teams
-                        .Where(t => t.TeamName == newMatch.Team2)
+                        .Where(t => t.TeamName == editedMatch.Team2)
                         .First()
                         .TeamId
                 };

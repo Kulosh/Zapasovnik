@@ -27,7 +27,7 @@ namespace Zapasovnik.API.Controllers
             User newUser = new User
             {
                 UserName = incomeUser.UserName,
-                UserEmail = incomeUser.UserEmail,
+                UserEmail = incomeUser.UserEmail!,
                 UserPassword = incomeUser.UserPassword,
                 Admin = false
             };
@@ -42,7 +42,7 @@ namespace Zapasovnik.API.Controllers
                 .OrderBy(u => u.UserId)
                 .Last();
 
-            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
+            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail, user.Admin);
 
             return Ok(token);
         }

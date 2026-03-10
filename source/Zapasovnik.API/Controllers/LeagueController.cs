@@ -25,19 +25,19 @@ namespace Zapasovnik.API.Controllers
         [HttpGet("Leagues")]
         public List<League> APILeagues()
         {
-            List<League> Leagues = DbContext.Leagues.ToList();
+            List<League> resp = DbContext.Leagues.ToList();
 
-            return Leagues;
+            return resp;
         }
 
         [HttpGet("LeagueDetail/{id}")]
         public League APILeague(int id)
         {
-            League league = DbContext.Leagues
+            League resp = DbContext.Leagues
                 .Where(l => l.LeagueId == id)
                 .First();
 
-            return league;
+            return resp;
         }
 
         // ------------------------------------
@@ -51,6 +51,7 @@ namespace Zapasovnik.API.Controllers
             try
             {
                 League newLeague = new League { LeagueName = newObject.LeagueName};
+
                 DbContext.Leagues.Add(newLeague);
                 DbContext.SaveChanges();
 
@@ -69,17 +70,17 @@ namespace Zapasovnik.API.Controllers
         [HttpPatch("EditLeague/{id}")]
         public bool APIEditLeague(int id, [FromBody] LeagueDto editedObject)
         {
-            List<League> leagues = DbContext.Leagues.ToList();
-
             try
             {
-                League editedLeague = leagues
+                List<League> leagues = DbContext.Leagues.ToList();
+
+                League league = leagues
                     .Where(l => l.LeagueId == id)
                     .First();
 
-                editedLeague.LeagueName = editedObject.LeagueName;
+                league.LeagueName = editedObject.LeagueName;
 
-                DbContext.Leagues.Update(editedLeague);
+                DbContext.Leagues.Update(league);
                 DbContext.SaveChanges();
 
                 return true;

@@ -64,14 +64,14 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "True")]
         [HttpPost("AddTeam")]
-        public bool APIAddTeam([FromBody] TeamDto team)
+        public bool APIAddTeam([FromBody] TeamDto newObject)
         {
             try
             {
                 Team newTeam = new()
                 {
-                    TeamName = team.TeamName,
-                    TeamEstablished = Convert.ToDateTime(team.TeamEstablished)
+                    TeamName = newObject.TeamName,
+                    TeamEstablished = Convert.ToDateTime(newObject.TeamEstablished)
                 };
 
                 DbContext.Teams.Add(newTeam);
@@ -157,16 +157,18 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "True")]
         [HttpPatch("EditTeam/{id}")]
-        public bool APIEditTeam(int id,[FromBody] TeamDto team)
+        public bool APIEditTeam(int id,[FromBody] TeamDto editedObject)
         {
             try
             {
                 List<Team> teams = DbContext.Teams.ToList();
 
-                Team newTeam = teams.Where(t => t.TeamId == id).First();
+                Team newTeam = teams
+                    .Where(t => t.TeamId == id)
+                    .First();
 
-                newTeam.TeamName = team.TeamName;
-                newTeam.TeamEstablished = Convert.ToDateTime(team.TeamEstablished);
+                newTeam.TeamName = editedObject.TeamName;
+                newTeam.TeamEstablished = Convert.ToDateTime(editedObject.TeamEstablished);
 
                 DbContext.Teams.Update(newTeam);
                 DbContext.SaveChanges();
@@ -197,8 +199,8 @@ namespace Zapasovnik.API.Controllers
                 List<UserFavTeam> oldFavTeams = userFavTeams
                     .FindAll(t => t.TeamId == id);
                 List<TeamMatch> oldTeamMatches = teamMatches
-                        .Where(tm => tm.TeamId == id)
-                        .ToList();
+                    .Where(tm => tm.TeamId == id)
+                    .ToList();
                 List<TeamPlayer> oldTeamPlayers = teamPlayers
                     .FindAll(t => t.TeamId == id);
                 Team team = teams
