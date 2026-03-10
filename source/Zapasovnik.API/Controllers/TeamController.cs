@@ -48,7 +48,7 @@ namespace Zapasovnik.API.Controllers
                     TeamName = t.TeamName,
                     TeamEstablished = t.TeamEstablished,
                     isFavorite = userFavTeams
-                                    .FirstOrDefault(uft => uft.TeamId == user.EntityId && uft.UserId == user.UserId) != null
+                        .FirstOrDefault(uft => uft.TeamId == user.EntityId && uft.UserId == user.UserId) != null
                 })
                 .First();
 

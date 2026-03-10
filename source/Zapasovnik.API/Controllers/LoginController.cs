@@ -15,8 +15,6 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        //TODO: rename on frontend
-
         public UsersOnlyDb DbContext { get; set; }
         public List<User> Users { get; set; }
 
@@ -27,7 +25,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult APIUser([FromBody] User incomeUser)
+        public IActionResult APIUser([FromBody] RegisterDto incomeUser)
         {
             incomeUser.UserPassword = PasswordHelper.HashPassword(incomeUser.UserPassword);
 

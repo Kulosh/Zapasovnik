@@ -40,7 +40,7 @@ namespace Zapasovnik.API.Controllers
                               t => t.TeamId,
                               (tp, t) => t.TeamName)
                         .OrderBy(name => name)
-                        .FirstOrDefault()!,
+                        .FirstOrDefault() ?? "No team",
                 })
                 .OrderBy(p => p.Id)
                 .ThenBy(p => p.FName)
@@ -77,7 +77,7 @@ namespace Zapasovnik.API.Controllers
                 Birth = $"{player.PlayerBorn}",
                 Team = team ?? "No team",
                 IsFavorite = userFavPlayers
-                    .FirstOrDefault(ufp => ufp.PlayerId == user.EntityId && ufp.UserId == user.UserId) != null
+                    .FirstOrDefault(ufp => ufp.PlayerId == user.EntityId && ufp.UserId == user.UserId) != null ? true : false
             };
 
             return resp;
