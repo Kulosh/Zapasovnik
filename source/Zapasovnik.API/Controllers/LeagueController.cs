@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json.Nodes;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;

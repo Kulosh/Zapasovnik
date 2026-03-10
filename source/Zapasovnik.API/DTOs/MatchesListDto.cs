@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Zapasovnik.API.DTOs
+﻿namespace Zapasovnik.API.DTOs
 {
     public class MatchesListDto
     {

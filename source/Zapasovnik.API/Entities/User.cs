@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Entities
 {
