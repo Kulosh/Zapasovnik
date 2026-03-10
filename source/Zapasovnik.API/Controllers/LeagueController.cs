@@ -6,7 +6,6 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
-    [Authorize(Roles = "True")]
     [ApiController]
     [Route("zapasovnik")]
     public class LeagueController : ControllerBase
