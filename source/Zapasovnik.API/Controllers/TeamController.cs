@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
@@ -12,154 +11,70 @@ namespace Zapasovnik.API.Controllers
     public class TeamController : ControllerBase
     {
         public TeamsDbContext DbContext { get; set; }
-        public List<Team> Teams { get; set; }
-        public List<UserFavTeam> UserFavTeams { get; set; }
-        public List<TeamMatch> TeamMatches { get; set; }
-        public List<TeamPlayer> TeamPlayers { get; set; }
-        public List<Match> Matches { get; set; }
 
         public TeamController()
         {
             DbContext = new();
-            Teams = DbContext.Teams.ToList();
         }
 
+        // ------------------------------------
+        // GET requests
+        // ------------------------------------
+
         [HttpGet("Teams")]
-        public List<TeamsDto> APITeams()
+        public List<TeamsListDto> APITeams()
         {
-            List<TeamsDto> teams = Teams
-                .Select(t => new TeamsDto
+            List<Team> teams = DbContext.Teams.ToList();
+
+            List<TeamsListDto> resp = teams
+                .Select(t => new TeamsListDto
                 {
                     TeamId = t.TeamId,
                     TeamName = t.TeamName
                 })
                 .ToList();
 
-            return teams;
+            return resp;
         }
+
+        // ------------------------------------
+        // POST requests
+        // ------------------------------------
 
         [HttpPost("TeamDetail")]
         public TeamDetail APITeamDetail([FromBody] FavDto user)
         {
-            UserFavTeams = DbContext.UserFavTeams.ToList();
-            
-            TeamDetail team = Teams
+            List<UserFavTeam> userFavTeams = DbContext.UserFavTeams.ToList();
+            List<Team> teams = DbContext.Teams.ToList();
+
+            TeamDetail resp = teams
                 .Where(t => t.TeamId == user.EntityId)
                 .Select(t => new TeamDetail
                 {
                     TeamId = t.TeamId,
                     TeamName = t.TeamName,
                     TeamEstablished = t.TeamEstablished,
-                    isFavorite = false
+                    isFavorite = userFavTeams
+                        .FirstOrDefault(uft => uft.TeamId == user.EntityId && uft.UserId == user.UserId) != null
                 })
                 .First();
 
-            team.isFavorite = UserFavTeams.Where(uft => uft.TeamId == user.EntityId && uft.UserId == user.UserId).FirstOrDefault() != null ? true : false ;
-
-            return team;
+            return resp;
         }
 
         [Authorize(Roles = "True")]
         [HttpPost("AddTeam")]
-        public bool APIAddTeam([FromBody] AddTeamDto team)
+        public bool APIAddTeam([FromBody] TeamDto newObject)
         {
             try
             {
-                Team newTeam = new Team();
+                Team newTeam = new()
+                {
+                    TeamName = newObject.TeamName,
+                    TeamEstablished = Convert.ToDateTime(newObject.TeamEstablished)
+                };
 
-                newTeam.TeamName = team.TeamName;
-                newTeam.TeamEstablished = Convert.ToDateTime(team.TeamEstablished);
-
-                Teams.Add(newTeam);
                 DbContext.Teams.Add(newTeam);
-                DbContext.SaveChanges();
-                return true;
-            } catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "True")]
-        [HttpDelete("DeleteTeam/{id}")]
-        public bool APIDeleteTeam(int id)
-        {
-            TeamMatches = DbContext.TeamMatches.ToList();
-            TeamPlayers = DbContext.TeamPlayers.ToList();
-            UserFavTeams = DbContext.UserFavTeams.ToList();
-            Matches = DbContext.Matches.ToList();
-
-            try
-            {
-                List<UserFavTeam> favTeams = UserFavTeams.FindAll(t => t.TeamId == id);
-                List<int> matchIds = TeamMatches
-                        .Where(tm => tm.TeamId == id)
-                        .Select(tm => tm.MatchId)
-                        .ToList();
-                List<TeamPlayer> teamPlayers = TeamPlayers.FindAll(t => t.TeamId == id);
-                Team team = Teams.Where(t => t.TeamId == id).FirstOrDefault();
-
-                if (favTeams.Count > 0 || favTeams != null)
-                { 
-                    DbContext.UserFavTeams.RemoveRange(favTeams);
-                    DbContext.SaveChanges();
-                }
-
-                if (matchIds.Count > 0 || matchIds != null)
-                {
-
-                    foreach (int i in matchIds)
-                    {
-                        List<TeamMatch> tm = TeamMatches
-                            .Where(tm => tm.MatchId == i)
-                            .ToList();
-                        DbContext.TeamMatches.RemoveRange(tm);
-                        DbContext.SaveChanges();
-                        Match m = Matches.Where(m => m.MatchId == i).FirstOrDefault();
-                        DbContext.Matches.Remove(m);
-                        DbContext.SaveChanges();
-                    }
-                }
-
-                if (teamPlayers.Count > 0 || teamPlayers != null)
-                {
-                    DbContext.TeamPlayers.RemoveRange(teamPlayers);
-                    DbContext.SaveChanges();
-                }
-
-                DbContext.Teams.Remove(team);
-                DbContext.SaveChanges();
-
-                return true;
-            } catch
-            {
-                return false; 
-            }
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("AddFavTeam")]
-        public bool APIAddFavTeam([FromBody] UserFavTeam team)
-        {
-            try
-            {
-                DbContext.UserFavTeams.Add(team);
-                DbContext.SaveChanges();
-
-                return true;
-            } catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "False")]
-        [HttpPost("DeleteFavTeam")]
-        public bool APIDeleteFavTeam([FromBody] UserFavTeam team)
-        {
-            try
-            {
-                DbContext.UserFavTeams.Remove(team);
                 DbContext.SaveChanges();
 
                 return true;
@@ -171,36 +86,89 @@ namespace Zapasovnik.API.Controllers
 
         [Authorize(Roles = "False")]
         [HttpPost("FavTeams")]
-        public List<TeamsDto> APIFavTeams([FromBody] UserDto userId)
+        public List<TeamsListDto> APIFavTeams([FromBody] int userId)
         {
-            UserFavTeams = DbContext.UserFavTeams.ToList();
+            List<UserFavTeam> userFavTeams = DbContext.UserFavTeams.ToList();
 
-            List<TeamsDto> favTeams = UserFavTeams
-                .Where(uft => uft.UserId == userId.UserId)
+            List<TeamsListDto> resp = userFavTeams
+                .Where(uft => uft.UserId == userId)
                 .Join(DbContext.Teams,
                     fav => fav.TeamId,
                     t => t.TeamId,
-                    (fav,t) => t)
-                .Select(t => new TeamsDto
+                    (fav, t) => t)
+                .Select(t => new TeamsListDto
                 {
                     TeamName = t.TeamName,
                     TeamId = t.TeamId
                 })
                 .ToList();
 
-            return favTeams;
+            return resp;
         }
 
-        [Authorize(Roles = "True")]
-        [HttpPatch("EditTeam/{id}")]
-        public bool APIEditTeam(int id,[FromBody] AddTeamDto team)
+        [Authorize(Roles = "False")]
+        [HttpPost("AddFavTeam")]
+        public bool APIAddFavTeam([FromBody] FavDto team)
         {
             try
             {
-                Team newTeam = Teams.Where(t => t.TeamId == id).First();
+                UserFavTeam userFavTeam = new()
+                {
+                    TeamId = team.EntityId,
+                    UserId = team.UserId
+                };
 
-                newTeam.TeamName = team.TeamName;
-                newTeam.TeamEstablished = Convert.ToDateTime(team.TeamEstablished);
+                DbContext.UserFavTeams.Add(userFavTeam);
+                DbContext.SaveChanges();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
+        [Authorize(Roles = "False")]
+        [HttpPost("DeleteFavTeam")]
+        public bool APIDeleteFavTeam([FromBody] FavDto team)
+        {
+            try
+            {
+                UserFavTeam userFavTeam = new()
+                {
+                    TeamId = team.EntityId,
+                    UserId = team.UserId
+                };
+
+                DbContext.UserFavTeams.Remove(userFavTeam);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ------------------------------------
+        // PATCH requests
+        // ------------------------------------
+
+        [Authorize(Roles = "True")]
+        [HttpPatch("EditTeam/{id}")]
+        public bool APIEditTeam(int id,[FromBody] TeamDto editedObject)
+        {
+            try
+            {
+                List<Team> teams = DbContext.Teams.ToList();
+
+                Team newTeam = teams
+                    .Where(t => t.TeamId == id)
+                    .First();
+
+                newTeam.TeamName = editedObject.TeamName;
+                newTeam.TeamEstablished = Convert.ToDateTime(editedObject.TeamEstablished);
 
                 DbContext.Teams.Update(newTeam);
                 DbContext.SaveChanges();
@@ -212,5 +180,75 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        // ------------------------------------
+        // DELETE requests
+        // ------------------------------------
+
+        [Authorize(Roles = "True")]
+        [HttpDelete("DeleteTeam/{id}")]
+        public bool APIDeleteTeam(int id)
+        {
+            List<TeamMatch> teamMatches = DbContext.TeamMatches.ToList();
+            List<TeamPlayer> teamPlayers = DbContext.TeamPlayers.ToList();
+            List<UserFavTeam> userFavTeams = DbContext.UserFavTeams.ToList();
+            List<Match> matches = DbContext.Matches.ToList();
+            List<Team> teams = DbContext.Teams.ToList();
+
+            try
+            {
+                List<UserFavTeam> oldFavTeams = userFavTeams
+                    .FindAll(t => t.TeamId == id);
+                List<TeamMatch> oldTeamMatches = teamMatches
+                    .Where(tm => tm.TeamId == id)
+                    .ToList();
+                List<TeamPlayer> oldTeamPlayers = teamPlayers
+                    .FindAll(t => t.TeamId == id);
+                Team team = teams
+                    .Where(t => t.TeamId == id)
+                    .First();
+
+                if (oldFavTeams.Count > 0 || oldFavTeams != null)
+                {
+                    DbContext.UserFavTeams.RemoveRange(oldFavTeams);
+                    DbContext.SaveChanges();
+                }
+
+                if (oldTeamMatches.Count > 0 || oldTeamMatches != null)
+                {
+
+                    foreach (TeamMatch teamMatch in oldTeamMatches)
+                    {
+                        List<TeamMatch> tm = teamMatches
+                            .Where(tm => tm.MatchId == teamMatch.MatchId)
+                            .ToList();
+
+                        DbContext.TeamMatches.RemoveRange(tm);
+                        DbContext.SaveChanges();
+
+                        Match m = matches
+                            .Where(m => m.MatchId == teamMatch.MatchId)
+                            .First();
+
+                        DbContext.Matches.Remove(m);
+                        DbContext.SaveChanges();
+                    }
+                }
+
+                if (oldTeamPlayers.Count > 0 || oldTeamPlayers != null)
+                {
+                    DbContext.TeamPlayers.RemoveRange(oldTeamPlayers);
+                    DbContext.SaveChanges();
+                }
+
+                DbContext.Teams.Remove(team);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

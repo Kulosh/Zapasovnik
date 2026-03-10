@@ -3,9 +3,8 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.DbContexts
 {
-    public class TeamMatchesDb : DbContext
+    public class MatchesDb : DbContext
     {
-
         public DbSet<Match> Matches { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMatch> TeamsMatches { get; set; }
@@ -18,11 +17,11 @@ namespace Zapasovnik.API.DbContexts
 
             if (Environment.GetEnvironmentVariable("ConnectionString") == null)
             {
-                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                ConfigurationBuilder configurationBuilder = new();
                 IConfiguration configuration = configurationBuilder
                     .AddUserSecrets<Program>()
                     .Build();
-                connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+                connection = configuration.GetSection("Zapasovnik")["ConnectionString"]!;
             }
             else
             {

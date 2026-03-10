@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Zapasovnik.API.Security;
 
 namespace Zapasovnik.API.Entities
 {
@@ -13,13 +11,13 @@ namespace Zapasovnik.API.Entities
         public int UserId { get; set; }
 
         [Column("user_name")]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
 
         [Column("user_email")]
-        public string ?UserEmail { get; set; }
+        public required string UserEmail { get; set; }
 
         [Column("user_password")]
-        public string UserPassword { get; set; }
+        public required string UserPassword { get; set; }
 
         [Column("admin")]
         public bool Admin { get; set; } = false;

@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System;
-using System.Collections.Generic;
 
 namespace Zapasovnik.API.Entities
 {
@@ -13,7 +11,7 @@ namespace Zapasovnik.API.Entities
         public int MatchId { get; set; }
 
         [Column("match_date")]
-        public DateTime? MatchDate { get; set; }
+        public DateTime MatchDate { get; set; }
 
         [Column("FK_league_id")]
         public int? LeagueId { get; set; }

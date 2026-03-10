@@ -1,18 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.DbContexts
 {
-    public class UserFavPlayersDb : DbContext
+    public class UsersOnlyDb : DbContext
     {
-        public DbSet<Player> Players { get; set; }
-        public DbSet<TeamPlayer> TeamsPlayers { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<UserFavPlayer> UsersFavPlayers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connection;
+            string ?connection;
 
             if (Environment.GetEnvironmentVariable("ConnectionString") == null)
             {
@@ -24,10 +21,10 @@ namespace Zapasovnik.API.DbContexts
             }
             else
             {
-                connection = Environment.GetEnvironmentVariable("ConnectionString")!;
+                connection = Environment.GetEnvironmentVariable("ConnectionString");
             }
 
-            optionsBuilder.UseMySQL(connection);
+            optionsBuilder.UseMySQL(connection!);
         }
     }
 }

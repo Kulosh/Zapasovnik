@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
@@ -12,7 +10,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        public dbZapasovnikContext DbContext { get; set; }
+        public UsersOnlyDb DbContext { get; set; }
         public List<User> Users { get; set; }  
 
         public RegisterController()
@@ -29,17 +27,22 @@ namespace Zapasovnik.API.Controllers
             User newUser = new User
             {
                 UserName = incomeUser.UserName,
-                UserEmail = incomeUser.UserEmail,
+                UserEmail = incomeUser.UserEmail!,
                 UserPassword = incomeUser.UserPassword,
                 Admin = false
             };
 
             DbContext.Users.Add(newUser);
             DbContext.SaveChanges();
+            Users = DbContext.Users
+                .OrderBy(u => u.UserId)
+                .ToList();
 
-            User user = Users.OrderBy(u => u.UserId).Last();
+            User user = Users
+                .OrderBy(u => u.UserId)
+                .Last();
 
-            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail!, user.Admin);
+            string token = JwtTokenGen.GenerateJwtToken(user.UserId, user.UserName, user.UserEmail, user.Admin);
 
             return Ok(token);
         }

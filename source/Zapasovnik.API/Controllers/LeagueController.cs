@@ -1,51 +1,59 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json.Nodes;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.Controllers
 {
-    [Authorize(Roles = "True")]
     [ApiController]
     [Route("zapasovnik")]
     public class LeagueController : ControllerBase
     {
         public LeaguesDbContext DbContext { get; set; }
 
-
         public LeagueController()
         {
             DbContext = new();
         }
 
+        // ------------------------------------
+        // GET requests
+        // ------------------------------------
+
         [HttpGet("Leagues")]
         public List<League> APILeagues()
         {
-            List<League> Leagues = DbContext.Leagues.ToList();
-            return Leagues;
+            List<League> resp = DbContext.Leagues.ToList();
+
+            return resp;
         }
 
         [HttpGet("LeagueDetail/{id}")]
         public League APILeague(int id)
         {
-            League league = DbContext.Leagues.Where(l => l.LeagueId == id).First();
+            League resp = DbContext.Leagues
+                .Where(l => l.LeagueId == id)
+                .First();
 
-            return league;
+            return resp;
         }
 
+        // ------------------------------------
+        // POST requests
+        // ------------------------------------
+
+        [Authorize(Roles = "True")]
         [HttpPost("AddLeague")]
-        public bool APIAddLeague([FromBody] AddLeagueDto league)
+        public bool APIAddLeague([FromBody] LeagueDto newObject)
         {
             try
             {
-                League newLeague = new League { LeagueName = league.LeagueName};
+                League newLeague = new League { LeagueName = newObject.LeagueName};
+
                 DbContext.Leagues.Add(newLeague);
                 DbContext.SaveChanges();
+
                 return true;
             } catch
             {
@@ -53,19 +61,59 @@ namespace Zapasovnik.API.Controllers
             }
         }
 
+        // ------------------------------------
+        // PATCH requests
+        // ------------------------------------
+
+        [Authorize(Roles = "True")]
+        [HttpPatch("EditLeague/{id}")]
+        public bool APIEditLeague(int id, [FromBody] LeagueDto editedObject)
+        {
+            try
+            {
+                List<League> leagues = DbContext.Leagues.ToList();
+
+                League league = leagues
+                    .Where(l => l.LeagueId == id)
+                    .First();
+
+                league.LeagueName = editedObject.LeagueName;
+
+                DbContext.Leagues.Update(league);
+                DbContext.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ------------------------------------
+        // DELETE requests
+        // ------------------------------------
+
         [Authorize(Roles = "True")]
         [HttpDelete("DeleteLeague/{id}")]
         public bool APIDeleteLeague(int id)
         {
             try
             {
-                League league = DbContext.Leagues.Where(l => l.LeagueId == id).First();
-                List<Match> matches = DbContext.Matches.Where(m => m.LeagueId == id).ToList();
+                League league = DbContext.Leagues
+                    .Where(l => l.LeagueId == id)
+                    .First();
+                List<Match> matches = DbContext.Matches
+                    .Where(m => m.LeagueId == id)
+                    .ToList();
+
                 if (matches.Count > 0)
                 {
                     foreach (Match match in matches)
                     {
-                        List<TeamMatch> teamMatches = DbContext.TeamMatches.Where(tm => tm.MatchId == match.MatchId).ToList();
+                        List<TeamMatch> teamMatches = DbContext.TeamMatches
+                            .Where(tm => tm.MatchId == match.MatchId)
+                            .ToList();
                         DbContext.TeamMatches.RemoveRange(teamMatches);
                         DbContext.SaveChanges();
                     }
@@ -79,28 +127,6 @@ namespace Zapasovnik.API.Controllers
 
                 return true;
             } catch
-            {
-                return false;
-            }
-        }
-
-        [Authorize(Roles = "True")]
-        [HttpPatch("EditLeague/{id}")]
-        public bool APIEditLeague(int id, [FromBody] AddLeagueDto league)
-        {
-            List<League> leagues = DbContext.Leagues.ToList();
-
-            try
-            {
-                League newLeague = leagues.Where(l => l.LeagueId == id).First();
-
-                newLeague.LeagueName = league.LeagueName;
-
-                DbContext.Leagues.Update(newLeague);
-                DbContext.SaveChanges();
-                return true;
-            }
-            catch
             {
                 return false;
             }

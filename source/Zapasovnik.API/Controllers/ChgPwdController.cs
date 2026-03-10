@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Zapasovnik.API.DbContexts;
 using Zapasovnik.API.DTOs;
 using Zapasovnik.API.Entities;
@@ -14,7 +12,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class ChgPwdController : ControllerBase
     {
-        public dbZapasovnikContext DbContext { get; set; }
+        public UsersOnlyDb DbContext { get; set; }
         public List<User> Users { get; set; }
 
         public ChgPwdController()
@@ -24,7 +22,7 @@ namespace Zapasovnik.API.Controllers
         }
 
         [HttpPost]
-        public bool APIChangePassword([FromBody] ChangePasswordDto chg)
+        public bool APIChangePassword([FromBody] ChgPwdDto chg)
         {
             User user = Users
                 .Where(u => u.UserId == chg.UserId)
