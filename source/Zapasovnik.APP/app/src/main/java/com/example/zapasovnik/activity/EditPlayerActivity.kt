@@ -56,7 +56,8 @@ class EditPlayerActivity : ComponentActivity() {
 
             fnameInput.text = player.body()!!.FName
             lnameInput.text = player.body()!!.LName
-            teamInput.setText(player.body()!!.Team)
+
+            if (player.body()!!.Team != "No team") teamInput.setText(player.body()!!.Team)
 
             // Set date from DB
             val rawDate = player.body()!!.Birth
