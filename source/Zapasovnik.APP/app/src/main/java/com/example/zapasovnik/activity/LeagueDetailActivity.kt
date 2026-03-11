@@ -27,8 +27,8 @@ class LeagueDetailActivity : ComponentActivity() {
 
         val id = intent.getIntExtra("id", -1)
         val nameView = findViewById<TextView>(R.id.leagueDetailName)
-        val deleteButton = findViewById<Button>(R.id.deleteLeagueBtn)
-        val editButton = findViewById<Button>(R.id.editLeagueBtn)
+        val deleteButton = findViewById<Button>(R.id.leagueDetailDeleteBtn)
+        val editButton = findViewById<Button>(R.id.leagueDetailEditBtn)
 
         lifecycleScope.launch {
             val league = RetrofitClient.api.getLeagueDetail(id, "Bearer ${userData.jwtTokenFlow.first()}")

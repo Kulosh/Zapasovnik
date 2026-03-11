@@ -30,10 +30,10 @@ class TeamDetailActivity : ComponentActivity() {
         val id = intent.getIntExtra("id", -1)
         val nameView = findViewById<TextView>(R.id.teamDetailName)
         val estView = findViewById<TextView>(R.id.teamDetailEst)
-        val deleteButton = findViewById<Button>(R.id.deleteTeamBtn)
-        val favButton = findViewById<Button>(R.id.addToFavTeams)
-        val unfavButton = findViewById<Button>(R.id.delFromFavTeams)
-        val editButton = findViewById<Button>(R.id.editTeamBtn)
+        val deleteButton = findViewById<Button>(R.id.teamDetailDeleteBtn)
+        val favButton = findViewById<Button>(R.id.teamDetailAddFavBtn)
+        val unfavButton = findViewById<Button>(R.id.teamDetailDeleteFavBtn)
+        val editButton = findViewById<Button>(R.id.teamDetailEditBtn)
 
         lifecycleScope.launch {
             val user = buildJsonObject {

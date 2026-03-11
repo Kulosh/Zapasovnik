@@ -27,7 +27,7 @@ class PlayersActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.playersTableView)
-        val addButton = findViewById<Button>(R.id.addPlayerBtn)
+        val addButton = findViewById<Button>(R.id.playerAddBtn)
 
         lifecycleScope.launch {
             val players = RetrofitClient.api.getPlayers()

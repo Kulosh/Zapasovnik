@@ -34,10 +34,10 @@ class MatchDetailActivity : ComponentActivity() {
         val team2View = findViewById<TextView>(R.id.matchDetailTeam2)
         val dateView = findViewById<TextView>(R.id.matchDetailDate)
         val leagueView = findViewById<TextView>(R.id.matchDetailLeague)
-        val deleteButton = findViewById<Button>(R.id.deleteMatchBtn)
-        val favButton = findViewById<Button>(R.id.addToFavMatches)
-        val unfavButton = findViewById<Button>(R.id.delFromFavMatches)
-        val editButton = findViewById<Button>(R.id.editMatchBtn)
+        val deleteButton = findViewById<Button>(R.id.matchDetailDeleteBtn)
+        val favButton = findViewById<Button>(R.id.matchDetailAddFavBtn)
+        val unfavButton = findViewById<Button>(R.id.matchDetailDeleteFavBtn)
+        val editButton = findViewById<Button>(R.id.matchDetailEditBtn)
 
         var match: Response<MatchDetail> ?= null
 

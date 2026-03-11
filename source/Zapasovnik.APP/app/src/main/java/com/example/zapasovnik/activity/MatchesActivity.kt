@@ -27,7 +27,7 @@ class MatchesActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.matchesTableView)
-        val addButton = findViewById<Button>(R.id.addMatchBtn)
+        val addButton = findViewById<Button>(R.id.matchAddBtn)
 
         lifecycleScope.launch {
             val matches = RetrofitClient.api.getTeamMatches()

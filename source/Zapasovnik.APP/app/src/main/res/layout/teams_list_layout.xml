@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/addTeamBtn"
+        android:id="@+id/teamAddBtn"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"

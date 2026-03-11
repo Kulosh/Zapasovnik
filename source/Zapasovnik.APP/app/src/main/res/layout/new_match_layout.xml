@@ -47,16 +47,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="205dp" />
 
-    <Button
-        android:id="@+id/newMatchAddBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/add_match"
-        app:layout_constraintEnd_toStartOf="@+id/guideline11"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/newMatchDate" />
-
     <CalendarView
         android:id="@+id/newMatchDate"
         android:layout_width="0dp"
@@ -68,5 +58,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newMatchLeague" />
+
+    <Button
+        android:id="@+id/newMatchAddBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/add_match"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toBottomOf="@+id/newMatchDate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

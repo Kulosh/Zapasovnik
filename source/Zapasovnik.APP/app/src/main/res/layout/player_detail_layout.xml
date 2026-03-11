@@ -80,7 +80,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <Button
-        android:id="@+id/deletePlayerBtn"
+        android:id="@+id/playerDetailDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
@@ -109,33 +109,33 @@
         app:layout_constraintGuide_begin="357dp" />
 
     <Button
-        android:id="@+id/addToFavPlayers"
+        android:id="@+id/playerDetailAddFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/add_fav"
-        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
-        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
-        app:layout_constraintTop_toBottomOf="@+id/deletePlayerBtn" />
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailDeleteBtn" />
 
     <Button
-        android:id="@+id/delFromFavPlayers"
+        android:id="@+id/playerDetailDeleteFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/delete_fav"
-        app:layout_constraintEnd_toEndOf="@+id/addToFavPlayers"
-        app:layout_constraintStart_toStartOf="@+id/addToFavPlayers"
-        app:layout_constraintTop_toBottomOf="@+id/addToFavPlayers" />
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailAddFavBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailAddFavBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailAddFavBtn" />
 
     <Button
-        android:id="@+id/editPlayerBtn"
+        android:id="@+id/playerDetailEditBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/edit_player"
-        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
-        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
-        app:layout_constraintTop_toBottomOf="@+id/delFromFavPlayers" />
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailDeleteFavBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

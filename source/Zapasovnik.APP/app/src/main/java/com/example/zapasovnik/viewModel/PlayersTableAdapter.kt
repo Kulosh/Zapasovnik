@@ -23,7 +23,7 @@ class PlayersTableAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerTableHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fav_players_table_row, parent, false)
+            .inflate(R.layout.players_table_row, parent, false)
         return PlayerTableHolder(view)
     }
 

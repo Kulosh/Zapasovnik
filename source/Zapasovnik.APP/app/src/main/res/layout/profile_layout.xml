@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
     <Button
-        android:id="@+id/profileChangePassword"
+        android:id="@+id/profileChangePasswordBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="@string/change_password"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/favPlayersBtn"
+        android:id="@+id/profileFavPlayersBtn"
         android:layout_width="320dp"
         android:layout_height="64dp"
         android:text="@string/fav_players"
@@ -79,22 +79,22 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <Button
-        android:id="@+id/favTeamsBtn"
+        android:id="@+id/profileFavTeamsBtn"
         android:layout_width="320dp"
         android:layout_height="64dp"
         android:layout_marginTop="80dp"
         android:text="@string/fav_teams"
-        app:layout_constraintStart_toStartOf="@+id/favPlayersBtn"
-        app:layout_constraintTop_toTopOf="@+id/favPlayersBtn" />
+        app:layout_constraintStart_toStartOf="@+id/profileFavPlayersBtn"
+        app:layout_constraintTop_toTopOf="@+id/profileFavPlayersBtn" />
 
     <Button
-        android:id="@+id/favMatchesBtn"
+        android:id="@+id/profileFavMatchesBtn"
         android:layout_width="320dp"
         android:layout_height="64dp"
         android:layout_marginTop="80dp"
         android:text="@string/fav_matches"
-        app:layout_constraintStart_toStartOf="@+id/favPlayersBtn"
-        app:layout_constraintTop_toTopOf="@+id/favTeamsBtn" />
+        app:layout_constraintStart_toStartOf="@+id/profileFavPlayersBtn"
+        app:layout_constraintTop_toTopOf="@+id/profileFavTeamsBtn" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -111,7 +111,7 @@
         app:layout_constraintGuide_begin="359dp" />
 
     <Button
-        android:id="@+id/logoutBtn"
+        android:id="@+id/profileLogoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"

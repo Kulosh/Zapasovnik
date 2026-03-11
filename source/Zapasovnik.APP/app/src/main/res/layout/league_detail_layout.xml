@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/deleteLeagueBtn"
+        android:id="@+id/leagueDetailDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
@@ -55,13 +55,13 @@
         app:layout_constraintGuide_begin="357dp" />
 
     <Button
-        android:id="@+id/editLeagueBtn"
+        android:id="@+id/leagueDetailEditBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/edit_league"
-        app:layout_constraintEnd_toEndOf="@+id/deleteLeagueBtn"
-        app:layout_constraintStart_toStartOf="@+id/deleteLeagueBtn"
-        app:layout_constraintTop_toBottomOf="@+id/deleteLeagueBtn" />
+        app:layout_constraintEnd_toEndOf="@+id/leagueDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/leagueDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/leagueDetailDeleteBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

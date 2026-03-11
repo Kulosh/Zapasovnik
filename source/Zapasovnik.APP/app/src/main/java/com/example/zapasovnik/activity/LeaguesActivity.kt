@@ -28,13 +28,6 @@ class LeaguesActivity : ComponentActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.leaguesTableView)
         val addButton = findViewById<Button>(R.id.addLeagueBtn)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        addButton.setOnClickListener {
-            val intent = Intent(this, NewLeagueActivity::class.java)
-            startActivity(intent)
-        }
-
         lifecycleScope.launch {
             val leagues = RetrofitClient.api.getLeagues()
 
@@ -43,6 +36,13 @@ class LeaguesActivity : ComponentActivity() {
                 intent.putExtra("id", league.LeagueId)
                 startActivity(intent)
             }
+        }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        addButton.setOnClickListener {
+            val intent = Intent(this, NewLeagueActivity::class.java)
+            startActivity(intent)
         }
     }
 }

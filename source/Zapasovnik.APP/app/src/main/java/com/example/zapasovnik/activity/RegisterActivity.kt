@@ -28,9 +28,9 @@ class RegisterActivity : ComponentActivity() {
 
         val usernameInput = findViewById<EditText>(R.id.regUsername)
         val emailInput = findViewById<EditText>(R.id.regEmail)
-        val pwd1Input = findViewById<EditText>(R.id.regPwd)
-        val pwd2Input = findViewById<EditText>(R.id.regPwdRe)
-        val registerButton = findViewById<Button>(R.id.regBtnConfirm)
+        val pwd1Input = findViewById<EditText>(R.id.regPwd1)
+        val pwd2Input = findViewById<EditText>(R.id.regPwd2)
+        val registerButton = findViewById<Button>(R.id.regConfirmBtn)
 
         registerButton.setOnClickListener {
             if (

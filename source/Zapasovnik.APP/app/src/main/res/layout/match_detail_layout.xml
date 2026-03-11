@@ -80,7 +80,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <Button
-        android:id="@+id/deleteMatchBtn"
+        android:id="@+id/matchDetailDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
@@ -109,33 +109,33 @@
         app:layout_constraintGuide_begin="357dp" />
 
     <Button
-        android:id="@+id/addToFavMatches"
+        android:id="@+id/matchDetailAddFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/add_fav"
-        app:layout_constraintEnd_toEndOf="@+id/deleteMatchBtn"
-        app:layout_constraintStart_toStartOf="@+id/deleteMatchBtn"
-        app:layout_constraintTop_toBottomOf="@+id/deleteMatchBtn" />
+        app:layout_constraintEnd_toEndOf="@+id/matchDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/matchDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/matchDetailDeleteBtn" />
 
     <Button
-        android:id="@+id/delFromFavMatches"
+        android:id="@+id/matchDetailDeleteFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/delete_fav"
-        app:layout_constraintEnd_toEndOf="@+id/addToFavMatches"
-        app:layout_constraintStart_toStartOf="@+id/addToFavMatches"
-        app:layout_constraintTop_toBottomOf="@+id/addToFavMatches" />
+        app:layout_constraintEnd_toEndOf="@+id/matchDetailAddFavBtn"
+        app:layout_constraintStart_toStartOf="@+id/matchDetailAddFavBtn"
+        app:layout_constraintTop_toBottomOf="@+id/matchDetailAddFavBtn" />
 
     <Button
-        android:id="@+id/editMatchBtn"
+        android:id="@+id/matchDetailEditBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/edit_match"
-        app:layout_constraintEnd_toEndOf="@+id/deleteMatchBtn"
-        app:layout_constraintStart_toStartOf="@+id/deleteMatchBtn"
-        app:layout_constraintTop_toBottomOf="@+id/delFromFavMatches" />
+        app:layout_constraintEnd_toEndOf="@+id/matchDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/matchDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/matchDetailDeleteFavBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

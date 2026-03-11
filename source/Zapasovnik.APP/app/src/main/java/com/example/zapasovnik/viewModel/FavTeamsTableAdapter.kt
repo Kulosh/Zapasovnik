@@ -21,7 +21,7 @@ class FavTeamsTableAdapter(
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavTeamTableHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fav_teams_table_row, parent, false)
+                .inflate(R.layout.teams_table_row, parent, false)
             return FavTeamTableHolder(view)
         }
 

@@ -25,12 +25,12 @@ class ProfileActivity : ComponentActivity() {
 
         val usernameView = findViewById<TextView>(R.id.profileUsername)
         val emailView = findViewById<TextView>(R.id.profileEmail)
-        val changPasswordButton = findViewById<Button>(R.id.profileChangePassword)
+        val changPasswordButton = findViewById<Button>(R.id.profileChangePasswordBtn)
         val leaguesButton = findViewById<Button>(R.id.profileLeaguesBtn)
-        val favPlayersButton = findViewById<Button>(R.id.favPlayersBtn)
-        val favMatchesButton = findViewById<Button>(R.id.favMatchesBtn)
-        val favTeamsButton = findViewById<Button>(R.id.favTeamsBtn)
-        val logoutButton = findViewById<Button>(R.id.logoutBtn)
+        val favPlayersButton = findViewById<Button>(R.id.profileFavPlayersBtn)
+        val favMatchesButton = findViewById<Button>(R.id.profileFavMatchesBtn)
+        val favTeamsButton = findViewById<Button>(R.id.profileFavTeamsBtn)
+        val logoutButton = findViewById<Button>(R.id.profileLogoutBtn)
 
         lifecycleScope.launch {
             val username = userData.usernameFlow.first()

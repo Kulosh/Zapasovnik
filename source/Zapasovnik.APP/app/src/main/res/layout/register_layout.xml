@@ -43,11 +43,11 @@
         android:hint="@string/email"
         android:autofillHints="emailAddress"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/regPwd"
+        app:layout_constraintBottom_toTopOf="@+id/regPwd1"
         app:layout_constraintStart_toStartOf="@+id/regUsername" />
 
     <EditText
-        android:id="@+id/regPwd"
+        android:id="@+id/regPwd1"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"
@@ -56,11 +56,11 @@
         android:hint="@string/enter_password"
         android:autofillHints="password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/regPwdRe"
+        app:layout_constraintBottom_toTopOf="@+id/regPwd2"
         app:layout_constraintStart_toStartOf="@+id/regUsername" />
 
     <EditText
-        android:id="@+id/regPwdRe"
+        android:id="@+id/regPwd2"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@color/white"
@@ -72,13 +72,13 @@
         app:layout_constraintStart_toStartOf="@+id/regUsername" />
 
     <Button
-        android:id="@+id/regBtnConfirm"
+        android:id="@+id/regConfirmBtn"
         android:layout_width="128dp"
         android:layout_height="64dp"
         android:layout_marginTop="64dp"
         android:text="@string/register"
-        app:layout_constraintEnd_toEndOf="@+id/regPwdRe"
-        app:layout_constraintStart_toStartOf="@+id/regPwdRe"
+        app:layout_constraintEnd_toEndOf="@+id/regPwd2"
+        app:layout_constraintStart_toStartOf="@+id/regPwd2"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

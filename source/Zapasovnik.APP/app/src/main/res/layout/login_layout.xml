@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/usernameLogin"
+        android:id="@+id/loginUsername"
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"
@@ -16,13 +16,13 @@
         android:ems="10"
         android:hint="@string/username"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/passwordLogin"
+        app:layout_constraintBottom_toTopOf="@+id/loginPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline8" />
 
     <EditText
-        android:id="@+id/passwordLogin"
+        android:id="@+id/loginPassword"
         android:layout_width="320dp"
         android:layout_height="48dp"
         android:layout_marginBottom="64dp"
@@ -32,10 +32,10 @@
         android:hint="@string/password"
         android:inputType="text|textPassword"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintStart_toStartOf="@+id/usernameLogin" />
+        app:layout_constraintStart_toStartOf="@+id/loginUsername" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/loginLoginBtn"
         android:layout_width="240dp"
         android:layout_height="64dp"
         android:text="@string/login"
@@ -44,12 +44,12 @@
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
     <Button
-        android:id="@+id/loginRegBtn"
+        android:id="@+id/loginRegisterBtn"
         android:layout_width="240dp"
         android:layout_height="64dp"
         android:text="@string/register"
-        app:layout_constraintStart_toStartOf="@+id/loginBtn"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+        app:layout_constraintStart_toStartOf="@+id/loginLoginBtn"
+        app:layout_constraintTop_toBottomOf="@+id/loginLoginBtn" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"

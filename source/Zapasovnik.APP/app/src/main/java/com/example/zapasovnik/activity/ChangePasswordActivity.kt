@@ -30,7 +30,7 @@ class ChangePasswordActivity : ComponentActivity() {
         val oldPwdInput = findViewById<EditText>(R.id.changePwdOld)
         val newPwd1Input = findViewById<EditText>(R.id.changePwdNew)
         val newPwd2Input = findViewById<EditText>(R.id.changePwdNewRe)
-        val confirmButton = findViewById<Button>(R.id.changeConfirm)
+        val confirmButton = findViewById<Button>(R.id.changePwdConfirm)
 
         confirmButton.setOnClickListener {
             if (newPwd1Input.text.toString() == newPwd2Input.text.toString()) {

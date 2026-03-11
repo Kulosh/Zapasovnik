@@ -29,12 +29,12 @@ class LoginActivity : ComponentActivity() {
 
         val intent = Intent(this, HomeActivity::class.java)
 
-        val loginButton = findViewById<Button>(R.id.loginBtn)
-        val registerButton = findViewById<Button>(R.id.loginRegBtn)
+        val loginButton = findViewById<Button>(R.id.loginLoginBtn)
+        val registerButton = findViewById<Button>(R.id.loginRegisterBtn)
 
         loginButton.setOnClickListener {
-            val username: String = findViewById<EditText>(R.id.usernameLogin).text.toString()
-            val password: String = findViewById<EditText>(R.id.passwordLogin).text.toString()
+            val username: String = findViewById<EditText>(R.id.loginUsername).text.toString()
+            val password: String = findViewById<EditText>(R.id.loginPassword).text.toString()
             val loginString = buildJsonObject {
                 put("userName", username)
                 put("userPassword", password)

@@ -29,9 +29,19 @@ class HomeActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.homeMatchTableView)
-        val teamsButton = findViewById<Button>(R.id.teamBtn)
-        val matchesButton = findViewById<Button>(R.id.matchBtn)
-        val playersButton = findViewById<Button>(R.id.playerBtn)
+        val teamsButton = findViewById<Button>(R.id.homeTeamsBtn)
+        val matchesButton = findViewById<Button>(R.id.homeMatchesBtn)
+        val playersButton = findViewById<Button>(R.id.homePlayersBtn)
+
+        lifecycleScope.launch {
+            val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
+
+            recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+                val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+                intent.putExtra("id", match.Id)
+                startActivity(intent)
+            }
+        }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -49,16 +59,6 @@ class HomeActivity : ComponentActivity() {
             val intent = Intent(this, PlayersActivity::class.java)
             startActivity(intent)
         }
-
-        lifecycleScope.launch {
-            val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches()
-
-            recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
-                val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
-                intent.putExtra("id", match.Id)
-                startActivity(intent)
-            }
-        }
     }
 
     override fun onStart() {
@@ -66,7 +66,7 @@ class HomeActivity : ComponentActivity() {
 
         userData = UserData(this)
 
-        val loginButton = findViewById<ImageView>(R.id.loginIcon)
+        val loginButton = findViewById<ImageView>(R.id.homeLoginButton)
 
         val loginIntent = Intent(this, LoginActivity::class.java)
         val profileIntent = Intent(this, ProfileActivity::class.java)

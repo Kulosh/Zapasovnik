@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     <Button
-        android:id="@+id/deleteTeamBtn"
+        android:id="@+id/teamDetailDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
@@ -73,33 +73,33 @@
         app:layout_constraintGuide_begin="357dp" />
 
     <Button
-        android:id="@+id/addToFavTeams"
+        android:id="@+id/teamDetailAddFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/add_fav"
-        app:layout_constraintEnd_toEndOf="@+id/deleteTeamBtn"
-        app:layout_constraintStart_toStartOf="@+id/deleteTeamBtn"
-        app:layout_constraintTop_toBottomOf="@+id/deleteTeamBtn" />
+        app:layout_constraintEnd_toEndOf="@+id/teamDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/teamDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/teamDetailDeleteBtn" />
 
     <Button
-        android:id="@+id/delFromFavTeams"
+        android:id="@+id/teamDetailDeleteFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/delete_fav"
-        app:layout_constraintEnd_toEndOf="@+id/addToFavTeams"
-        app:layout_constraintStart_toStartOf="@+id/addToFavTeams"
-        app:layout_constraintTop_toBottomOf="@+id/addToFavTeams" />
+        app:layout_constraintEnd_toEndOf="@+id/teamDetailAddFavBtn"
+        app:layout_constraintStart_toStartOf="@+id/teamDetailAddFavBtn"
+        app:layout_constraintTop_toBottomOf="@+id/teamDetailAddFavBtn" />
 
     <Button
-        android:id="@+id/editTeamBtn"
+        android:id="@+id/teamDetailEditBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/edit_team"
-        app:layout_constraintEnd_toEndOf="@+id/deleteTeamBtn"
-        app:layout_constraintStart_toStartOf="@+id/deleteTeamBtn"
-        app:layout_constraintTop_toBottomOf="@+id/delFromFavTeams" />
+        app:layout_constraintEnd_toEndOf="@+id/teamDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/teamDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/teamDetailDeleteFavBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

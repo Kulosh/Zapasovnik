@@ -27,25 +27,26 @@ class TeamsActivity : ComponentActivity() {
         userData = UserData(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.teamsTableView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val addTeam = findViewById<Button>(R.id.addTeamBtn)
-
-        addTeam.setOnClickListener {
-            val intent = Intent(this, NewTeamActivity::class.java)
-            startActivity(intent)
-        }
+        val addButton = findViewById<Button>(R.id.teamAddBtn)
 
         lifecycleScope.launch {
             val teams = RetrofitClient.api.getTeams()
             val isAdmin = userData.adminFlow.first()
 
-            if (!isAdmin) addTeam.visibility = Button.GONE
+            if (!isAdmin) addButton.visibility = Button.GONE
 
             recyclerView.adapter = FavTeamsTableAdapter(teams) { team ->
                 val intent = Intent(this@TeamsActivity, TeamDetailActivity::class.java)
                 intent.putExtra("id", team.TeamId)
                 startActivity(intent)
             }
+        }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        addButton.setOnClickListener {
+            val intent = Intent(this, NewTeamActivity::class.java)
+            startActivity(intent)
         }
     }
 }
