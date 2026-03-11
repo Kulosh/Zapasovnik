@@ -7,10 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.League
-import com.example.zapasovnik.model.Match
-import com.example.zapasovnik.model.Team
 
 class LeaguesTableAdapter(
     private val leagues: List<League>,

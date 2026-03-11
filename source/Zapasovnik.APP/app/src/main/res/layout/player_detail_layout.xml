@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:text="@string/new_player_fname"
+        android:text="@string/player_fname"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_lname"
+        android:text="@string/player_lname"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -49,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_birth"
+        android:text="@string/player_birth"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -67,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/new_player_team"
+        android:text="@string/player_team"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -81,12 +80,12 @@
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <Button
-        android:id="@+id/deletePlayerBtn"
+        android:id="@+id/playerDetailDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@android:color/holo_red_dark"
         android:padding="8dp"
-        android:text="@string/del_player"
+        android:text="@string/delete_player"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
@@ -110,33 +109,33 @@
         app:layout_constraintGuide_begin="357dp" />
 
     <Button
-        android:id="@+id/addToFavPlayers"
+        android:id="@+id/playerDetailAddFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:text="@string/add_fav"
-        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
-        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
-        app:layout_constraintTop_toBottomOf="@+id/deletePlayerBtn" />
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailDeleteBtn" />
 
     <Button
-        android:id="@+id/delFromFavPlayers"
+        android:id="@+id/playerDetailDeleteFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
-        android:text="@string/add_del"
-        app:layout_constraintEnd_toEndOf="@+id/addToFavPlayers"
-        app:layout_constraintStart_toStartOf="@+id/addToFavPlayers"
-        app:layout_constraintTop_toBottomOf="@+id/addToFavPlayers" />
+        android:text="@string/delete_fav"
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailAddFavBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailAddFavBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailAddFavBtn" />
 
     <Button
-        android:id="@+id/editPlayerBtn"
+        android:id="@+id/playerDetailEditBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/edit_player"
-        app:layout_constraintEnd_toEndOf="@+id/deletePlayerBtn"
-        app:layout_constraintStart_toStartOf="@+id/deletePlayerBtn"
-        app:layout_constraintTop_toBottomOf="@+id/delFromFavPlayers" />
+        app:layout_constraintEnd_toEndOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintStart_toStartOf="@+id/playerDetailDeleteBtn"
+        app:layout_constraintTop_toBottomOf="@+id/playerDetailDeleteFavBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -34,96 +33,106 @@ class EditPlayerActivity : ComponentActivity() {
         setContentView(R.layout.new_player_layout)
 
         userData = UserData(this)
-        val id = intent.getIntExtra("playerId", -1)
 
-        val teamSel = findViewById<AutoCompleteTextView>(R.id.newPlayerTeam)
+        val id = intent.getIntExtra("playerId", -1)
+        val fnameInput = findViewById<TextView>(R.id.newPlayerFName)
+        val lnameInput = findViewById<TextView>(R.id.newPlayerLName)
+        val teamInput = findViewById<AutoCompleteTextView>(R.id.newPlayerTeam)
+        val dateSelect = findViewById<CalendarView>(R.id.newPlayerBorn)
+        val addButton = findViewById<Button>(R.id.newPlayerAddBtn)
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, mutableListOf<String>())
-        teamSel.setAdapter(adapter)
-        val addBtn = findViewById<Button>(R.id.newPlayerAddBtn)
-        var birth = LocalDateTime.now().toString()
-        val date = findViewById<CalendarView>(R.id.newPlayerBorn)
-        val fname = findViewById<TextView>(R.id.newPlayerFName)
-        val lname = findViewById<TextView>(R.id.newPlayerLName)
+        teamInput.setAdapter(adapter)
+
+        // For storing date to send to server
+        var date = LocalDateTime.now().toString()
 
         lifecycleScope.launch {
             val user = buildJsonObject {
-                put("userId", userData.userIdFlow.first().toInt())
+                put("userId", userData.userIdFlow.first())
                 put("entityId", id)
             }
             val player = RetrofitClient.api.postPlayerDetail(user)
 
-            fname.text = player.body()?.FName
-            lname.text = player.body()?.LName
-            teamSel.setText(player.body()?.Team)
+            fnameInput.text = player.body()!!.FName
+            lnameInput.text = player.body()!!.LName
 
-            val oldDate = player.body()?.Birth?.replace(Regex("[\\p{Z}\\s]+"), " ")
+            if (player.body()!!.Team != "No team") teamInput.setText(player.body()!!.Team)
+
+            // Set date from DB
+            val rawDate = player.body()!!.Birth
+
+            val normalizedDate = rawDate
+                .replace('\u202F', ' ')   // narrow no-break space
+                .replace('\u00A0', ' ')   // no-break space
+                .replace(Regex("\\s+"), " ")
+                .trim()
+
             val formatter = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a", Locale.US)
-            val ldt = LocalDateTime.parse(oldDate, formatter)
-            val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            date.date = millis
+
+            normalizedDate.let {
+                val ldt = LocalDateTime.parse(it, formatter)
+                val millis = ldt.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                dateSelect.date = millis
+            }
         }
 
-        teamSel.addTextChangedListener(object: TextWatcher {
+        teamInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 lifecycleScope.launch {
                     val teams = RetrofitClient.api.getTeams().map { it.TeamName }
-//                    Log.d("Teams", "$teams")
 
                     adapter.clear()
                     adapter.addAll(teams)
                     adapter.notifyDataSetChanged()
 
-                    if (teams.isNotEmpty() && !teamSel.isPopupShowing) {
-                        teamSel.showDropDown()
+                    if (teams.isNotEmpty() && !teamInput.isPopupShowing) {
+                        teamInput.showDropDown()
                     }
                 }
             }
         })
 
-        date.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            birth = "$year-${month + 1}-$dayOfMonth"
+        dateSelect.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            date = "$year-${month + 1}-$dayOfMonth"
         }
 
-        addBtn.setOnClickListener {
-            val team = teamSel.text.toString()
+        addButton.setOnClickListener {
+            val team = teamInput.text.toString()
 
-//            Log.d("Birth", birth)
-//            Log.d("Team", team)
-
-            if (fname.text == "" || lname.text == "") {
+            if (fnameInput.text == "" || lnameInput.text == "") {
                 Toast.makeText(
                     applicationContext,
-                    R.string.new_player_enter_name,
+                    R.string.enter_name,
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val intent = Intent(this, HomeActivity::class.java)
-
                 lifecycleScope.launch {
                     val newPlayerString = buildJsonObject {
-                        put("FName", fname.text.toString())
-                        put("LName", lname.text.toString())
-                        put("Birth", birth)
+                        put("FName", fnameInput.text.toString())
+                        put("LName", lnameInput.text.toString())
+                        put("Birth", date)
                         put("Team", team)
                     }
 
-//                    Log.d("String", newPlayerString.toString())
-
                     val resp = RetrofitClient.api.patchEditPlayer(id,newPlayerString, "Bearer ${userData.jwtTokenFlow.first()}")
+
                     if (resp.isSuccessful && resp.body().toString() == "true") {
                         Toast.makeText(
                             applicationContext,
-                            R.string.new_player_success,
+                            R.string.added_successfully,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        val intent = Intent(this@EditPlayerActivity, HomeActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
                             applicationContext,
-                            R.string.network_error,
+                            R.string.error,
                             Toast.LENGTH_SHORT
                         ).show()
                     }

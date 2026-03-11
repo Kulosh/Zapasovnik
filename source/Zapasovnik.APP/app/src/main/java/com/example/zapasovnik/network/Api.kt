@@ -1,7 +1,6 @@
 package com.example.zapasovnik.network
 
-import com.example.zapasovnik.model.FavPlayer
-import com.example.zapasovnik.model.JwtResponse
+import com.example.zapasovnik.model.Player
 import com.example.zapasovnik.model.League
 import com.example.zapasovnik.model.Match
 import com.example.zapasovnik.model.MatchDetail
@@ -24,15 +23,13 @@ interface Api {
     suspend fun getTeamMatches(): List<Match>
 
     @GET("Players")
-    suspend fun getPlayers(): List<FavPlayer>
+    suspend fun getPlayers(): List<Player>
 
     @GET("Teams")
     suspend fun getTeams(): List<Team>
 
     @GET("Leagues")
-    suspend fun getLeagues(
-        @Header("Authorization") token: String
-    ): List<League>
+    suspend fun getLeagues(): List<League>
 
     @GET("LeagueDetail/{id}")
     suspend fun getLeagueDetail(
@@ -55,8 +52,8 @@ interface Api {
         @Body user: JsonObject
     ): Response<TeamDetail>
 
-    @POST("User")
-    suspend fun postUser(
+    @POST("Login")
+    suspend fun postLogin(
         @Body user: JsonObject
     ): ResponseBody
 
@@ -68,19 +65,19 @@ interface Api {
 
     @POST("favPlayer")
     suspend fun postFavPlayer (
-        @Body userId: JsonObject,
+        @Body userId: Int,
         @Header("Authorization") authorization: String
-    ): List<FavPlayer>
+    ): List<Player>
 
     @POST("favMatch")
     suspend fun postFavMatch (
-        @Body userId: JsonObject,
+        @Body userId: Int,
         @Header("Authorization") authorization: String
     ): List<Match>
 
     @POST("favTeams")
     suspend fun postFavTeams (
-        @Body userId: JsonObject,
+        @Body userId: Int,
         @Header("Authorization") authorization: String
     ): List<Team>
 

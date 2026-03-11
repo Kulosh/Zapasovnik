@@ -23,7 +23,7 @@ class HomeMatchTableAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMatchTableHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_match_table_row, parent, false)
+            .inflate(R.layout.matches_table_row, parent, false)
         return HomeMatchTableHolder(view)
     }
 

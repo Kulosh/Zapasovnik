@@ -8,15 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.FavPlayer
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
-import com.example.zapasovnik.viewModel.FavPlayersTableAdapter
 import com.example.zapasovnik.viewModel.PlayersTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 class FavPlayersActivity : ComponentActivity() {
 
@@ -28,13 +24,11 @@ class FavPlayersActivity : ComponentActivity() {
         setContentView(R.layout.fav_players_layout)
 
         userData = UserData(this)
+
         val recyclerView = findViewById<RecyclerView>(R.id.favPlayersTableView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         lifecycleScope.launch {
-            val userId = buildJsonObject {
-                put("userId", userData.userIdFlow.first())
-            }
+            val userId = userData.userIdFlow.first()
             val favPlayers = RetrofitClient.api.postFavPlayer(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
             recyclerView.adapter = PlayersTableAdapter(favPlayers) { player ->
@@ -43,5 +37,7 @@ class FavPlayersActivity : ComponentActivity() {
                 startActivity(intent)
             }
         }
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }

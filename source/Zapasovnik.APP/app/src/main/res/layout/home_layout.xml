@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/loginIcon"
+        android:id="@+id/homeLoginButton"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="64dp"
@@ -20,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/homeLogo"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="96dp"
@@ -46,36 +45,36 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/playerBtn"
+        android:id="@+id/homePlayersBtn"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
-        android:text="@string/players_btn"
+        android:text="@string/players"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/matchBtn" />
+        app:layout_constraintStart_toStartOf="@+id/homeMatchesBtn" />
 
     <Button
-        android:id="@+id/teamBtn"
+        android:id="@+id/homeTeamsBtn"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/teams_btn"
+        android:text="@string/teams"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/matchBtn"
+        app:layout_constraintBottom_toTopOf="@+id/homeMatchesBtn"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="@+id/guideline6" />
 
     <Button
-        android:id="@+id/matchBtn"
+        android:id="@+id/homeMatchesBtn"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/matches_btn"
+        android:text="@string/matches"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/playerBtn"
-        app:layout_constraintStart_toStartOf="@+id/teamBtn" />
+        app:layout_constraintBottom_toTopOf="@+id/homePlayersBtn"
+        app:layout_constraintStart_toStartOf="@+id/homeTeamsBtn" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"

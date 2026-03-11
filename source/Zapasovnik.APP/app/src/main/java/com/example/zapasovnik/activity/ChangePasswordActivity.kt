@@ -2,7 +2,6 @@ package com.example.zapasovnik.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import kotlin.collections.getValue
 
 class ChangePasswordActivity : ComponentActivity() {
 
@@ -28,42 +26,37 @@ class ChangePasswordActivity : ComponentActivity() {
         setContentView(R.layout.change_password_layout)
 
         userData = UserData(this)
-        val oldPwd = findViewById<EditText>(R.id.changePwdOld)
-        val newPwd = findViewById<EditText>(R.id.changePwdNew)
-        val newPwdRe = findViewById<EditText>(R.id.changePwdNewRe)
-        val confirmBtn = findViewById<Button>(R.id.changeConfirm)
-//        val username = intent.getStringExtra("usernamePwd")
-//        Log.w("Username", "$username")
 
+        val oldPwdInput = findViewById<EditText>(R.id.changePwdOld)
+        val newPwd1Input = findViewById<EditText>(R.id.changePwdNew)
+        val newPwd2Input = findViewById<EditText>(R.id.changePwdNewRe)
+        val confirmButton = findViewById<Button>(R.id.changePwdConfirm)
 
-        confirmBtn.setOnClickListener {
-            if (newPwd.text.toString() == newPwdRe.text.toString()) {
-                val intent = Intent(this, ProfileActivity::class.java)
-
+        confirmButton.setOnClickListener {
+            if (newPwd1Input.text.toString() == newPwd2Input.text.toString()) {
                 lifecycleScope.launch {
                     val userId = userData.userIdFlow.first()
-                    val token = userData.jwtTokenFlow.first()
 
                     val pwdString = buildJsonObject {
                         put("UserId", userId)
-                        put("Old", oldPwd.text.toString())
-                        put("New", newPwd.text.toString())
+                        put("Old", oldPwdInput.text.toString())
+                        put("New", newPwd1Input.text.toString())
                     }
                     val resp = RetrofitClient.api.postChangePassword(pwdString, "Bearer ${userData.jwtTokenFlow.first()}")
                     val success = resp.body()
-//                    Log.d("response", "$resp")
-//                    Log.d("PWD string", pwdString.toString())
+
                     if (success == true) {
+                        val intent = Intent(this@ChangePasswordActivity, ProfileActivity::class.java)
                         startActivity(intent)
                     } else Toast.makeText(
                         applicationContext,
-                        R.string.old_wrong,
+                        R.string.old_password_incorrect,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             } else Toast.makeText(
                 applicationContext,
-                R.string.new_not_same,
+                R.string.passwords_not_same,
                 Toast.LENGTH_SHORT
             ).show()
         }

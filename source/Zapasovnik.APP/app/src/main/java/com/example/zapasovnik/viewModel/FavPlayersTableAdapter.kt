@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.FavPlayer
+import com.example.zapasovnik.model.Player
 
-class FavPlayersTableAdapter(private val players: List<FavPlayer>):
+class FavPlayersTableAdapter(private val players: List<Player>):
     RecyclerView.Adapter<FavPlayersTableAdapter.FavPlayerTableHolder>() {
         class FavPlayerTableHolder(view: View): RecyclerView.ViewHolder(view) {
             val fname: TextView = view.findViewById(R.id.FavPlayerFname)
@@ -18,7 +18,7 @@ class FavPlayersTableAdapter(private val players: List<FavPlayer>):
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavPlayerTableHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fav_players_table_row, parent, false)
+                .inflate(R.layout.players_table_row, parent, false)
             return FavPlayerTableHolder(view)
         }
 
