@@ -12,7 +12,6 @@ import com.example.zapasovnik.R
 import com.example.zapasovnik.model.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.viewModel.FavTeamsTableAdapter
-import com.example.zapasovnik.viewModel.PlayersTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
