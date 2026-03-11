@@ -225,12 +225,12 @@ namespace Zapasovnik.API.Controllers
                     .Where(p => p.PlayerId == id)
                     .First();
 
-                Team? oldTeam = teams
-                    .Where(t => t.TeamName == editedObject.Team)
+                TeamPlayer? oldTeamPlayer = teamPlayers
+                    .Where(tp => tp.PlayerId == id)
                     .FirstOrDefault();
 
-                TeamPlayer? oldTeamPlayer = teamPlayers
-                    .Where(tp => tp.PlayerId == id && tp.TeamId == oldTeam?.TeamId)
+                Team? oldTeam = teams
+                    .Where(t => t.TeamId == oldTeamPlayer?.TeamId)
                     .FirstOrDefault();
 
                 if (oldPlayer.FirstName == editedObject.FName &&
