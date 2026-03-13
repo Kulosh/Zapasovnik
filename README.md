@@ -15,6 +15,7 @@
       - [Backend](#backend)
       - [Frontend](#frontend)
       - [Database](#database)
+    - [Structure](#structure)
 
 ---
 
@@ -79,4 +80,64 @@ Database contains 10 main tables and 1 table, which is right now not implemented
 
 - `tbTeamsPlayersArchive`
 
+Relations, columns and data types are specified in the dbDiagram specified at the beginning of this part
+
 ---
+
+## Code
+
+### Structure
+
+**Backend**
+
+```bash
+Zapasovnik.API/
+├── Controllers/
+├── DbContexts/
+├── DTOs/
+├── Entities/
+└── Security/
+```
+
+**`Controllers/`**
+
+No surprise, this directory hold controllers. They are used as a messenger between frontend and database. Controller contains logic to obtain data from DB using LINQ queries in methods, or in this case, actions.
+
+We implemented 7 controllers. 3 of them serves the users and 4 of them handles the data in DB.
+
+The 3 user-controllers are following (Name should explain their role)
+
+- `ChgPwdController.cs`
+- `LoginController.cs`
+- `RegisterController.cs`
+
+The rest of the 7 are
+
+- `LeagueController.cs` (Mainly for admin)
+- `MatchesController.cs`
+- `PlayerController.cs`
+- `TeamController.cs`
+
+**`DbContexts/`**
+
+DbContexts are classes containing info on how to connect to DB
+
+**Frontend**
+
+```bash
+Zapasovnik.APP/
+└── app/
+    └── src/
+        └── main/
+            ├── java/../
+            │   ├── activity/
+            │   ├── model/
+            │   ├── network/
+            │   ├── network/
+            │   └── viewModel/
+            └── res/
+                ├── drawable/
+                ├── layout/
+                ├── values/
+                └── values-cs/
+```
