@@ -21,6 +21,13 @@
       - [Database](#database)
     - [Examples](#examples)
       - [Backend](#backend-examples-back)
+        - [DbContext](#dbcontext)
+        - [Entities and DTOs](#entities-and-dtos)
+        - [Security](#security)
+          - [Hashing](#hashing)
+          - [JWT](#jwt)
+        - [Controllers](#controllers)
+      - [Frontend](#frontend-examples-front)
 
 ---
 
@@ -240,3 +247,196 @@ Relations, columns and data types are specified in the dbDiagram specified at th
 ### Examples
 
 #### Backend {#examples-back}
+
+##### DbContext
+
+DbContext consists of the parts.
+
+1. `DbSet<T>` - Table to load
+2. `OnConfiguring()` - Connection parameters
+
+In `UsersOnlyDbContext.cs` to load `tbUsers`, we use the following `DbSet<T>` as a class property.
+
+```csharp
+public DbSet<User> Users { get; set; }
+```
+
+Because connection string is stored either in `UserSecrets` or `EnvironmentalVariable`, we use the following lookup for this parameter.
+
+```csharp
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    string ?connection;
+
+    if (Environment.GetEnvironmentVariable("ConnectionString") == null)
+    {
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        IConfiguration configuration = configurationBuilder
+            .AddUserSecrets<Program>()
+            .Build();
+        connection = configuration.GetSection("Zapasovnik")["ConnectionString"];
+    }
+    else
+    {
+        connection = Environment.GetEnvironmentVariable("ConnectionString");
+    }
+
+    optionsBuilder.UseMySQL(connection!);
+}
+```
+
+---
+
+##### Entities and DTOs
+
+Entities and DTOs share similar structure, except from Entities having attributes used for data operations with DB.
+
+Here is an example of a Entity for `tbTeamsPlayers`, which handles M:N relations.
+
+```csharp
+[Table("tbTeamsPlayers")]    // Name of the table in DB
+[PrimaryKey(nameof(TeamId), nameof(PlayerId))]     // Combined PK
+public class TeamPlayer
+{
+    [Column("teams_players_id")]    // Name of the column in DB
+    public int TeamsPlayersId { get; set; }
+
+    [Column("FK_team_id")]
+    public int TeamId { get; set; }
+
+    [Column("FK_player_id")]
+    public int PlayerId { get; set; }
+
+    [Column("since")]
+    public DateTime Since { get; set; } = DateTime.Now;    // Setting default value
+}
+```
+
+---
+
+##### Security
+
+###### Hashing
+
+Hashing is done using `SHA256` like this.
+
+```csharp
+public class PasswordHelper
+{
+    public static string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            // convert byte[] to string (hex)
+            StringBuilder builder = new StringBuilder();
+
+            foreach (byte b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+
+            return builder.ToString();
+        }
+    }
+}
+```
+
+---
+
+###### JWT
+
+JWT token generation is done with support of two classes.
+
+1. `JwtSecret.cs` - Loads and returns secret
+2. `JwtTokenGen.cs` - Generates and returns the token
+
+`JwtSecret` contains the same loading mechanism as `DbContext`, which looks for `UserSecrets` or `EnvironmentalVariable`.
+
+`JwtTokenGen` is based on documentation found on internet, except claims, which contain "custom" parameters, such as "role" and "uid".
+
+```csharp
+var claims = new List<Claim>
+{
+    new Claim(JwtRegisteredClaimNames.Sub, username),
+    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+    new Claim(JwtRegisteredClaimNames.Email, email),
+    new Claim("role", admin.ToString()),
+    new Claim("uid", id.ToString())
+};
+```
+
+---
+
+##### Controllers
+
+Each controller has a appropriate DbContext as a class property, which is then initiated and set in the controller constructor.
+
+Data loading is left to controller actions, which loads only the necessary data.
+
+Example of `MatchesController.cs`
+
+```csharp
+[Route("Zapasovnik")]
+[ApiController]
+public class MatchesController : ControllerBase
+{
+  public MatchesDb DbContext { get; set; }
+  
+  public MatchesController()
+  {
+      DbContext = new();
+  }
+
+  // ------------------------------------
+  // GET requests
+  // ------------------------------------
+
+  // If this method was only for logged in users,
+  // i.e. users with JWT, there would be [Authorize]
+  // as following
+    
+  // [Authorize]
+  [HttpGet("TeamMatches")]
+  public List<MatchesListDto> APITeamMatches()
+  {
+    List<Match> matches = DbContext.Matches.ToList();
+    List<TeamMatch> teamMatches = DbContext.TeamsMatches.ToList();
+    List<Team> teams = DbContext.Teams.ToList();
+
+    List<MatchesListDto> resp = matches
+      .Select(m => new MatchesListDto
+      {
+        MatchDate = m.MatchDate,
+
+        MatchId = m.MatchId,
+
+        Team1 = teamMatches
+          .Where(tm => tm.MatchId == m.MatchId)
+          .Join(teams,
+            tm => tm.TeamId,
+            t => t.TeamId,
+            (tm, t) => t.TeamName)
+          .OrderBy(name => name)
+          .First(),
+
+        Team2 = teamMatches
+          .Where(tm => tm.MatchId == m.MatchId)
+          .Join(teams,
+            tm => tm.TeamId,
+            t => t.TeamId,
+            (tm, t) => t.TeamName)
+          .OrderBy(name => name)
+          .Skip(1)
+          .First()
+      })
+      .OrderBy(x => x.MatchDate)
+      .ToList();
+
+    return resp;
+  }
+}
+```
+
+#### Frontend {#examples-front}
