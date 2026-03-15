@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.UserData
+import com.example.zapasovnik.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import com.example.zapasovnik.viewModel.HomeMatchTableAdapter
 import kotlinx.coroutines.flow.first

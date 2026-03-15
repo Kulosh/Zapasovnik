@@ -1,4 +1,4 @@
-package com.example.zapasovnik.model
+package com.example.zapasovnik
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey

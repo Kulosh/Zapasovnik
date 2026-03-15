@@ -8,9 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.UserData
+import com.example.zapasovnik.UserData
 import com.example.zapasovnik.network.RetrofitClient
-import com.example.zapasovnik.viewModel.FavTeamsTableAdapter
+import com.example.zapasovnik.viewModel.TeamsTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,7 @@ class FavTeamsActivity : ComponentActivity() {
             val userId = userData.userIdFlow.first()
             val favTeams = RetrofitClient.api.postFavTeams(userId, "Bearer ${userData.jwtTokenFlow.first()}")
 
-            recyclerView.adapter = FavTeamsTableAdapter(favTeams) { team ->
+            recyclerView.adapter = TeamsTableAdapter(favTeams) { team ->
                 val intent = Intent(this@FavTeamsActivity, TeamDetailActivity::class.java)
                 intent.putExtra("id", team.TeamId)
                 startActivity(intent)

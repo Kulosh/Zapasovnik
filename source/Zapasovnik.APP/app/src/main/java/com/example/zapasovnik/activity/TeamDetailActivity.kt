@@ -9,7 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.UserData
+import com.example.zapasovnik.UserData
 import com.example.zapasovnik.network.RetrofitClient
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

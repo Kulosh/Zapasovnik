@@ -3,12 +3,13 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.DbContexts
 {
-    public class PlayersDb : DbContext
+    public class MatchesDbContext : DbContext
     {
-        public DbSet<Player> Players { get; set; }
-        public DbSet<TeamPlayer> TeamsPlayers { get; set; }
+        public DbSet<Match> Matches { get; set; }
         public DbSet<Team> Teams { get; set; }
-        public DbSet<UserFavPlayer> UsersFavPlayers { get; set; }
+        public DbSet<TeamMatch> TeamsMatches { get; set; }
+        public DbSet<League> Leagues { get; set; }
+        public DbSet<UserFavMatch> UserFavMatches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -16,7 +17,7 @@ namespace Zapasovnik.API.DbContexts
 
             if (Environment.GetEnvironmentVariable("ConnectionString") == null)
             {
-                ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+                ConfigurationBuilder configurationBuilder = new();
                 IConfiguration configuration = configurationBuilder
                     .AddUserSecrets<Program>()
                     .Build();

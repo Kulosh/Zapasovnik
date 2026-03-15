@@ -10,7 +10,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        public PlayersDb DbContext { get; set; }
+        public PlayersDbContext DbContext { get; set; }
 
         public PlayerController()
         {

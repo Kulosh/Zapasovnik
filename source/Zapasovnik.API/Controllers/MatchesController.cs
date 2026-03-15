@@ -10,7 +10,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
-        public MatchesDb DbContext { get; set; }
+        public MatchesDbContext DbContext { get; set; }
 
         public MatchesController()
         {
