@@ -1,4 +1,4 @@
-# Zapasovnik
+****# Zapasovnik
 
 <img src="./source/Zapasovnik.APP/app/src/main/res/drawable/logo.png" height="128" alt="Zapasovnik logo">
 
@@ -6,28 +6,30 @@
 
 ## Table of contents
 
-- [Zapasovnik](#zapasovnik)
-  - [Table of contents](#table-of-contents)
-  - [Introduction](#introduction)
-    - [About the project](#about-the-project)
-    - [What is *Zapasovnik*](#what-is-zapasovnik)
-    - [About the code](#about-the-code)
-      - [Backend](#backend-intro-back)
-      - [Frontend](#frontend-intro-front)
-  - [Code](#code)
-    - [Structure](#structure)
-      - [Backend](#backend-structure-back)
-      - [Frontend](#frontend-structure-front)
-      - [Database](#database)
-    - [Examples](#examples)
-      - [Backend](#backend-examples-back)
-        - [DbContext](#dbcontext)
-        - [Entities and DTOs](#entities-and-dtos)
-        - [Security](#security)
-          - [Hashing](#hashing)
-          - [JWT](#jwt)
-        - [Controllers](#controllers)
-      - [Frontend](#frontend-examples-front)
+- [Table of contents](#table-of-contents)
+- [Introduction](#introduction)
+  - [About the project](#about-the-project)
+  - [What is *Zapasovnik*](#what-is-zapasovnik)
+  - [About the code](#about-the-code)
+    - [Backend {#intro-back}](#backend-intro-back)
+    - [Frontend {#intro-front}](#frontend-intro-front)
+- [Code](#code)
+  - [Structure](#structure)
+    - [Backend {#structure-back}](#backend-structure-back)
+    - [Frontend {#structure-front}](#frontend-structure-front)
+    - [Database](#database)
+  - [Examples](#examples)
+    - [Backend {#examples-back}](#backend-examples-back)
+      - [DbContext](#dbcontext)
+      - [Entities and DTOs](#entities-and-dtos)
+      - [Security](#security)
+        - [Hashing](#hashing)
+        - [JWT](#jwt)
+      - [Controllers](#controllers)
+    - [Frontend {#examples-front}](#frontend-examples-front)
+      - [Activity](#activity)
+      - [Network](#network)
+      - [ViewModel](#viewmodel)
 
 ---
 
@@ -440,3 +442,117 @@ public class MatchesController : ControllerBase
 ```
 
 #### Frontend {#examples-front}
+
+##### Activity
+
+All logic and interactions within the layouts are handled by classes in `activity/`.
+
+For interactions like `click` there are event listeners on the intended elements and looks like this:
+
+```kotlin
+teamsButton.setOnClickListener {
+  val intent = Intent(this, TeamsActivity::class.java)
+  startActivity(intent)
+}
+```
+
+You may see that perhaps all event listeners have the 2 lines of code in them as they are in the example. Their intent (:D) is to find activity class, which has at its beginning the intended layout, and start it.
+
+---
+
+When it comes to getting data from local storage or API, we need to use something called `lifecycleScope.launch`. This allows us to work with asynchronous operations. It can be called on creation of the activity or on `click` or any other moment you need.
+
+Here is an example of `lifecycleScope.launch` use-case in `HomeActivity.kt` to load matches from API.
+
+```kotlin
+lifecycleScope.launch {
+  val teamMatches: List<Match> = RetrofitClient.api.getTeamMatches() // Call to API
+
+  recyclerView.adapter = HomeMatchTableAdapter(teamMatches) { match ->
+    val intent = Intent(this@HomeActivity, MatchDetailActivity::class.java)
+    intent.putExtra("id", match.Id)
+    startActivity(intent)
+  }
+}
+```
+
+---
+
+##### Network
+
+`network/` stores files used for communication with API. `RetrofitClient.kt` , which uses Retrofit to send/get data from API based on given parameters.
+
+```kotlin
+object RetrofitClient {
+  private const val BASE_URL = "https://api.kulosh.eu/zapasovnik/"
+
+  val api: Api by lazy {
+    Retrofit
+      .Builder()
+      .baseUrl(BASE_URL) // Base URL of API
+      .addConverterFactory(Json.asConverterFactory("application/json".toMediaType())) // Tells API that transferred data are JSON
+      .build()
+      .create(Api::class.java)
+  }
+}
+```
+
+Secondary there is an interface file `Api.kt`. This file contains all API actions or targets to which requests are sent. It also contains parameters like `@Body`, `@Header` if JWT is needed, `@Path` if `id` is being sent or return data type.
+
+The API target could look like this
+
+```kotlin
+interface Api {
+  @GET("LeagueDetail/{id}")
+  suspend fun getLeagueDetail(
+    @Path("id") id: Int,
+    @Header("Authorization") authorization: String
+  ): Response<League>
+
+...
+
+}
+```
+
+---
+
+##### ViewModel
+
+`viewModel/` contains logic used by `recyclerView` to fill columns in tables.
+
+```kotlin
+class HomeMatchTableAdapter(
+  // Data source
+  private val matches: List<Match>,
+  // Sends match which was clicked on
+  private val onMatchClick: (Match) -> Unit
+) : RecyclerView.Adapter<HomeMatchTableAdapter.HomeMatchTableHolder>() {
+
+  // Choose all columns
+  class HomeMatchTableHolder(view: View): RecyclerView.ViewHolder(view) {
+    val team1: TextView = view.findViewById(R.id.Team1)
+    val date: TextView = view.findViewById(R.id.Date)
+    val team2: TextView = view.findViewById(R.id.Team2)
+    val row: LinearLayout = view.findViewById(R.id.matchRow)
+  }
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMatchTableHolder {
+    val view = LayoutInflater.from(parent.context)
+      .inflate(R.layout.matches_table_row, parent, false)
+    return HomeMatchTableHolder(view)
+  }
+
+  // Fills data into the table
+  override fun onBindViewHolder(holder: HomeMatchTableHolder, position: Int) {
+    val match = matches[position]
+    holder.team1.text = match.Team1
+    holder.date.text = match.Date
+    holder.team2.text = match.Team2
+    holder.row.setOnClickListener {
+      onMatchClick(match)
+    }
+  }
+
+  override fun getItemCount() = matches.size
+}
+```
