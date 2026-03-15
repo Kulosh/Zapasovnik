@@ -3,7 +3,7 @@ using Zapasovnik.API.Entities;
 
 namespace Zapasovnik.API.DbContexts
 {
-    public class UsersOnlyDb : DbContext
+    public class UsersOnlyDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
 

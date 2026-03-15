@@ -9,9 +9,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
-import com.example.zapasovnik.model.UserData
+import com.example.zapasovnik.UserData
 import com.example.zapasovnik.network.RetrofitClient
-import com.example.zapasovnik.viewModel.FavTeamsTableAdapter
+import com.example.zapasovnik.viewModel.TeamsTableAdapter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -35,7 +35,7 @@ class TeamsActivity : ComponentActivity() {
 
             if (!isAdmin) addButton.visibility = Button.GONE
 
-            recyclerView.adapter = FavTeamsTableAdapter(teams) { team ->
+            recyclerView.adapter = TeamsTableAdapter(teams) { team ->
                 val intent = Intent(this@TeamsActivity, TeamDetailActivity::class.java)
                 intent.putExtra("id", team.TeamId)
                 startActivity(intent)

@@ -10,7 +10,7 @@ namespace Zapasovnik.API.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        public UsersOnlyDb DbContext { get; set; }
+        public UsersOnlyDbContext DbContext { get; set; }
         public List<User> Users { get; set; }  
 
         public RegisterController()

@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.zapasovnik.R
 import com.example.zapasovnik.model.Team
 
-class FavTeamsTableAdapter(
+class TeamsTableAdapter(
     private val teams: List<Team>,
     private val onTeamClick: (Team) -> Unit
 ):
-    RecyclerView.Adapter<FavTeamsTableAdapter.FavTeamTableHolder>() {
+    RecyclerView.Adapter<TeamsTableAdapter.FavTeamTableHolder>() {
         class FavTeamTableHolder(view: View): RecyclerView.ViewHolder(view) {
             val teamName: TextView = view.findViewById(R.id.FavTeamName)
             val row: LinearLayout = view.findViewById(R.id.teamRow)

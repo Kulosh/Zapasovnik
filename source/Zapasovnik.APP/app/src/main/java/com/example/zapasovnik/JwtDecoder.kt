@@ -1,5 +1,6 @@
-package com.example.zapasovnik.model
+package com.example.zapasovnik
 
+import com.example.zapasovnik.model.DecodedJwt
 import org.json.JSONObject
 import java.util.Base64
 
