@@ -1,4 +1,4 @@
-****# Zapasovnik
+# Zapasovnik
 
 <img src="./source/Zapasovnik.APP/app/src/main/res/drawable/logo.png" height="128" alt="Zapasovnik logo">
 
