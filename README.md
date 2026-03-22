@@ -4,6 +4,17 @@
 
 ---
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+> :no_entry: [DEPRECATED]
+> 
+> As of March 22nd 2026, the API server is offline and will no longer be available.
+> However, you can still deploy your own API with extra steps of changing `BASE_URL` in `RetrofitClient.kt`
+> and make adjustments for JWT on backend in `Program.cs` and `JwtTokenGen.cs`
+
+
+---
+
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
